@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#f4f5f8" name="theme-color"/>
+<title>Math & Statistics Prerequisites — Switch job</title>
+<!-- Machine Learning brand metadata -->
+<link href="assets/brand/favicon.svg?v=20260727c" rel="icon" type="image/svg+xml"/>
+<link href="assets/brand/favicon-32.png?v=20260727c" rel="icon" sizes="32x32" type="image/png"/>
+<link href="assets/brand/favicon.ico?v=20260727c" rel="shortcut icon"/>
+<link href="assets/brand/apple-touch-icon.png?v=20260727c" rel="apple-touch-icon" sizes="180x180"/>
+<link href="assets/brand/site.webmanifest?v=20260727c" rel="manifest"/>
+<link color="#6f47f5" href="assets/brand/safari-pinned-tab.svg?v=20260727c" rel="mask-icon"/>
+<link href="assets/brand/social-card.png?v=20260727c" rel="image_src"/>
+<meta content="Switch job" name="application-name"/>
+<meta content="Switch job" name="apple-mobile-web-app-title"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="#2563eb" name="msapplication-TileColor"/>
+<meta content="assets/brand/browserconfig.xml?v=20260727c" name="msapplication-config"/>
+<meta content="website" property="og:type"/>
+<meta content="Switch job Learning Platform" property="og:site_name"/>
+<meta content="Math & Statistics Prerequisites" property="og:title"/>
+<meta content="The minimum maths that unlocks all of ML: dot products, gradients, convexity, Bayes, and maximum likelihood as the loss factory that generates MSE and log-loss." property="og:description"/>
+<meta content="assets/brand/social-card.png?v=20260727c" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="Switch job learning platform logo" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Math & Statistics Prerequisites" name="twitter:title"/>
+<meta content="The minimum maths that unlocks all of ML: dot products, gradients, convexity, Bayes, and maximum likelihood as the loss factory that generates MSE and log-loss." name="twitter:description"/>
+<meta content="assets/brand/social-card.png?v=20260727c" name="twitter:image"/>
+<link href="assets/brand/favicon-16.png?v=20260727c" rel="icon" sizes="16x16" type="image/png"/>
+<!-- /Machine Learning brand metadata -->
+<meta content="The minimum maths that unlocks all of ML: dot products, gradients, convexity, Bayes, and maximum likelihood as the loss factory that generates MSE and log-loss." name="description"/>
+<link href="assets/styles.css?v=20260727c" rel="stylesheet"/>
+<link href="assets/office-theme.css?v=20260727e" rel="stylesheet"/>
+</head>
+<body data-page="ml-01-math-statistics" data-prep-section="ml">
+<div class="app">
+<aside class="sidebar">
+<div class="brand">
+<a class="brand-link" href="index.html" aria-label="Switch job home">
+<span class="brand-mark" aria-hidden="true"><img src="assets/brand/switch-job-logo.png?v=20260727c" alt=""/></span>
+<div class="brand-text"><strong>Switch job</strong><span>Learning Platform</span></div>
+</a>
+</div>
+<div class="search-wrap"><div class="search-box"><svg fill="none" height="15" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="15"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg><input data-search="" placeholder="Search everything…  ( / )" type="text"/></div><div class="search-results"></div></div>
+<nav class="nav"></nav>
+</aside>
+<div class="backdrop"></div>
+<div class="main">
+<header class="topbar">
+<button aria-label="Menu" class="icon-btn menu-btn"><svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><path d="M3 12h18M3 6h18M3 18h18"></path></svg></button>
+<div class="crumbs">Machine Learning / Part A / Module 01</div>
+<button aria-label="Toggle theme" class="icon-btn" data-theme-toggle=""></button>
+</header>
+<div class="content-wrap">
+<main class="content prep-content">
+<div class="eyebrow"><span class="dot"></span> Module 01 · Part A Foundations</div>
+<h1>Math &amp; Statistics Prerequisites</h1>
+<p class="lead">You do not need a maths degree. You need fluency in a small, specific set of ideas — this is the minimum set that unlocks every module after it.</p>
+<div class="meta-row"><span class="pill purple">Prerequisites · Module 00</span><span class="pill">Study time · 8 h</span><span class="pill blue">6 interview questions</span><span class="pill">MATH · THEORY</span></div>
+<div class="callout key"><div class="c-ico">🎯</div><div class="c-body"><div class="c-title">Your interview goal</div><p>Be able to derive a loss function from a probability model, state what a p-value does and does not mean, and explain why regularization is a prior.</p></div></div>
+<h2 id="what-to-learn">1 · What to learn</h2>
+<h3>Linear algebra</h3>
+<ol><li>Vectors, dot product, and its geometric meaning — projection, similarity, angle.</li><li>Matrices as linear maps; matrix multiplication as composition.</li><li>The design matrix <code>X</code> (n × d): rows are samples, columns are features. Internalise this shape.</li><li>Transpose, inverse, rank, singularity — and what “<code>XᵀX</code> is not invertible” means practically.</li><li>Norms: L1, L2, L∞ — and their shapes as constraint regions.</li><li>Eigenvalues, eigenvectors, and the covariance matrix. This <em>is</em> PCA.</li><li>Condition number — why badly scaled features make optimization slow.</li></ol>
+<h3>Calculus</h3>
+<ol><li>Derivative as slope; partial derivative; the gradient as the direction of steepest ascent.</li><li>The chain rule. This <em>is</em> backpropagation.</li><li>Convexity, and why it guarantees a unique global minimum.</li><li>Setting the gradient to zero to find an optimum. This <em>is</em> the normal equation.</li></ol>
+<h3>Probability and statistics</h3>
+<ol><li>Random variables, expectation, variance, covariance, correlation.</li><li>Conditional and joint probability, independence.</li><li>Bayes’ theorem, and how to state it in words.</li><li>Bernoulli, Binomial, Normal, Poisson, Exponential, Uniform.</li><li>Central Limit Theorem and the Law of Large Numbers — what each actually claims.</li><li><strong>Maximum Likelihood Estimation.</strong> The single highest-leverage statistical concept for ML interviews.</li><li>MAP estimation, and its equivalence to regularized MLE.</li><li>Estimator bias, standard error, confidence intervals — and their correct interpretation.</li><li>Hypothesis testing, p-values, Type I/II error, power.</li><li>Bootstrapping and permutation tests — more useful in practice than most parametric tests.</li><li>Simpson’s paradox, selection bias, survivorship bias, confounding.</li></ol>
+<h2 id="intuitions">2 · Core intuitions</h2>
+<h3>Everything is a dot product</h3>
+<p>A linear model’s prediction is <code>w·x</code>. Cosine similarity is a normalized dot product. Attention scores are dot products. If dot products feel abstract, everything downstream feels abstract.</p>
+<h3>MLE is the loss factory</h3>
+<p>Pick a probability model for your data, write the likelihood of what you observed, take the negative log — and you have <em>derived</em> a loss function:</p>
+<ul><li>Gaussian noise around a linear prediction → <strong>squared error</strong>.</li><li>Bernoulli outcomes with a sigmoid probability → <strong>log-loss / cross-entropy</strong>.</li><li>Laplace noise → <strong>absolute error</strong>.</li></ul>
+<p>This one insight answers a whole family of “why this loss?” questions across Modules 06, 07, 11 and 17.</p>
+<h3>Regularization is a prior</h3>
+<p>Maximizing the posterior (MAP) rather than the likelihood adds a term encoding your prior belief about the parameters. A Gaussian prior on the weights gives L2 / ridge; a Laplace prior gives L1 / lasso. Regularization is not a hack — it is Bayesian inference in disguise.</p>
+<h3>Covariance is the object PCA diagonalizes</h3>
+<p>PCA takes the eigenvectors of the covariance matrix: the directions of maximum variance. They are orthogonal because the covariance matrix is symmetric — a consequence, not an imposed constraint.</p>
+<h2 id="formulas">3 · Formulas you must be able to write from memory</h2>
+<div class="code-block" data-reveal="">
+<div class="code-head"><span class="lang"><span class="dots"><i></i><i></i><i></i></span>math_prerequisites.txt</span><button class="copy-btn">Copy</button></div>
+<pre><code>Dot product          a·b = Σ aᵢbᵢ = |a||b|cosθ
+
+Expectation          E[X]   = Σ x·P(x)          (discrete)
+Variance             Var(X) = E[(X-μ)²] = E[X²] - (E[X])²
+Covariance           Cov(X,Y) = E[(X-μx)(Y-μy)]
+Correlation          ρ = Cov(X,Y) / (σx·σy)          ∈ [-1, 1]
+
+Bayes                P(A|B) = P(B|A)·P(A) / P(B)
+
+Likelihood           L(θ) = ∏ᵢ p(xᵢ | θ)
+Log-likelihood       ℓ(θ) = Σᵢ log p(xᵢ | θ)
+MLE                  θ̂ = argmax_θ ℓ(θ)
+MAP                  θ̂ = argmax_θ [ ℓ(θ) + log p(θ) ]     ← the regularizer
+
+Gaussian pdf         p(x) = (1/√(2πσ²))·exp(-(x-μ)²/(2σ²))
+Sigmoid              σ(z) = 1/(1+e^(-z));   σ'(z) = σ(z)(1-σ(z))
+Softmax              softmax(z)ᵢ = e^(zᵢ) / Σⱼ e^(zⱼ)
+
+Standard error       SE = σ/√n
+95% CI (approx)      x̄ ± 1.96·SE</code></pre>
+</div>
+<h2 id="drill">4 · Hands-on drill</h2>
+<p>In pure <code>numpy</code>, no <code>sklearn</code>:</p>
+<ol><li>Implement mean, variance and the covariance matrix from scratch; verify against numpy.</li><li>Sample 10,000 means of 30 draws from an exponential distribution and plot the histogram. Watch the CLT happen.</li><li>Implement a bootstrap 95% confidence interval for the median of a skewed sample.</li><li><strong>On paper:</strong> starting from a Gaussian likelihood, show that maximizing it is equivalent to minimizing squared error. Then do the same for Bernoulli → log-loss. These two derivations appear directly in Modules 06 and 07.</li></ol>
+<div class="callout warn"><div class="c-ico">⚠️</div><div class="c-body"><div class="c-title">Gotchas that fail candidates</div><ul><li><strong>Misinterpreting a p-value.</strong> It is not the probability the null hypothesis is true.</li><li><strong>Misinterpreting a confidence interval.</strong> A 95% CI does not mean “95% probability the parameter is in this interval”.</li><li><strong>Confusing the CLT with “data becomes normal”.</strong> The CLT is about the distribution of the sample <em>mean</em>.</li><li><strong>Saying zero correlation implies independence.</strong> Only the converse holds.</li><li><strong>Not being able to state what a singular <code>XᵀX</code> means</strong> — perfectly collinear features, or more features than samples.</li></ul></div></div>
+<h2 id="questions">5 · Interview questions</h2>
+<div class="prep-toolbar" data-sticky-prep=""><label class="prep-filter"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><input data-question-filter="" placeholder="Filter these questions…"/></label><button class="btn ghost" data-expand-answers="" type="button">Open all</button><span class="prep-count" data-question-count="">6 questions</span></div>
+<section aria-label="Math and statistics interview questions" class="prep-question-list">
+<details class="prep-question" data-question="explain maximum likelihood estimation and derive a loss function with it" data-tags="MLE derivation loss">
+<summary><span class="prep-q-no">01</span><span class="prep-q-title">Explain maximum likelihood estimation, and derive a loss function with it.<span class="prep-tags"><span>MLE</span><span>derivation</span><span>loss</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>MLE chooses the parameters that make the observed data most probable under an assumed model. Write the likelihood <code>L(θ) = ∏ p(xᵢ|θ)</code>, take the log to turn the product into a sum — same argmax, numerically stable — and maximize, equivalently minimizing the negative log-likelihood.</p><p><strong>Derivation.</strong> Assume <code>yᵢ = w·xᵢ + εᵢ</code> with <code>εᵢ ~ N(0, σ²)</code>. Then <code>p(yᵢ|xᵢ,w) = (1/√(2πσ²))·exp(-(yᵢ - w·xᵢ)²/(2σ²))</code>. The log-likelihood is <code>-n/2·log(2πσ²) - (1/2σ²)·Σ(yᵢ - w·xᵢ)²</code>. The first term is constant in <code>w</code>, so maximizing the log-likelihood is exactly minimizing <code>Σ(yᵢ - w·xᵢ)²</code> — mean squared error.</p><p>So <strong>MSE is not an arbitrary choice; it is the MLE under Gaussian noise.</strong></p><div class="prep-say"><strong>30-second version</strong><p>MLE picks parameters maximizing the probability of the observed data. Assume Gaussian noise on a linear prediction and the negative log-likelihood reduces exactly to squared error.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you understand that loss functions come from probabilistic assumptions. This is the single most reusable derivation in ML interviews.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “So what does using MSE assume about your errors?” — additive, zero-mean, constant-variance, Gaussian. With heavy tails, MSE over-weights outliers and MAE (the Laplace-noise MLE) or Huber is more appropriate.</div></div></details>
+<details class="prep-question" data-question="what does a p value of 0.03 mean" data-tags="statistics inference trap">
+<summary><span class="prep-q-no">02</span><span class="prep-q-title">What does a p-value of 0.03 mean?<span class="prep-tags"><span>statistics</span><span>inference</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>If the null hypothesis were true, there is a 3% probability of observing a test statistic at least as extreme as the one observed. It is a statement about <em>data given a hypothesis</em> — not about the probability of the hypothesis given the data, and not a measure of effect size. A p-value of 0.03 on a very large sample can accompany a business-irrelevant effect.</p><div class="prep-say"><strong>30-second version</strong><p>The probability of data at least this extreme if the null were true. Not the probability the null is true, and not an effect size.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>The most common statistical misconception in the industry. Getting it right is a strong positive signal.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “You ran 20 independent tests and one came back at p = 0.04. What do you conclude?” — essentially nothing; at α = 0.05 you expect about one false positive in 20 by construction. Apply a multiple-comparison correction, or pre-register a single primary metric.</div></div></details>
+<details class="prep-question" data-question="state bayes theorem and apply it disease test base rate" data-tags="Bayes base rate derivation">
+<summary><span class="prep-q-no">03</span><span class="prep-q-title">A disease affects 1 in 1,000. A test has 99% sensitivity and 95% specificity. You test positive — what is the probability you have it?<span class="prep-tags"><span>Bayes</span><span>base rate</span><span>derivation</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p><code>P(D|+) = P(+|D)P(D) / P(+)</code>. Prior <code>P(D) = 0.001</code> and <code>P(+|D) = 0.99</code>, so the true-positive mass is <code>0.001 × 0.99 = 0.00099</code>. The false-positive rate is <code>1 - 0.95 = 0.05</code>, so the false-positive mass is <code>0.999 × 0.05 = 0.04995</code>.</p><p><code>P(D|+) = 0.00099 / (0.00099 + 0.04995) ≈ 0.0194</code> — about <strong>1.9%</strong>.</p><p>Despite a “99% accurate” test, a positive result means under a 2% chance of disease, because the prior is so small that false positives from the huge healthy population swamp the true positives.</p><div class="prep-say"><strong>30-second version</strong><p>About 1.9%. The base rate is so low that false positives from the large healthy population dominate the true positives.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Base-rate reasoning. This is exactly the arithmetic behind why precision collapses on imbalanced problems in Module 12 — same computation, different vocabulary.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “Connect this to a fraud model.” — precision on a rare positive class is bounded by the base rate, so a model with excellent recall and a plausible false-positive rate can still produce a majority-false-positive alert queue.</div></div></details>
+<details class="prep-question" data-question="does zero correlation imply independence" data-tags="correlation independence trap">
+<summary><span class="prep-q-no">04</span><span class="prep-q-title">Does zero correlation imply independence?<span class="prep-tags"><span>correlation</span><span>independence</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>No. Independence implies zero correlation, but not the reverse. Pearson correlation measures only <em>linear</em> association: take <code>x ~ Uniform(-1,1)</code> and <code>y = x²</code> — perfectly dependent, correlation ≈ 0. The exception is the joint Gaussian case, where zero correlation does imply independence. The practical consequence is that screening features by correlation-with-target silently discards non-linear predictors.</p><div class="prep-say"><strong>30-second version</strong><p>No — only the converse holds. Pearson correlation sees linear association only; y = x² has correlation near zero while being perfectly dependent.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you know the limits of your default diagnostic tool, and the feature-selection consequence.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “How would you detect non-linear dependence?” — mutual information, Spearman rank correlation for monotone relationships, distance correlation, or simply fit a shallow tree and inspect its gain.</div></div></details>
+<details class="prep-question" data-question="what is the bias of an estimator and give a biased example" data-tags="estimator bias variance">
+<summary><span class="prep-q-no">05</span><span class="prep-q-title">What is the bias of an estimator, and give an example of a biased one.<span class="prep-tags"><span>estimator</span><span>bias</span><span>variance</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Bias is <code>E[θ̂] - θ</code>: the systematic error of the estimation procedure across repeated samples. The maximum-likelihood variance estimator dividing by <code>n</code> is biased downward; dividing by <code>n-1</code> (Bessel’s correction) is unbiased, because one degree of freedom is consumed estimating the mean. Crucially, unbiasedness is not automatically desirable — ridge regression is deliberately biased in exchange for a large variance reduction, and often achieves lower total error.</p><div class="prep-say"><strong>30-second version</strong><p>The systematic error of the procedure across repeated samples. Dividing variance by n is biased low; n−1 corrects it. But biased can be better — that is exactly ridge’s bargain.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Setup for the bias–variance decomposition in Module 05. The “biased can be better” point is what distinguishes a strong answer.</p></div></div></details>
+<details class="prep-question" data-question="explain simpsons paradox with a decision it would change" data-tags="confounding experimentation">
+<summary><span class="prep-q-no">06</span><span class="prep-q-title">Explain Simpson’s paradox with a case where it would change your decision.<span class="prep-tags"><span>confounding</span><span>experimentation</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>A trend present in every subgroup can reverse when the subgroups are aggregated, because group membership confounds the comparison. Classic case: treatment A appears better than B overall, but B is better within both mild and severe cohorts — because B was disproportionately given to severe cases.</p><p>Decision impact: an aggregate A/B readout showing variant B winning can be driven entirely by a shift in traffic mix — for example more mobile users landing in one arm — so you must check per-segment results and randomization balance before shipping.</p><div class="prep-say"><strong>30-second version</strong><p>A trend in every subgroup can reverse on aggregation when group membership confounds the comparison. So an aggregate A/B win can be pure traffic-mix artefact.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Confounding awareness — the core skill in any experimentation-adjacent role.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “How do you protect against it?” — randomize properly, pre-register segments, check covariate balance across arms, and use stratified or CUPED-style variance reduction.</div></div></details>
+</section>
+<div class="page-nav"><a href="00-interview-landscape.html"><div class="dir">← Previous</div><div class="ttl">Interview Landscape &amp; Setup</div></a><a class="next" href="02-algorithm-taxonomy.html"><div class="dir">Next →</div><div class="ttl">Algorithm Taxonomy</div></a></div>
+</main>
+<div class="toc-rail"><nav class="toc"></nav></div>
+</div>
+</div>
+</div>
+<script src="assets/app.js?v=20260727c"></script>
+<script src="assets/ml-sitenav.js?v=20260727c"></script>
+<script src="assets/enhance.js?v=20260727c"></script>
+<script src="assets/interview-prep.js?v=20260727c"></script>
+</body>
+</html>

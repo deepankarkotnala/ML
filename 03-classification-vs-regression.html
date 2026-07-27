@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#f4f5f8" name="theme-color"/>
+<title>Classification vs Regression — Switch job</title>
+<!-- Machine Learning brand metadata -->
+<link href="assets/brand/favicon.svg?v=20260727c" rel="icon" type="image/svg+xml"/>
+<link href="assets/brand/favicon-32.png?v=20260727c" rel="icon" sizes="32x32" type="image/png"/>
+<link href="assets/brand/favicon.ico?v=20260727c" rel="shortcut icon"/>
+<link href="assets/brand/apple-touch-icon.png?v=20260727c" rel="apple-touch-icon" sizes="180x180"/>
+<link href="assets/brand/site.webmanifest?v=20260727c" rel="manifest"/>
+<link color="#6f47f5" href="assets/brand/safari-pinned-tab.svg?v=20260727c" rel="mask-icon"/>
+<link href="assets/brand/social-card.png?v=20260727c" rel="image_src"/>
+<meta content="Switch job" name="application-name"/>
+<meta content="Switch job" name="apple-mobile-web-app-title"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="#2563eb" name="msapplication-TileColor"/>
+<meta content="assets/brand/browserconfig.xml?v=20260727c" name="msapplication-config"/>
+<meta content="website" property="og:type"/>
+<meta content="Switch job Learning Platform" property="og:site_name"/>
+<meta content="Classification vs Regression" property="og:title"/>
+<meta content="How the target's measurement scale propagates through loss, link function, metric and error meaning — plus the threshold decision no regression model needs." property="og:description"/>
+<meta content="assets/brand/social-card.png?v=20260727c" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="Switch job learning platform logo" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Classification vs Regression" name="twitter:title"/>
+<meta content="How the target's measurement scale propagates through loss, link function, metric and error meaning — plus the threshold decision no regression model needs." name="twitter:description"/>
+<meta content="assets/brand/social-card.png?v=20260727c" name="twitter:image"/>
+<link href="assets/brand/favicon-16.png?v=20260727c" rel="icon" sizes="16x16" type="image/png"/>
+<!-- /Machine Learning brand metadata -->
+<meta content="How the target's measurement scale propagates through loss, link function, metric and error meaning — plus the threshold decision no regression model needs." name="description"/>
+<link href="assets/styles.css?v=20260727c" rel="stylesheet"/>
+<link href="assets/office-theme.css?v=20260727e" rel="stylesheet"/>
+</head>
+<body data-page="ml-03-classification-vs-regression" data-prep-section="ml">
+<div class="app">
+<aside class="sidebar">
+<div class="brand">
+<a class="brand-link" href="index.html" aria-label="Switch job home">
+<span class="brand-mark" aria-hidden="true"><img src="assets/brand/switch-job-logo.png?v=20260727c" alt=""/></span>
+<div class="brand-text"><strong>Switch job</strong><span>Learning Platform</span></div>
+</a>
+</div>
+<div class="search-wrap"><div class="search-box"><svg fill="none" height="15" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="15"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg><input data-search="" placeholder="Search everything…  ( / )" type="text"/></div><div class="search-results"></div></div>
+<nav class="nav"></nav>
+</aside>
+<div class="backdrop"></div>
+<div class="main">
+<header class="topbar">
+<button aria-label="Menu" class="icon-btn menu-btn"><svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><path d="M3 12h18M3 6h18M3 18h18"></path></svg></button>
+<div class="crumbs">Machine Learning / Part A / Module 03</div>
+<button aria-label="Toggle theme" class="icon-btn" data-theme-toggle=""></button>
+</header>
+<div class="content-wrap">
+<main class="content prep-content">
+<div class="eyebrow"><span class="dot"></span> Module 03 · Part A Foundations</div>
+<h1>Classification vs Regression</h1>
+<p class="lead">The target type is the root of a dependency tree. Get the root wrong and every branch — loss, metric, error interpretation — is wrong with it.</p>
+<div class="meta-row"><span class="pill purple">Prerequisites · Modules 01–02</span><span class="pill">Study time · 4 h</span><span class="pill blue">4 interview questions</span><span class="pill">THEORY · APPLIED</span></div>
+<div class="callout key"><div class="c-ico">🎯</div><div class="c-body"><div class="c-title">Your interview goal</div><p>Go beyond “continuous versus categorical” to the consequences — and always ask whether the business needs a score or a decision.</p></div></div>
+<h2 id="what-to-learn">1 · What to learn</h2>
+<ol><li>The formal difference: the target’s measurement scale — continuous and ordered versus discrete and categorical.</li><li>How the target type propagates through <strong>loss</strong>, <strong>output link</strong>, <strong>metric</strong> and <strong>error interpretation</strong>. This propagation is the real content of the module.</li><li>Binary vs multi-class vs multi-label vs ordinal classification — and why multi-label is not multi-class.</li><li>Regression variants: point prediction, quantile regression, count regression, survival / time-to-event.</li><li>When one problem can be framed either way, and how to decide.</li><li>Discretizing a continuous target: when it is legitimate and what it costs.</li><li>Ranking as a third family that is neither.</li><li>That a classifier outputs a score, and the <em>decision</em> requires a threshold that comes from business cost — not from the model.</li></ol>
+<h2 id="intuitions">2 · Core intuitions</h2>
+<h3>The target type is the root of a dependency tree</h3>
+<div class="table-wrap"><table><thead><tr><th></th><th>Regression</th><th>Binary Classification</th></tr></thead><tbody><tr><td>Target</td><td><code>y ∈ ℝ</code></td><td><code>y ∈ {0,1}</code></td></tr><tr><td>Model output</td><td>a number</td><td>a probability, then a class</td></tr><tr><td>Typical loss</td><td>MSE / MAE / Huber</td><td>Log-loss / hinge</td></tr><tr><td>Link function</td><td>identity</td><td>logit (sigmoid)</td></tr><tr><td>Metrics</td><td>RMSE, MAE, MAPE, R²</td><td>precision/recall, F1, ROC-AUC, PR-AUC, log-loss</td></tr><tr><td>“Error” means</td><td>how far off</td><td>which side of the boundary, and how confident</td></tr><tr><td>Extra decision needed</td><td>none</td><td><strong>the threshold</strong></td></tr></tbody></table></div>
+<h3>Classification is two steps, and interviewers care about the second</h3>
+<p>A classifier produces a score; converting that score into an action requires a threshold. <code>0.5</code> is a default, almost never the right answer, and choosing it deliberately from a cost matrix is one of the strongest signals you can give in an applied round.</p>
+<h3>Ordinal targets are the interesting middle</h3>
+<p>A 1–5 star rating is ordered but not evenly spaced. Treating it as regression assumes the gap between 1 and 2 equals the gap between 4 and 5. Treating it as 5-class classification throws away the ordering entirely — predicting 5 when the truth is 1 is penalized identically to predicting 2. The honest answers are ordinal regression, or classification with a distance-aware metric such as quadratic weighted kappa.</p>
+<h3>Discretizing a continuous target destroys information</h3>
+<p>Turning “days until churn” into “churns within 30 days” makes the problem easier to communicate and threshold, but throws away the distinction between day 1 and day 29, and makes usefulness depend on a cutoff chosen before you learned anything. Do it when the <em>decision</em> is genuinely binary; not merely to reach for a classifier.</p>
+<h2 id="drill">3 · Hands-on drill</h2>
+<ol><li>Take a dataset with a continuous target. Fit a regressor and report RMSE and MAE.</li><li>Discretize the target at the median, fit a classifier, and report precision, recall and PR-AUC.</li><li>Write 200 words on what information the discretization destroyed and which framing you would actually ship.</li><li>Then take a 1–5 rating dataset and compare regression, 5-class classification, and quadratic-weighted-kappa evaluation on the same data.</li></ol>
+<div class="callout warn"><div class="c-ico">⚠️</div><div class="c-body"><div class="c-title">Gotchas that fail candidates</div><ul><li><strong>Treating multi-label as multi-class.</strong> Softmax on a multi-label problem forces probabilities to compete and sum to 1, which is simply the wrong model.</li><li><strong>Using accuracy on regression</strong>, or RMSE on classification — usually a slip, always noticed.</li><li><strong>Not asking whether the business needs a score or a decision.</strong> They are different deliverables.</li><li><strong>Forgetting that logistic “regression” is a classifier</strong> — and not knowing why the name is what it is.</li></ul></div></div>
+<h2 id="questions">4 · Interview questions</h2>
+<div class="prep-toolbar" data-sticky-prep=""><label class="prep-filter"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><input data-question-filter="" placeholder="Filter these questions…"/></label><button class="btn ghost" data-expand-answers="" type="button">Open all</button><span class="prep-count" data-question-count="">4 questions</span></div>
+<section aria-label="Classification versus regression interview questions" class="prep-question-list">
+<details class="prep-question" data-question="classification versus regression what actually changes" data-tags="fundamentals loss metrics">
+<summary><span class="prep-q-no">01</span><span class="prep-q-title">Classification vs regression: what actually changes?<span class="prep-tags"><span>fundamentals</span><span>loss</span><span>metrics</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>The target’s measurement scale, and then everything depending on it. Regression predicts a continuous quantity where “close” is meaningful, so it uses distance-based losses (MSE, MAE, Huber), an identity link, and error metrics in the target’s own units. Classification predicts membership of a discrete set, so it uses likelihood-based losses (log-loss) or margin-based losses (hinge), a squashing link (sigmoid or softmax) to produce probabilities, and metrics built on the confusion matrix plus a business-chosen threshold. The deepest practical difference is that a classifier’s output requires an <strong>extra decision — the threshold</strong> — that no regression model needs.</p><div class="prep-say"><strong>30-second version</strong><p>The target scale, and then loss, link, metric and error meaning all follow from it. And uniquely, classification needs a threshold the model itself never supplies.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you can go beyond “continuous versus categorical” into consequences. The threshold observation is what marks a senior answer.</p></div></div></details>
+<details class="prep-question" data-question="predict days until machine fails regression or classification censoring" data-tags="applied survival censoring trap">
+<summary><span class="prep-q-no">02</span><span class="prep-q-title">You must predict how many days until a machine fails. Regression or classification?<span class="prep-tags"><span>applied</span><span>survival</span><span>censoring</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>It depends on the decision the output drives, so I would clarify first. If maintenance is scheduled and the planner needs a horizon, regression on days — or better, <strong>survival analysis</strong>, because some machines have not failed yet and that is right-censored data, which plain regression either drops or mislabels. If the decision is a binary “service this machine in the next shift or not”, classification on a fixed window is simpler to calibrate and threshold.</p><p>A good production answer is often both: a classifier for the alerting decision and a regression or quantile model for the scheduling horizon. And if downside risk is asymmetric, <strong>quantile regression</strong> — predicting the 10th percentile of time-to-failure is far more useful than the mean when failure is expensive.</p><div class="prep-say"><strong>30-second version</strong><p>Clarify the decision first. A scheduling horizon means regression, ideally survival analysis because of censoring; a shift-level go/no-go means classification. Often ship both.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you ask about the decision before choosing a formulation, and whether you spot censoring. Naming survival analysis is a strong differentiator.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “What is censoring and why does it break regression?” — a machine still running at the end of your window has time-to-failure ≥ its current age, not equal to it. Training on that value as ground truth biases predictions systematically downward.</div></div></details>
+<details class="prep-question" data-question="multiclass versus multilabel how do model and loss differ softmax sigmoid" data-tags="multiclass multilabel softmax">
+<summary><span class="prep-q-no">03</span><span class="prep-q-title">Multi-class vs multi-label. How do the model and loss differ?<span class="prep-tags"><span>multiclass</span><span>multilabel</span><span>softmax</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Multi-class: classes are mutually exclusive, one label per sample. Use a softmax over <code>K</code> units with categorical cross-entropy; probabilities sum to 1 and compete. Multi-label: labels are independent and co-occurring, such as article tags. Use <code>K</code> independent sigmoid outputs and the sum of per-label binary cross-entropies; each probability is independent and they need not sum to 1. Metrics differ too — multi-class uses macro, micro or weighted precision-recall and a confusion matrix; multi-label uses per-label metrics, Hamming loss, subset accuracy and mean average precision.</p><div class="prep-say"><strong>30-second version</strong><p>Multi-class is mutually exclusive: softmax plus categorical cross-entropy. Multi-label is independent: K sigmoids plus summed binary cross-entropy. Softmax for multi-label is simply the wrong model.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>An easy question to get subtly wrong. Saying “softmax” for a multi-label problem is an immediate flag.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “One-vs-Rest or One-vs-One for multi-class with a binary-only algorithm?” — OvR trains K classifiers, cheap but each faces an imbalanced problem; OvO trains K(K−1)/2 pairwise classifiers, far more models but each on a smaller balanced subset, which is why libsvm uses it where training cost is super-linear in n.</div></div></details>
+<details class="prep-question" data-question="when is it legitimate to bin a continuous target into classes" data-tags="target design trap">
+<summary><span class="prep-q-no">04</span><span class="prep-q-title">When is it legitimate to bin a continuous target into classes?<span class="prep-tags"><span>target design</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>When the downstream decision is genuinely discrete <em>and</em> the bin boundaries come from the business rather than the data — a regulatory threshold, a fixed SLA, a fixed intervention budget.</p><p>It is illegitimate when done for convenience: you destroy within-bin information, make performance sensitive to an arbitrary cutoff, and introduce a discontinuity where cases just below and just above the line are treated as categorically different. If you do bin, report how many samples sit near the boundary and check the model is not merely learning the cutoff.</p><p>A better pattern is usually to model the continuous target and threshold the <em>prediction</em>, which keeps the cutoff a configurable business parameter rather than a baked-in modelling choice.</p><div class="prep-say"><strong>30-second version</strong><p>Only when the decision is genuinely discrete and the boundary comes from the business. Otherwise model the continuous target and threshold the prediction, keeping the cutoff configurable.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Resistance to convenient simplifications, and awareness that thresholds should live outside the model where possible.</p></div></div></details>
+</section>
+<div class="page-nav"><a href="02-algorithm-taxonomy.html"><div class="dir">← Previous</div><div class="ttl">Algorithm Taxonomy</div></a><a class="next" href="04-data-prep-feature-engineering.html"><div class="dir">Next →</div><div class="ttl">Data Prep &amp; Feature Engineering</div></a></div>
+</main>
+<div class="toc-rail"><nav class="toc"></nav></div>
+</div>
+</div>
+</div>
+<script src="assets/app.js?v=20260727c"></script>
+<script src="assets/ml-sitenav.js?v=20260727c"></script>
+<script src="assets/enhance.js?v=20260727c"></script>
+<script src="assets/interview-prep.js?v=20260727c"></script>
+</body>
+</html>

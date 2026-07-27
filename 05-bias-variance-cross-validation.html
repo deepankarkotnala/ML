@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#f4f5f8" name="theme-color"/>
+<title>Bias–Variance, Splits & Cross-Validation — Switch job</title>
+<!-- Machine Learning brand metadata -->
+<link href="assets/brand/favicon.svg?v=20260727c" rel="icon" type="image/svg+xml"/>
+<link href="assets/brand/favicon-32.png?v=20260727c" rel="icon" sizes="32x32" type="image/png"/>
+<link href="assets/brand/favicon.ico?v=20260727c" rel="shortcut icon"/>
+<link href="assets/brand/apple-touch-icon.png?v=20260727c" rel="apple-touch-icon" sizes="180x180"/>
+<link href="assets/brand/site.webmanifest?v=20260727c" rel="manifest"/>
+<link color="#6f47f5" href="assets/brand/safari-pinned-tab.svg?v=20260727c" rel="mask-icon"/>
+<link href="assets/brand/social-card.png?v=20260727c" rel="image_src"/>
+<meta content="Switch job" name="application-name"/>
+<meta content="Switch job" name="apple-mobile-web-app-title"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="#2563eb" name="msapplication-TileColor"/>
+<meta content="assets/brand/browserconfig.xml?v=20260727c" name="msapplication-config"/>
+<meta content="website" property="og:type"/>
+<meta content="Switch job Learning Platform" property="og:site_name"/>
+<meta content="Bias–Variance, Splits & Cross-Validation" property="og:title"/>
+<meta content="The bias-variance decomposition, every hyperparameter as a position on the dial, the bagging variance identity, time-series validation with an embargo, and nested cross-validation." property="og:description"/>
+<meta content="assets/brand/social-card.png?v=20260727c" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="Switch job learning platform logo" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Bias–Variance, Splits & Cross-Validation" name="twitter:title"/>
+<meta content="The bias-variance decomposition, every hyperparameter as a position on the dial, the bagging variance identity, time-series validation with an embargo, and nested cross-validation." name="twitter:description"/>
+<meta content="assets/brand/social-card.png?v=20260727c" name="twitter:image"/>
+<link href="assets/brand/favicon-16.png?v=20260727c" rel="icon" sizes="16x16" type="image/png"/>
+<!-- /Machine Learning brand metadata -->
+<meta content="The bias-variance decomposition, every hyperparameter as a position on the dial, the bagging variance identity, time-series validation with an embargo, and nested cross-validation." name="description"/>
+<link href="assets/styles.css?v=20260727c" rel="stylesheet"/>
+<link href="assets/office-theme.css?v=20260727e" rel="stylesheet"/>
+</head>
+<body data-page="ml-05-bias-variance-cross-validation" data-prep-section="ml">
+<div class="app">
+<aside class="sidebar">
+<div class="brand">
+<a class="brand-link" href="index.html" aria-label="Switch job home">
+<span class="brand-mark" aria-hidden="true"><img src="assets/brand/switch-job-logo.png?v=20260727c" alt=""/></span>
+<div class="brand-text"><strong>Switch job</strong><span>Learning Platform</span></div>
+</a>
+</div>
+<div class="search-wrap"><div class="search-box"><svg fill="none" height="15" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="15"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg><input data-search="" placeholder="Search everything…  ( / )" type="text"/></div><div class="search-results"></div></div>
+<nav class="nav"></nav>
+</aside>
+<div class="backdrop"></div>
+<div class="main">
+<header class="topbar">
+<button aria-label="Menu" class="icon-btn menu-btn"><svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><path d="M3 12h18M3 6h18M3 18h18"></path></svg></button>
+<div class="crumbs">Machine Learning / Part A / Module 05</div>
+<button aria-label="Toggle theme" class="icon-btn" data-theme-toggle=""></button>
+</header>
+<div class="content-wrap">
+<main class="content prep-content">
+<div class="eyebrow"><span class="dot"></span> Module 05 · Part A Foundations</div>
+<h1>Bias–Variance, Splits &amp; Cross-Validation</h1>
+<p class="lead">Universal. Every hyperparameter question is secretly this question — which is why the bias-variance dial is the most reusable framing in the whole curriculum.</p>
+<div class="meta-row"><span class="pill purple">Prerequisites · Modules 01–04</span><span class="pill">Study time · 8 h</span><span class="pill blue">6 interview questions</span><span class="pill">Universal</span></div>
+<div class="callout key"><div class="c-ico">🎯</div><div class="c-body"><div class="c-title">Your interview goal</div><p>Write the decomposition from memory, place any named hyperparameter on the dial instantly, know why random K-fold ruins time series, and explain why a tuned CV score is optimistically biased.</p></div></div>
+<h2 id="what-to-learn">1 · What to learn</h2>
+<ol><li>Generalization: the difference between training error and expected error on new data.</li><li>Overfitting and underfitting — the symptoms, not just the definitions.</li><li>The <strong>bias–variance decomposition</strong> of expected squared error, and what each term means.</li><li>Model complexity versus error curves; the classical U-shaped test-error curve.</li><li><strong>Learning curves</strong> — error versus training-set size — and how to read them to decide “more data” versus “more model”.</li><li>Train / validation / test — three sets, three distinct jobs.</li><li>K-fold, stratified K-fold, repeated K-fold, leave-one-out.</li><li><code>GroupKFold</code> for entity leakage; <code>TimeSeriesSplit</code> and walk-forward for temporal data.</li><li><strong>Nested cross-validation</strong>, and why a single CV loop that also tunes is optimistically biased.</li><li>The five families of regularization: penalties, early stopping, ensembling, more data or augmentation, and explicit capacity limits.</li><li>Double descent — what it is, and the honest scope of the claim.</li><li>Reproducibility: seeds, fold determinism, and reporting variance across folds rather than a single number.</li></ol>
+<h2 id="intuitions">2 · Core intuitions</h2>
+<h3>Bias is being wrong on average; variance is being unstable</h3>
+<p>Bias is error from the model being too rigid to represent the truth — a straight line fitted to a curve is wrong no matter how much data you give it. Variance is error from the model being so sensitive that a different training sample would produce a very different function. A depth-1 tree has high bias and low variance; a fully grown tree has low bias and high variance.</p>
+<h3>Every hyperparameter is a position on the bias–variance dial</h3>
+<p>This is the most reusable framing in the curriculum, because interviewers ask it in a hundred disguises.</p>
+<div class="table-wrap"><table><thead><tr><th>Hyperparameter</th><th>Increase it →</th></tr></thead><tbody><tr><td><code>λ</code> / <code>alpha</code> (regularization)</td><td>more bias, less variance</td></tr><tr><td><code>C</code> in SVM</td><td>less bias, more variance (C is inverse regularization)</td></tr><tr><td>tree <code>max_depth</code></td><td>less bias, more variance</td></tr><tr><td>tree <code>min_samples_leaf</code></td><td>more bias, less variance</td></tr><tr><td><code>k</code> in KNN</td><td>more bias, less variance</td></tr><tr><td><code>n_estimators</code> in <strong>Random Forest</strong></td><td>variance ↓, then flat — does not meaningfully overfit</td></tr><tr><td><code>n_estimators</code> in <strong>boosting</strong></td><td>bias ↓, variance ↑ — <strong>will</strong> overfit, needs early stopping</td></tr><tr><td><code>learning_rate</code> in boosting</td><td>larger → faster bias reduction, more variance</td></tr><tr><td>polynomial degree</td><td>less bias, more variance</td></tr></tbody></table></div>
+<p>Memorize the contrast between the two <code>n_estimators</code> rows. It is asked constantly and is the cleanest one-line proof that you understand bagging versus boosting.</p>
+<h3>Bagging attacks variance; boosting attacks bias</h3>
+<p>Bagging averages many low-bias, high-variance models fitted on bootstrap samples, so bias stays roughly the same and variance falls. Boosting adds many high-bias, low-variance models sequentially, each correcting the previous residuals, so bias falls and you must control the resulting variance with shrinkage and early stopping.</p>
+<h3>The test set is a one-shot resource</h3>
+<p>Train fits parameters. Validation selects hyperparameters and model families. Test estimates generalization <em>once</em>, at the end. Every time you look at the test set and change something, you leak information into your model choice and your final estimate becomes optimistic. This is why nested CV exists.</p>
+<h3>Read learning curves to decide what to do next</h3>
+<p>Plot training and validation error against training-set size. Both high and close together means <strong>underfitting</strong> — add capacity or better features; more data will not help. Low training error with a large persistent gap means <strong>overfitting</strong> — regularize, simplify, or add data; here more data <em>will</em> help, and the curve shows roughly how much.</p>
+<h3>Double descent, stated carefully</h3>
+<p>In heavily over-parameterized regimes — especially deep networks — test error can fall again after the interpolation threshold, producing a second descent beyond the classical U-curve. It is real and important in modern deep learning, but it is <strong>not</strong> a licence to ignore overfitting in the tabular models this curriculum covers, where the classical U-curve is what you will actually observe.</p>
+<h2 id="formulas">3 · Whiteboard formulas</h2>
+<div class="code-block" data-reveal="">
+<div class="code-head"><span class="lang"><span class="dots"><i></i><i></i><i></i></span>bias_variance.txt</span><button class="copy-btn">Copy</button></div>
+<pre><code>Expected squared error at a point x, over training sets:
+
+  E[(y - f̂(x))²] = ( Bias[f̂(x)] )² + Var[f̂(x)] + σ²
+                     ─────┬─────      ────┬────    ─┬─
+              systematic error   sensitivity to    irreducible
+              from wrong form     the sample       noise
+
+  Bias[f̂(x)] = E[f̂(x)] - f(x)
+  Var[f̂(x)]  = E[( f̂(x) - E[f̂(x)] )²]
+
+σ² is the noise floor: no model, however good, can go below it.
+
+Variance of an average of B correlated models (the bagging identity):
+  Var = ρσ² + (1-ρ)·σ²/B
+        ───     ────────
+    irreducible   →0 as B→∞
+    correlation
+    floor</code></pre>
+</div>
+<p>That last identity is the mathematical reason Random Forest randomizes features: raising <code>B</code> only helps down to the <code>ρσ²</code> floor, so improving further means <em>reducing ρ</em> by decorrelating the trees. Being able to state it earns real credit in Module 16.</p>
+<h2 id="drill">4 · Hands-on drill</h2>
+<ol><li>Fit polynomial regressions of degree 1 to 15 on a small noisy sample; plot training and test error against degree and produce the U-curve yourself.</li><li>Plot learning curves for a high-bias and a high-variance model on the same data; confirm you can identify which is which from the curves alone.</li><li>Take a time-ordered dataset and score the same model with random K-fold and with <code>TimeSeriesSplit</code>. <strong>Record the gap</strong> — that number is your answer to the leakage question.</li><li>Implement nested CV manually and compare its estimate against a single tuned-CV estimate on the same data. Note the optimism.</li></ol>
+<div class="callout warn"><div class="c-ico">⚠️</div><div class="c-body"><div class="c-title">Gotchas that fail candidates</div><ul><li><strong>Random K-fold on time series.</strong> Trains on the future to predict the past.</li><li><strong>Not stratifying</strong> a K-fold on an imbalanced target, so some folds have too few positives for a stable estimate.</li><li><strong>Tuning on the test set</strong> and then reporting the test score as unbiased.</li><li><strong>Reporting a single CV number with no spread.</strong> 0.82 ± 0.09 is a very different result from 0.82 ± 0.01.</li><li><strong>Claiming more data always helps.</strong> Under high bias, it does not.</li><li><strong>Confusing the effect of <code>n_estimators</code></strong> in Random Forest versus in boosting.</li></ul></div></div>
+<h2 id="questions">5 · Interview questions</h2>
+<div class="prep-toolbar" data-sticky-prep=""><label class="prep-filter"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><input data-question-filter="" placeholder="Filter these questions…"/></label><button class="btn ghost" data-expand-answers="" type="button">Open all</button><span class="prep-count" data-question-count="">6 questions</span></div>
+<section aria-label="Bias-variance and cross-validation interview questions" class="prep-question-list">
+<details class="prep-question" data-question="write and explain the bias variance decomposition" data-tags="derivation fundamentals">
+<summary><span class="prep-q-no">01</span><span class="prep-q-title">Write and explain the bias–variance decomposition.<span class="prep-tags"><span>derivation</span><span>fundamentals</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>For squared error, expected error at a point decomposes as <code>bias² + variance + irreducible noise</code>. Bias is <code>E[f̂(x)] - f(x)</code>, the systematic error from the model class being too restrictive to represent the truth. Variance is <code>E[(f̂(x) - E[f̂(x)])²]</code>, the error from sensitivity to the particular training sample. <code>σ²</code> is noise in the data-generating process — a floor no model can beat. Crucially, <strong>the expectation is over training sets</strong>, which is the part candidates usually omit and the part that makes “variance” meaningful: it asks how much your fitted function would move if you had drawn a different sample of the same size.</p><div class="prep-say"><strong>30-second version</strong><p>bias² + variance + irreducible noise. Bias is systematic error from too rigid a model class; variance is sensitivity to the sample; σ² is the noise floor — and the expectation is over training sets.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether your understanding is mathematical or slogan-level. Saying “the expectation is over training sets” is the marker of a genuine answer.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “Does this hold for 0-1 classification loss?” — not in this clean additive form; the decomposition is exact for squared error. Analogues exist but are messier. The intuition transfers, the algebra does not.</div></div></details>
+<details class="prep-question" data-question="99 percent train accuracy 71 percent test accuracy what do you do" data-tags="overfitting debugging playbook">
+<summary><span class="prep-q-no">02</span><span class="prep-q-title">Your model has 99% train accuracy and 71% test accuracy. What do you do?<span class="prep-tags"><span>overfitting</span><span>debugging</span><span>playbook</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>A 28-point gap: high variance, overfitting. I would address it in order of cost. <strong>(1)</strong> Verify the evaluation first — is the split leaking or unrepresentative, is the test set too small to trust? <strong>(2)</strong> Reduce capacity: shallower trees, higher <code>min_samples_leaf</code>, fewer features, lower polynomial degree. <strong>(3)</strong> Add regularization: L1/L2, dropout, subsampling for boosting. <strong>(4)</strong> Early stopping on a validation set. <strong>(5)</strong> Ensemble to average out variance. <strong>(6)</strong> Get more training data if feasible. <strong>(7)</strong> Simplify features — aggressive feature counts on limited rows are a common cause.</p><p>I would <strong>plot the learning curve before choosing between (6) and the rest</strong>, because the curve distinguishes “needs data” from “needs less model”.</p><div class="prep-say"><strong>30-second version</strong><p>High variance. Check the evaluation first, then reduce capacity, regularize, early-stop, ensemble, and consider more data — using a learning curve to decide whether data will actually help.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you have an ordered, cost-aware playbook, and whether you check the evaluation before changing the model.</p></div></div></details>
+<details class="prep-question" data-question="does adding more trees to a random forest cause overfitting what about gradient boosting" data-tags="ensembles bagging boosting trap">
+<summary><span class="prep-q-no">03</span><span class="prep-q-title">Does adding more trees to a Random Forest cause overfitting? What about gradient boosting?<span class="prep-tags"><span>ensembles</span><span>bagging</span><span>boosting</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p><strong>Random Forest: essentially no.</strong> Each tree is fitted independently on a bootstrap sample and prediction is an average, so adding trees reduces variance and then plateaus. Test error flattens; it does not rise meaningfully. So <code>n_estimators</code> is a compute and latency decision, not a regularization decision.</p><p><strong>Gradient boosting: yes, definitively.</strong> Each tree is fitted to the current ensemble’s residuals, so the ensemble keeps reducing training error and will eventually fit noise. <code>n_estimators</code> in boosting is a genuine bias–variance knob and must be chosen by early stopping on a validation set, interacting with the learning rate — a lower rate needs more trees.</p><div class="prep-say"><strong>30-second version</strong><p>Random Forest: no, it plateaus, because trees are independent and averaged. Boosting: yes, because each tree fits the current residuals — so early stopping is mandatory.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>The cleanest single discriminator between candidates who understand ensembles and candidates who have memorized names. Get this one perfect.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “Then why does Random Forest have a <code>max_depth</code> parameter?” — individual tree depth still controls each tree’s variance and the correlation between trees, and limiting it saves compute. But unlike boosting, fully grown trees are usually fine because averaging handles the variance.</div></div></details>
+<details class="prep-question" data-question="how do you cross validate a time series model embargo" data-tags="time series validation trap">
+<summary><span class="prep-q-no">04</span><span class="prep-q-title">How do you cross-validate a time-series model?<span class="prep-tags"><span>time series</span><span>validation</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Never with random K-fold — that trains on future data to predict the past, which is temporal leakage and produces an estimate you cannot reproduce in production. Use forward-chaining or walk-forward validation: sort by time, train on <code>[0..t]</code> and validate on <code>(t..t+h]</code>, sliding or expanding the window across several folds. <code>sklearn</code>’s <code>TimeSeriesSplit</code> implements the expanding-window version.</p><p>Three refinements that mark a strong answer: insert a <strong>gap or embargo</strong> between train and validation equal to your label-availability delay, so a label taking 30 days to materialize cannot be learned from data one day before validation; make the validation horizon match the real prediction horizon; and if entities also repeat over time, combine group and time constraints.</p><div class="prep-say"><strong>30-second version</strong><p>Forward-chaining, never random K-fold. Train on the past, validate on the future — with an embargo gap matching your label delay, and a validation horizon matching the real prediction horizon.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you can handle non-i.i.d. data. The embargo point is the senior differentiator; most candidates stop at “use TimeSeriesSplit”.</p></div></div></details>
+<details class="prep-question" data-question="what is nested cross validation and when do you need it" data-tags="validation model selection">
+<summary><span class="prep-q-no">05</span><span class="prep-q-title">What is nested cross-validation and when do you need it?<span class="prep-tags"><span>validation</span><span>model selection</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Two loops: the inner loop selects hyperparameters, the outer loop estimates generalization of the <em>whole procedure including that selection</em>. You need it whenever you want an unbiased performance estimate on a dataset too small to afford a separate untouched test set.</p><p>The reason is that selecting the best of 200 configurations by CV score means the winning score is partly luck — you took a maximum over noisy estimates — so it is optimistically biased. Nested CV re-runs the entire selection inside each outer fold, so the reported number reflects “how well does my procedure do”, not “how well did my luckiest configuration do”. Cost is the product of the two loops, so it is a small-data technique; with plenty of data a clean three-way split is simpler and adequate.</p><div class="prep-say"><strong>30-second version</strong><p>An inner loop tunes, an outer loop scores the whole tuning procedure. Needed because picking the best of many noisy CV scores is itself optimistic — so the tuned CV score is not an unbiased estimate.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you understand that model selection itself overfits. A strong mid-to-senior signal.</p></div></div></details>
+<details class="prep-question" data-question="cross validation says 0.84 plus minus 0.11 across five folds is the model good" data-tags="variance debugging trap">
+<summary><span class="prep-q-no">06</span><span class="prep-q-title">Cross-validation says 0.84 ± 0.11 across five folds. Is the model good?<span class="prep-tags"><span>variance</span><span>debugging</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>You cannot tell yet, and the ±0.11 is the story. That spread means folds range roughly 0.73–0.95, so the estimate is too unstable to act on. Likely causes: the dataset is small; the target is imbalanced and folds are not stratified, so positive counts vary wildly per fold; there is group or temporal structure making some folds much harder; or a few high-leverage outliers dominate whichever fold they land in.</p><p>Next steps: switch to stratified and/or repeated K-fold to stabilize the estimate, inspect per-fold scores for a single bad fold versus uniform noise, check fold-wise class balance, and check whether the bad fold corresponds to a specific time period or entity group.</p><div class="prep-say"><strong>30-second version</strong><p>Unknown — the ±0.11 means folds span roughly 0.73 to 0.95, which is too unstable to act on. Investigate stratification, group and temporal structure, and outlier leverage before judging the number.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you read uncertainty or just the headline number. Many candidates answer “0.84 is decent” and lose the round.</p></div></div></details>
+</section>
+<div class="page-nav"><a href="04-data-prep-feature-engineering.html"><div class="dir">← Previous</div><div class="ttl">Data Prep &amp; Feature Engineering</div></a><a class="next" href="06-linear-regression.html"><div class="dir">Next →</div><div class="ttl">Linear Regression</div></a></div>
+</main>
+<div class="toc-rail"><nav class="toc"></nav></div>
+</div>
+</div>
+</div>
+<script src="assets/app.js?v=20260727c"></script>
+<script src="assets/ml-sitenav.js?v=20260727c"></script>
+<script src="assets/enhance.js?v=20260727c"></script>
+<script src="assets/interview-prep.js?v=20260727c"></script>
+</body>
+</html>

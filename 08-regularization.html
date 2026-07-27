@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#f4f5f8" name="theme-color"/>
+<title>Regularization: Ridge, Lasso & Elastic Net — Switch job</title>
+<!-- Machine Learning brand metadata -->
+<link href="assets/brand/favicon.svg?v=20260727c" rel="icon" type="image/svg+xml"/>
+<link href="assets/brand/favicon-32.png?v=20260727c" rel="icon" sizes="32x32" type="image/png"/>
+<link href="assets/brand/favicon.ico?v=20260727c" rel="shortcut icon"/>
+<link href="assets/brand/apple-touch-icon.png?v=20260727c" rel="apple-touch-icon" sizes="180x180"/>
+<link href="assets/brand/site.webmanifest?v=20260727c" rel="manifest"/>
+<link color="#6f47f5" href="assets/brand/safari-pinned-tab.svg?v=20260727c" rel="mask-icon"/>
+<link href="assets/brand/social-card.png?v=20260727c" rel="image_src"/>
+<meta content="Switch job" name="application-name"/>
+<meta content="Switch job" name="apple-mobile-web-app-title"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="#2563eb" name="msapplication-TileColor"/>
+<meta content="assets/brand/browserconfig.xml?v=20260727c" name="msapplication-config"/>
+<meta content="website" property="og:type"/>
+<meta content="Switch job Learning Platform" property="og:site_name"/>
+<meta content="Regularization: Ridge, Lasso & Elastic Net" property="og:title"/>
+<meta content="Why L1 produces exact zeros via both the geometric and subgradient arguments, the SVD view of ridge, regularization as a Bayesian prior, and the five families beyond an L1/L2 penalty." property="og:description"/>
+<meta content="assets/brand/social-card.png?v=20260727c" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="Switch job learning platform logo" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Regularization: Ridge, Lasso & Elastic Net" name="twitter:title"/>
+<meta content="Why L1 produces exact zeros via both the geometric and subgradient arguments, the SVD view of ridge, regularization as a Bayesian prior, and the five families beyond an L1/L2 penalty." name="twitter:description"/>
+<meta content="assets/brand/social-card.png?v=20260727c" name="twitter:image"/>
+<link href="assets/brand/favicon-16.png?v=20260727c" rel="icon" sizes="16x16" type="image/png"/>
+<!-- /Machine Learning brand metadata -->
+<meta content="Why L1 produces exact zeros via both the geometric and subgradient arguments, the SVD view of ridge, regularization as a Bayesian prior, and the five families beyond an L1/L2 penalty." name="description"/>
+<link href="assets/styles.css?v=20260727c" rel="stylesheet"/>
+<link href="assets/office-theme.css?v=20260727e" rel="stylesheet"/>
+</head>
+<body data-page="ml-08-regularization" data-prep-section="ml">
+<div class="app">
+<aside class="sidebar">
+<div class="brand">
+<a class="brand-link" href="index.html" aria-label="Switch job home">
+<span class="brand-mark" aria-hidden="true"><img src="assets/brand/switch-job-logo.png?v=20260727c" alt=""/></span>
+<div class="brand-text"><strong>Switch job</strong><span>Learning Platform</span></div>
+</a>
+</div>
+<div class="search-wrap"><div class="search-box"><svg fill="none" height="15" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="15"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg><input data-search="" placeholder="Search everything…  ( / )" type="text"/></div><div class="search-results"></div></div>
+<nav class="nav"></nav>
+</aside>
+<div class="backdrop"></div>
+<div class="main">
+<header class="topbar">
+<button aria-label="Menu" class="icon-btn menu-btn"><svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><path d="M3 12h18M3 6h18M3 18h18"></path></svg></button>
+<div class="crumbs">Machine Learning / Part B / Module 08</div>
+<button aria-label="Toggle theme" class="icon-btn" data-theme-toggle=""></button>
+</header>
+<div class="content-wrap">
+<main class="content prep-content">
+<div class="eyebrow"><span class="dot"></span> Module 08 · Part B Linear Models</div>
+<h1>Regularization: Ridge, Lasso &amp; Elastic Net</h1>
+<p class="lead">Constant across interviews — and the L1-sparsity question is a favourite, because most candidates know the picture but not the mechanism.</p>
+<div class="meta-row"><span class="pill purple">Prerequisites · Modules 05–07</span><span class="pill">Study time · 6 h</span><span class="pill blue">5 interview questions</span><span class="pill">THEORY · MATH</span></div>
+<div class="callout key"><div class="c-ico">🎯</div><div class="c-body"><div class="c-title">Your interview goal</div><p>Give both arguments for L1 sparsity, explain why ridge is specifically right under collinearity, derive the Bayesian equivalence, and name five regularizers that are not a penalty term.</p></div></div>
+<h2 id="what-to-learn">1 · What to learn</h2>
+<ol><li>Regularization as the bias–variance dial, applied through the loss function.</li><li><strong>Ridge (L2):</strong> <code>J = loss + λ‖w‖²</code>, closed form <code>(XᵀX + λI)⁻¹Xᵀy</code>.</li><li><strong>Lasso (L1):</strong> <code>J = loss + λ‖w‖₁</code>, no closed form, produces exact zeros.</li><li><strong>Elastic Net:</strong> <code>J = loss + λ(α‖w‖₁ + (1-α)‖w‖²)</code>.</li><li><strong>Why L1 produces sparsity</strong> — the geometric argument <em>and</em> the subgradient argument. Know both.</li><li>The SVD view of ridge: shrinkage factor <code>σᵢ²/(σᵢ²+λ)</code> per singular direction.</li><li>The Bayesian view: L2 = Gaussian prior, L1 = Laplace prior, both as MAP estimation.</li><li>Why the intercept is not penalized, and why features must be standardized first.</li><li>Choosing λ by cross-validation; the regularization path; <code>RidgeCV</code> and <code>LassoCV</code>.</li><li>Behaviour under correlated features: lasso picks arbitrarily, ridge spreads weight, elastic net groups them.</li><li>Other regularization families: early stopping, dropout, data augmentation, ensembling, explicit capacity limits.</li><li>Group lasso and monotonic constraints, briefly.</li></ol>
+<h2 id="intuitions">2 · Core intuitions</h2>
+<h3>A penalty is a price on complexity</h3>
+<p>Unpenalized fitting chases every wiggle in the training sample. Adding <code>λ‖w‖²</code> makes large coefficients expensive, so the optimizer only “buys” a large coefficient when the loss reduction justifies it. As <code>λ → 0</code> you recover OLS; as <code>λ → ∞</code> all coefficients go to zero and you predict the mean. Cross-validation finds the sweet spot in between.</p>
+<h3>Why L1 gives exact zeros and L2 does not — geometry</h3>
+<p>Think of it as minimizing the loss subject to a budget on the coefficients. The L2 budget region <code>‖w‖₂ ≤ t</code> is a circle or sphere — smooth, no corners. The L1 region <code>‖w‖₁ ≤ t</code> is a diamond whose <strong>vertices lie exactly on the axes</strong>, where some coordinates are zero. The solution is where the expanding elliptical loss contours first touch the budget region, and a convex region with pointy corners is very likely to be touched <em>at</em> a corner — which means a coefficient of exactly zero. A sphere has no corners, so contact happens at a generic point where every coefficient is small but non-zero.</p>
+<h3>Why L1 gives exact zeros — calculus (the mechanism)</h3>
+<p>The L2 penalty’s derivative <code>2λw_j</code> vanishes as <code>w_j → 0</code>, so the shrinkage force fades exactly where it would need to be strongest to reach zero — asymptotic shrinkage, never arrival. The L1 subgradient is <code>λ·sign(w_j)</code>, which has <strong>constant magnitude λ regardless of how small <code>w_j</code> is</strong>. So there is a persistent push toward zero, and any feature whose loss-gradient contribution is smaller than λ gets pinned at exactly zero. This is visible directly in the soft-thresholding update of coordinate descent, where the <code>max(·,0)</code> is literally the mechanism creating the zero:</p>
+<div class="code-block" data-reveal="">
+<div class="code-head"><span class="lang"><span class="dots"><i></i><i></i><i></i></span>soft_thresholding.txt</span><button class="copy-btn">Copy</button></div>
+<pre><code>wⱼ ← sign(zⱼ)·max(|zⱼ| - λ, 0)</code></pre>
+</div>
+<h3>Ridge shrinks the unstable directions hardest</h3>
+<p>Via SVD, ridge multiplies each singular direction’s contribution by <code>σᵢ²/(σᵢ²+λ)</code>. Directions with large <code>σᵢ</code> — well-determined by the data — are barely affected. Directions with tiny <code>σᵢ</code> — the collinear, high-variance directions where OLS coefficients explode — get crushed. This is the precise reason ridge is the right tool for multicollinearity, and it is a better answer than “it shrinks coefficients”.</p>
+<h3>Regularization is a prior</h3>
+<p>Maximize the posterior instead of the likelihood: <code>log p(w|D) ∝ log p(D|w) + log p(w)</code>. A zero-mean Gaussian prior contributes <code>-‖w‖²/2τ²</code>, i.e. <strong>L2</strong>. A Laplace prior contributes <code>-‖w‖₁/b</code>, i.e. <strong>L1</strong> — and the Laplace density’s sharp peak at zero is the probabilistic counterpart of the geometric corner. So λ encodes how strongly you believe coefficients are small before seeing data.</p>
+<h3>Standardize first, and do not penalize the intercept</h3>
+<p>The penalty treats all coefficients with the same λ, so a feature measured in millimetres and one in kilometres get wildly unfair treatment unless you standardize. And penalizing the intercept would shrink predictions toward zero rather than toward the target mean, which is not what you want — so every sane implementation excludes it.</p>
+<h2 id="formulas">3 · Whiteboard formulas</h2>
+<div class="code-block" data-reveal="">
+<div class="code-head"><span class="lang"><span class="dots"><i></i><i></i><i></i></span>regularization.txt</span><button class="copy-btn">Copy</button></div>
+<pre><code>Ridge (L2)        J(w) = ‖y - Xw‖² + λ‖w‖²₂
+                  w    = (XᵀX + λI)⁻¹ Xᵀy        ← always invertible for λ>0
+                  SVD view: shrink direction i by σᵢ²/(σᵢ²+λ)
+                  Prior: w ~ N(0, τ²I),  λ = σ²/τ²
+
+Lasso (L1)        J(w) = ‖y - Xw‖² + λ‖w‖₁
+                  No closed form. Coordinate descent / LARS / proximal GD.
+                  Soft threshold:  wⱼ ← sign(zⱼ)·max(|zⱼ| - λ, 0)
+                  Prior: w ~ Laplace(0, b)
+
+Elastic Net       J(w) = ‖y - Xw‖² + λ( α‖w‖₁ + (1-α)‖w‖²₂ )
+                  α=1 → lasso;  α=0 → ridge
+
+sklearn note      Ridge/Lasso use `alpha` = λ  (bigger = MORE regularization)
+                  LogisticRegression/SVC use `C` = 1/λ (bigger = LESS)</code></pre>
+</div>
+<div class="callout warn"><div class="c-ico">⚠️</div><div class="c-body"><div class="c-title">The direction trap</div><p><code>Ridge</code> and <code>Lasso</code> take <code>alpha</code>, where <strong>bigger means more</strong> regularization. <code>LogisticRegression</code> and <code>SVC</code> take <code>C = 1/λ</code>, where <strong>bigger means less</strong>. Getting this backwards in a live coding round is a common and very visible mistake.</p></div></div>
+<h2 id="comparison">4 · Ridge vs Lasso vs Elastic Net</h2>
+<div class="table-wrap"><table><thead><tr><th></th><th>Ridge (L2)</th><th>Lasso (L1)</th><th>Elastic Net</th></tr></thead><tbody><tr><td>Penalty</td><td><code>λΣwⱼ²</code></td><td><code>λΣ|wⱼ|</code></td><td>mix</td></tr><tr><td>Exact zeros?</td><td>No</td><td><strong>Yes</strong></td><td>Yes</td></tr><tr><td>Feature selection</td><td>No</td><td>Yes</td><td>Yes</td></tr><tr><td>Closed form?</td><td>Yes</td><td>No</td><td>No</td></tr><tr><td>Correlated features</td><td>Spreads weight across them</td><td>Picks one ~arbitrarily</td><td><strong>Groups them</strong></td></tr><tr><td><code>d &gt; n</code></td><td>Works</td><td>Selects at most <code>n</code> features</td><td>Works</td></tr><tr><td>Differentiable at 0?</td><td>Yes</td><td>No (subgradient)</td><td>No</td></tr><tr><td>Prior</td><td>Gaussian</td><td>Laplace</td><td>Mixture</td></tr><tr><td>Best when</td><td>Many small effects; collinearity</td><td>Few strong effects; want sparsity</td><td>Many correlated features</td></tr></tbody></table></div>
+<h2 id="drill">5 · Hands-on drill</h2>
+<ol><li>Generate data with 100 features where only 5 matter. Fit OLS, ridge and lasso across a λ grid, then plot the <strong>regularization paths</strong> — coefficient value versus λ — for all three. Confirm you can see lasso coefficients hitting exactly zero while ridge’s only asymptote toward it.</li><li>Count how many of the 5 true features lasso recovers, and how many false ones it keeps.</li><li>Duplicate one of the 5 true features (perfect correlation) and re-fit. Observe that lasso splits or arbitrarily picks between the twins while ridge splits the weight evenly and elastic net keeps both. <strong>This experiment <em>is</em> the answer to the correlated-features question.</strong></li><li>Implement soft-thresholding coordinate descent for lasso from scratch and confirm it produces exact zeros.</li></ol>
+<div class="callout warn"><div class="c-ico">⚠️</div><div class="c-body"><div class="c-title">Gotchas that fail candidates</div><ul><li><strong>Not standardizing before regularizing.</strong> The penalty becomes arbitrary.</li><li><strong>Only giving the geometric sparsity argument.</strong> Give the subgradient one too — it is the mechanism.</li><li><strong>Saying lasso is always better because it selects features.</strong> With correlated predictors its selection is unstable across resamples.</li><li><strong>Getting the <code>alpha</code> versus <code>C</code> direction wrong.</strong></li><li><strong>Penalizing the intercept.</strong></li><li><strong>Thinking regularization only means an L1/L2 penalty.</strong> Early stopping, subsampling, dropout, bagging, <code>min_samples_leaf</code> and more data are all regularization.</li></ul></div></div>
+<h2 id="questions">6 · Interview questions</h2>
+<div class="prep-toolbar" data-sticky-prep=""><label class="prep-filter"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><input data-question-filter="" placeholder="Filter these questions…"/></label><button class="btn ghost" data-expand-answers="" type="button">Open all</button><span class="prep-count" data-question-count="">5 questions</span></div>
+<section aria-label="Regularization interview questions" class="prep-question-list">
+<details class="prep-question" data-question="why does l1 produce exactly zero coefficients while l2 does not" data-tags="L1 sparsity subgradient trap">
+<summary><span class="prep-q-no">01</span><span class="prep-q-title">Why does L1 produce exactly zero coefficients while L2 does not?<span class="prep-tags"><span>L1</span><span>sparsity</span><span>subgradient</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Two complementary arguments.</p><p><strong>Geometric:</strong> view it as minimizing the loss subject to a coefficient budget. The L1 constraint region <code>‖w‖₁ ≤ t</code> is a diamond whose vertices sit on the coordinate axes, where some coefficients are exactly zero; the L2 region is a smooth sphere. The optimum is where the loss’s elliptical contours first touch the region, and a region with sharp axis-aligned corners is very likely to be touched at a corner — producing exact zeros. A sphere has no corners, so contact is at a generic point with all coefficients small but non-zero.</p><p><strong>Analytic (the mechanism):</strong> the L2 gradient is <code>2λwⱼ</code>, which vanishes as <code>wⱼ → 0</code>, so the shrinkage force disappears precisely where it would need to be strongest — asymptotic shrinkage without arrival. The L1 subgradient is <code>λ·sign(wⱼ)</code>, constant in magnitude no matter how small <code>wⱼ</code> is, so there is a persistent constant push to zero and any coefficient whose loss gradient is smaller than λ is pinned at zero. You see this explicitly in lasso’s coordinate-descent update <code>wⱼ ← sign(zⱼ)·max(|zⱼ|−λ, 0)</code>, where <code>max(·,0)</code> is the zeroing operation.</p><div class="prep-say"><strong>30-second version</strong><p>Geometrically, L1’s diamond has corners on the axes where coefficients are zero, and contours tend to touch corners. Mechanically, L1’s subgradient is constant λ·sign(w) so the push to zero never fades, whereas L2’s 2λw vanishes as w → 0.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Depth. Nearly every candidate gives the diamond picture; the subgradient and soft-threshold mechanism is what distinguishes a strong answer, because it explains <em>why</em> the geometry works.</p></div></div></details>
+<details class="prep-question" data-question="ridge or lasso how do you choose" data-tags="model selection correlated features">
+<summary><span class="prep-q-no">02</span><span class="prep-q-title">Ridge or lasso: how do you choose?<span class="prep-tags"><span>model selection</span><span>correlated features</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Start from what you believe about the signal. If you expect many features each contributing a little — the dense case — ridge is better, because it keeps them all and shrinks proportionally. If you expect a few strong predictors among many irrelevant ones — the sparse case — lasso is better and hands you feature selection for free.</p><p>Then check correlation structure: with groups of correlated predictors, lasso arbitrarily keeps one and zeroes the others, which is unstable across resamples and can be actively misleading for interpretation, whereas ridge spreads weight across the group and elastic net selects the group as a unit — so <strong>elastic net is usually the pragmatic default for wide correlated data</strong>.</p><p>Practically: cross-validate all three over a λ grid, and also weigh the operational factor that a sparse model is cheaper to serve and easier to maintain, which can justify a small accuracy loss.</p><div class="prep-say"><strong>30-second version</strong><p>Dense signal with many small effects favours ridge; a few strong predictors favours lasso. With correlated groups, lasso’s choice is unstable — so elastic net is usually the pragmatic default. Then cross-validate all three.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you reason from the data’s structure rather than reciting “L1 selects features”.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “Why is lasso’s selection unstable with correlated features?” — among near-duplicates the loss is nearly flat with respect to which one carries the weight, so tiny sampling changes flip the choice. For stable selection use elastic net, or stability selection: bootstrap lasso and keep features chosen in most resamples.</div></div></details>
+<details class="prep-question" data-question="show the bayesian interpretation of ridge regression" data-tags="Bayesian MAP derivation">
+<summary><span class="prep-q-no">03</span><span class="prep-q-title">Show the Bayesian interpretation of ridge regression.<span class="prep-tags"><span>Bayesian</span><span>MAP</span><span>derivation</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Ridge is the MAP estimate under a Gaussian prior. Assume <code>y|X,w ~ N(Xw, σ²I)</code> and a prior <code>w ~ N(0, τ²I)</code>. The log posterior is <code>log p(y|X,w) + log p(w) + const</code>, which equals <code>-‖y-Xw‖²/(2σ²) - ‖w‖²/(2τ²) + const</code>.</p><p>Maximizing it is minimizing <code>‖y-Xw‖² + (σ²/τ²)‖w‖²</code> — exactly ridge with <strong><code>λ = σ²/τ²</code></strong>. The interpretation is illuminating: λ is the ratio of noise variance to prior variance, so noisy data or a tight prior belief that coefficients are small implies large λ and heavy shrinkage.</p><p>Substituting a Laplace prior in place of the Gaussian yields the L1 penalty and lasso, and the Laplace density’s sharp spike at zero is the probabilistic counterpart of the L1 diamond’s corner.</p><div class="prep-say"><strong>30-second version</strong><p>Ridge is MAP with a Gaussian prior on w: the log posterior gives loss + (σ²/τ²)‖w‖², so λ = σ²/τ² — the ratio of noise variance to prior variance. A Laplace prior gives lasso.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you see regularization as principled inference rather than a hyperparameter hack. Deriving λ = σ²/τ² and interpreting it is the strong finish.</p></div></div></details>
+<details class="prep-question" data-question="name five forms of regularization that are not an l1 l2 penalty" data-tags="breadth regularization">
+<summary><span class="prep-q-no">04</span><span class="prep-q-title">Name five forms of regularization that are not an L1/L2 penalty.<span class="prep-tags"><span>breadth</span><span>regularization</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p><strong>(1) Early stopping</strong> — halt training when validation loss stops improving; in boosting and neural nets this is the primary complexity control, and for gradient descent on a convex problem it is provably related to L2 shrinkage. <strong>(2) Ensembling / bagging</strong> — averaging decorrelated models reduces variance, which is regularization by another route. <strong>(3) Data augmentation, or simply more data</strong> — the most effective variance reducer when available. <strong>(4) Explicit capacity limits</strong> — <code>max_depth</code>, <code>min_samples_leaf</code>, <code>max_leaf_nodes</code>, fewer features, lower polynomial degree. <strong>(5) Stochasticity during training</strong> — dropout in neural networks, and <code>subsample</code> / <code>colsample_bytree</code> in gradient boosting, both preventing reliance on any single path or feature.</p><p>Two more worth naming: <strong>noise injection</strong> on inputs or labels (label smoothing), and <strong>structural constraints</strong> such as monotonicity constraints in XGBoost or LightGBM, which restrict the hypothesis space using domain knowledge and are increasingly used in regulated settings.</p><div class="prep-say"><strong>30-second version</strong><p>Early stopping, ensembling, more data or augmentation, explicit capacity limits, and training stochasticity like dropout or subsampling — plus noise injection and monotonic constraints.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Breadth. Candidates who equate regularization with <code>alpha</code> reveal a narrow mental model. Also sets up Modules 17 and 18.</p></div></div></details>
+<details class="prep-question" data-question="you have 200 samples and 5000 features what do you do" data-tags="applied high dimensional leakage trap">
+<summary><span class="prep-q-no">05</span><span class="prep-q-title">You have 200 samples and 5,000 features. What do you do?<span class="prep-tags"><span>applied</span><span>high dimensional</span><span>leakage</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p><code>d ≫ n</code>, so <code>XᵀX</code> is singular and unregularized OLS has no unique solution — regularization is mandatory, not optional.</p><p><strong>(1)</strong> Expect huge variance, so evaluate with repeated or nested cross-validation and report spread; a single holdout of 40 rows tells you almost nothing. <strong>(2)</strong> Start with strongly regularized linear models: lasso or elastic net for sparsity and interpretability, ridge if you believe many small effects. <strong>(3)</strong> Reduce dimensionality where sensible — remove near-zero-variance features, deduplicate perfectly correlated ones, consider PCA or a univariate filter — but <strong>fit any selection inside the CV folds</strong>, because selecting features on all the data is leakage and is spectacularly optimistic in this regime. <strong>(4)</strong> Use domain knowledge to prune; in the <code>d≫n</code> regime priors are worth more than algorithms. <strong>(5)</strong> Be very sceptical of complex models — a boosted ensemble on 200 rows will overfit. <strong>(6)</strong> If possible, get more data; the honest answer is that 200 rows bounds what any method can deliver.</p><div class="prep-say"><strong>30-second version</strong><p>Regularization is mandatory since XᵀX is singular. Lasso or elastic net, repeated or nested CV reporting spread, dimensionality reduction fitted inside the folds — and honesty that 200 rows caps what is achievable.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you recognize the regime and the leakage trap in feature selection. The “select inside the CV fold” point is the one most candidates miss.</p></div></div></details>
+</section>
+<div class="page-nav"><a href="07-logistic-regression-log-odds.html"><div class="dir">← Previous</div><div class="ttl">Logistic Regression &amp; Log Odds</div></a><a class="next" href="09-gradient-descent-optimization.html"><div class="dir">Next →</div><div class="ttl">Gradient Descent &amp; Optimization</div></a></div>
+</main>
+<div class="toc-rail"><nav class="toc"></nav></div>
+</div>
+</div>
+</div>
+<script src="assets/app.js?v=20260727c"></script>
+<script src="assets/ml-sitenav.js?v=20260727c"></script>
+<script src="assets/enhance.js?v=20260727c"></script>
+<script src="assets/interview-prep.js?v=20260727c"></script>
+</body>
+</html>

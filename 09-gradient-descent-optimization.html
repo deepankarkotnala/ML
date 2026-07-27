@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#f4f5f8" name="theme-color"/>
+<title>Gradient Descent & Optimization — Switch job</title>
+<!-- Machine Learning brand metadata -->
+<link href="assets/brand/favicon.svg?v=20260727c" rel="icon" type="image/svg+xml"/>
+<link href="assets/brand/favicon-32.png?v=20260727c" rel="icon" sizes="32x32" type="image/png"/>
+<link href="assets/brand/favicon.ico?v=20260727c" rel="shortcut icon"/>
+<link href="assets/brand/apple-touch-icon.png?v=20260727c" rel="apple-touch-icon" sizes="180x180"/>
+<link href="assets/brand/site.webmanifest?v=20260727c" rel="manifest"/>
+<link color="#6f47f5" href="assets/brand/safari-pinned-tab.svg?v=20260727c" rel="mask-icon"/>
+<link href="assets/brand/social-card.png?v=20260727c" rel="image_src"/>
+<meta content="Switch job" name="application-name"/>
+<meta content="Switch job" name="apple-mobile-web-app-title"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="#2563eb" name="msapplication-TileColor"/>
+<meta content="assets/brand/browserconfig.xml?v=20260727c" name="msapplication-config"/>
+<meta content="website" property="og:type"/>
+<meta content="Switch job Learning Platform" property="og:site_name"/>
+<meta content="Gradient Descent & Optimization" property="og:title"/>
+<meta content="Batch versus stochastic versus mini-batch, why scaling fixes an ill-conditioned loss surface, momentum through AdamW and what it decouples, saddle points, and gradient boosting as descent in function space." property="og:description"/>
+<meta content="assets/brand/social-card.png?v=20260727c" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="Switch job learning platform logo" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Gradient Descent & Optimization" name="twitter:title"/>
+<meta content="Batch versus stochastic versus mini-batch, why scaling fixes an ill-conditioned loss surface, momentum through AdamW and what it decouples, saddle points, and gradient boosting as descent in function space." name="twitter:description"/>
+<meta content="assets/brand/social-card.png?v=20260727c" name="twitter:image"/>
+<link href="assets/brand/favicon-16.png?v=20260727c" rel="icon" sizes="16x16" type="image/png"/>
+<!-- /Machine Learning brand metadata -->
+<meta content="Batch versus stochastic versus mini-batch, why scaling fixes an ill-conditioned loss surface, momentum through AdamW and what it decouples, saddle points, and gradient boosting as descent in function space." name="description"/>
+<link href="assets/styles.css?v=20260727c" rel="stylesheet"/>
+<link href="assets/office-theme.css?v=20260727e" rel="stylesheet"/>
+</head>
+<body data-page="ml-09-gradient-descent-optimization" data-prep-section="ml">
+<div class="app">
+<aside class="sidebar">
+<div class="brand">
+<a class="brand-link" href="index.html" aria-label="Switch job home">
+<span class="brand-mark" aria-hidden="true"><img src="assets/brand/switch-job-logo.png?v=20260727c" alt=""/></span>
+<div class="brand-text"><strong>Switch job</strong><span>Learning Platform</span></div>
+</a>
+</div>
+<div class="search-wrap"><div class="search-box"><svg fill="none" height="15" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="15"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg><input data-search="" placeholder="Search everything…  ( / )" type="text"/></div><div class="search-results"></div></div>
+<nav class="nav"></nav>
+</aside>
+<div class="backdrop"></div>
+<div class="main">
+<header class="topbar">
+<button aria-label="Menu" class="icon-btn menu-btn"><svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><path d="M3 12h18M3 6h18M3 18h18"></path></svg></button>
+<div class="crumbs">Machine Learning / Part B / Module 09</div>
+<button aria-label="Toggle theme" class="icon-btn" data-theme-toggle=""></button>
+</header>
+<div class="content-wrap">
+<main class="content prep-content">
+<div class="eyebrow"><span class="dot"></span> Module 09 · Part B Linear Models</div>
+<h1>Gradient Descent &amp; Optimization</h1>
+<p class="lead">How models actually learn — and the bridge to deep learning. The function-space framing at the end of this module is the cleanest possible setup for boosting.</p>
+<div class="meta-row"><span class="pill purple">Prerequisites · Modules 01, 06, 07</span><span class="pill">Study time · 8 h</span><span class="pill blue">6 interview questions</span><span class="pill">THEORY · MATH · DEBUG</span></div>
+<div class="callout key"><div class="c-ico">🎯</div><div class="c-body"><div class="c-title">Your interview goal</div><p>Explain the batch/stochastic trade in terms of gradient variance, describe why scaling changes convergence via the condition number, say precisely what AdamW decouples, and state how gradient boosting is descent in function space.</p></div></div>
+<h2 id="what-to-learn">1 · What to learn</h2>
+<ol><li>The core update <code>w ← w - η∇J(w)</code>, and why the negative gradient is the steepest-descent direction.</li><li><strong>Batch</strong> vs <strong>stochastic</strong> vs <strong>mini-batch</strong> — cost, noise, convergence and hardware fit.</li><li>The learning rate: too small, too large, divergence. Schedules — step, cosine, exponential, warmup.</li><li>Convex vs non-convex objectives: global optimum guarantees, local minima, saddle points, plateaus.</li><li>Why feature scaling matters: condition number, elongated contours, zig-zagging.</li><li><strong>Momentum</strong> and Nesterov accelerated gradient — the intuition and the update rule.</li><li>Adaptive methods: <strong>AdaGrad</strong>, <strong>RMSProp</strong>, <strong>Adam</strong>, <strong>AdamW</strong> — what each fixes about the previous one.</li><li>Second-order methods: Newton–Raphson, the Hessian, IRLS, <strong>L-BFGS</strong> — and why full Newton is infeasible for large <code>d</code>.</li><li>Coordinate descent (how lasso is actually solved) and proximal gradient methods.</li><li>Convergence criteria, gradient norms, and the difference between “converged” and “hit <code>max_iter</code>”.</li><li>Vanishing and exploding gradients — where they come from and the standard mitigations.</li><li>Epochs, iterations, batch size, and the batch-size / learning-rate relationship.</li><li><strong>Gradient descent versus gradient boosting</strong> — the same idea in two different spaces. A favourite question.</li></ol>
+<h2 id="intuitions">2 · Core intuitions</h2>
+<h3>You are walking downhill in the dark, feeling the slope</h3>
+<p>The gradient tells you the steepest uphill direction at your current position; you step the other way. The learning rate is your stride length. Too short and you take forever; too long and you leap over the valley and end up higher than you started.</p>
+<h3>Batch versus stochastic is a compute-versus-noise trade</h3>
+<p>Batch gradient descent uses all <code>n</code> samples per step: the gradient is exact, the path smooth, and each step costs <code>O(nd)</code> — infeasible when <code>n</code> is huge. SGD uses one sample: each step is <code>O(d)</code> and extremely fast, but the gradient is a noisy estimate so the path jitters and it never quite settles without a decaying learning rate. Mini-batch — typically 32 to 512 — is the practical answer: enough samples for a low-variance gradient, small enough to be fast, and shaped to exploit vectorized hardware. The noise in SGD is not purely a cost either: it helps escape sharp local minima and saddle points in non-convex problems.</p>
+<h3>Unscaled features make bowls into canyons</h3>
+<p>If one feature ranges 0–1 and another 0–100,000, the loss surface’s contours are extremely elongated ellipses. The gradient at most points is nearly perpendicular to the direction you actually need to travel, so you zig-zag across the canyon making tiny progress along it. Standardizing makes the contours near-circular and the gradient points roughly at the optimum. Formally, convergence rate depends on the <strong>condition number</strong> of the Hessian, and scaling improves it. This is <em>the</em> reason gradient-based methods need scaling while trees do not.</p>
+<h3>Momentum is a heavy ball</h3>
+<p>Instead of stepping purely by the current gradient, accumulate a velocity: <code>v ← βv + ∇J</code>, then <code>w ← w - ηv</code>. In consistent directions the velocity builds and you accelerate; in oscillating directions successive gradients cancel and the oscillation is damped. It directly attacks the canyon-zig-zag problem, and <code>β = 0.9</code> is the near-universal default. Nesterov’s variant evaluates the gradient at the look-ahead position <code>w - ηβv</code>, correcting the step slightly earlier.</p>
+<h3>Adaptive methods give each parameter its own learning rate</h3>
+<p>AdaGrad divides the step by the square root of accumulated squared gradients, so rarely-updated parameters get big steps — great for sparse data, but the accumulator only grows, so the learning rate decays to zero and learning stalls. RMSProp fixes that with an exponentially-decaying average instead of a full sum. Adam combines RMSProp’s per-parameter scaling with momentum, plus bias-correction for the two moving averages’ zero initialization.</p>
+<p><strong>AdamW</strong> fixes a subtle but real bug in Adam’s handling of L2: applying weight decay through the gradient means the adaptive scaling also rescales the decay, so it is not true L2 regularization. AdamW <strong>decouples</strong> weight decay from the gradient and applies it directly to the weights, which measurably improves generalization and is why it is standard for transformer training.</p>
+<h3>Gradient descent and gradient boosting are the same idea in different spaces</h3>
+<p>Gradient descent takes steps in <em>parameter</em> space: <code>w ← w - η∇_w J</code>. Gradient boosting takes steps in <em>function</em> space: <code>F ← F - η∇_F J</code>, where the “step” is a new weak learner fitted to approximate the negative functional gradient. That is exactly why each boosting tree is fitted to the negative gradient of the loss with respect to the current predictions, and why the boosting learning rate is called shrinkage and plays the same role as η. Stating this connection is a strong senior signal and the cleanest setup for Module 17.</p>
+<h3>Saddle points, not local minima, are the real problem in high dimensions</h3>
+<p>For a critical point to be a local minimum, <em>every</em> eigenvalue of the Hessian must be positive; in <code>d</code> dimensions that becomes increasingly unlikely, so most critical points are saddles. This is why SGD’s noise and momentum are so valuable in non-convex optimization — they help you slide off saddles that a purely deterministic method could stall on.</p>
+<h2 id="formulas">3 · Whiteboard formulas</h2>
+<div class="code-block" data-reveal="">
+<div class="code-head"><span class="lang"><span class="dots"><i></i><i></i><i></i></span>optimizers.txt</span><button class="copy-btn">Copy</button></div>
+<pre><code>Vanilla GD           w ← w - η·∇J(w)
+
+Momentum             v ← βv + ∇J(w)              (β ≈ 0.9)
+                     w ← w - η·v
+
+Nesterov             v ← βv + ∇J(w - ηβv)
+                     w ← w - η·v
+
+AdaGrad              G ← G + (∇J)²               (elementwise)
+                     w ← w - η·∇J / (√G + ε)     → η decays to 0 (the flaw)
+
+RMSProp              E ← ρE + (1-ρ)(∇J)²         (ρ ≈ 0.9)
+                     w ← w - η·∇J / (√E + ε)
+
+Adam                 m ← β₁m + (1-β₁)∇J          (momentum,   β₁ = 0.9)
+                     v ← β₂v + (1-β₂)(∇J)²       (RMSProp,    β₂ = 0.999)
+                     m̂ = m/(1-β₁ᵗ),  v̂ = v/(1-β₂ᵗ)      ← bias correction
+                     w ← w - η·m̂/(√v̂ + ε)
+
+AdamW                Adam step, then DECOUPLED decay:  w ← w - ηλ·w
+                     (NOT folded into ∇J — that is the fix over Adam)
+
+Newton-Raphson       w ← w - H⁻¹∇J    cost O(d³) per step — infeasible for large d
+                     (L-BFGS approximates H⁻¹ from a window of past gradients)
+
+Linear reg gradient  ∇J = Xᵀ(Xw - y)
+Logistic gradient    ∇J = Xᵀ(σ(Xw) - y)          ← identical form</code></pre>
+</div>
+<h2 id="drill">4 · Hands-on drill</h2>
+<ol><li>Implement batch GD, SGD and mini-batch GD for linear regression from scratch. Plot loss versus iteration for all three on the same axes and observe the noise/smoothness trade.</li><li>Run the same problem with η too small, about right, and too large, and produce a plot of divergence. Keep that picture in mind for the debugging question.</li><li>Run gradient descent on unscaled versus standardized features and <strong>count the iterations to convergence</strong>. The ratio is your evidence for the scaling question.</li><li>Implement momentum and Adam by hand and compare convergence on an ill-conditioned quadratic with condition number around 1,000.</li><li>Verify empirically that logistic regression’s log-loss surface has a single minimum from many random initializations, while an MSE-with-sigmoid objective reaches different optima.</li></ol>
+<div class="callout warn"><div class="c-ico">⚠️</div><div class="c-body"><div class="c-title">Gotchas that fail candidates</div><ul><li><strong>Saying gradient descent finds the global minimum.</strong> Only for convex objectives — linear and logistic regression are convex; neural nets and MSE-with-sigmoid are not.</li><li><strong>Getting the batch-size / learning-rate direction wrong.</strong> Larger batches give lower-variance gradients, which generally supports a <em>larger</em> learning rate.</li><li><strong>Confusing an epoch with an iteration.</strong> An epoch is a full pass; an iteration is one parameter update.</li><li><strong>Not being able to explain why scaling matters</strong> in terms of the loss surface.</li><li><strong>Saying Adam is always best.</strong> For convex problems L-BFGS often converges faster with no learning-rate tuning; for well-tuned vision training, SGD with momentum still frequently generalizes better.</li><li><strong>Not knowing what AdamW actually changes.</strong> “Adam with weight decay” is incomplete — the point is <em>decoupled</em> decay.</li></ul></div></div>
+<h2 id="questions">5 · Interview questions</h2>
+<div class="prep-toolbar" data-sticky-prep=""><label class="prep-filter"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><input data-question-filter="" placeholder="Filter these questions…"/></label><button class="btn ghost" data-expand-answers="" type="button">Open all</button><span class="prep-count" data-question-count="">6 questions</span></div>
+<section aria-label="Gradient descent and optimization interview questions" class="prep-question-list">
+<details class="prep-question" data-question="explain gradient descent and compare batch stochastic and mini batch" data-tags="fundamentals SGD hardware">
+<summary><span class="prep-q-no">01</span><span class="prep-q-title">Explain gradient descent, and compare batch, stochastic and mini-batch.<span class="prep-tags"><span>fundamentals</span><span>SGD</span><span>hardware</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Gradient descent minimizes a differentiable loss by repeatedly stepping in the negative gradient direction: <code>w ← w - η∇J(w)</code>. The gradient points uphill most steeply, so its negative is the locally fastest descent direction, and η controls the step size.</p><p><strong>Batch</strong> computes the gradient over all <code>n</code> samples: exact gradient, smooth monotone descent for suitable η, but <code>O(nd)</code> per step and it needs the whole dataset per update, so it does not scale. <strong>Stochastic</strong> uses one sample: <code>O(d)</code> per step, rapid early progress, supports online learning, but the gradient is noisy, the trajectory oscillates, and it needs a decaying learning rate to converge rather than hover. <strong>Mini-batch</strong> (32–512) is the standard compromise: gradient variance falls roughly as <code>1/batch_size</code>, updates are frequent, and the batch matrix multiply maps efficiently onto GPU and SIMD hardware.</p><p>Worth adding that SGD’s noise is sometimes a feature — it helps escape saddle points and sharp minima in non-convex problems.</p><div class="prep-say"><strong>30-second version</strong><p>Step against the gradient with stride η. Batch is exact but O(nd) per step; SGD is O(d) but noisy and needs a decaying rate; mini-batch balances gradient variance against speed and fits vectorized hardware.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Fundamentals plus practical awareness. The hardware point and “noise as a feature” both signal real experience.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “How does batch size interact with learning rate?” — bigger batches mean lower-variance gradients, so you can afford a larger rate; the common heuristic is to scale the rate linearly with batch size, usually with a warmup period to avoid early instability.</div></div></details>
+<details class="prep-question" data-question="training loss oscillates wildly and sometimes increases what is wrong" data-tags="debugging learning rate">
+<summary><span class="prep-q-no">02</span><span class="prep-q-title">Your training loss oscillates wildly and sometimes increases. What is wrong?<span class="prep-tags"><span>debugging</span><span>learning rate</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Most likely the learning rate is too high, so steps overshoot the minimum and can climb the far wall of the valley. I would check in this order:</p><ol><li><strong>Lower η by 10×</strong> and see if the oscillation resolves — the cheapest decisive test.</li><li><strong>Check feature scaling</strong>; unscaled features create an ill-conditioned surface where a rate that is fine in one direction diverges in another.</li><li>If using SGD with a very small batch, some oscillation is expected from gradient noise — <strong>increase the batch size or add momentum</strong>, which damps oscillation by construction.</li><li>Look for <strong>exploding gradients</strong>, especially with deep or recurrent models; apply gradient clipping.</li><li>Check for <strong>numerical issues</strong> — NaNs from <code>log(0)</code>, division by zero, unclipped probabilities in a hand-rolled log-loss.</li><li>Confirm the loss is <strong>averaged rather than summed</strong>, since a summed loss effectively multiplies your learning rate by the batch size.</li></ol><p>Then use a learning-rate schedule or an adaptive optimizer to stabilize.</p><div class="prep-say"><strong>30-second version</strong><p>Almost certainly too high a learning rate. Drop it 10×, then check scaling, batch size, gradient explosion, NaNs, and whether the loss is summed rather than averaged.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Structured debugging with an ordered, cheap-first checklist. The summed-versus-averaged loss detail is a nice practitioner touch.</p></div></div></details>
+<details class="prep-question" data-question="does gradient descent always find the global minimum saddle points" data-tags="convexity saddle points trap">
+<summary><span class="prep-q-no">03</span><span class="prep-q-title">Does gradient descent always find the global minimum?<span class="prep-tags"><span>convexity</span><span>saddle points</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Only if the objective is convex, in which case any local minimum is global and gradient descent with an appropriate step size converges to it. Linear regression with squared error and logistic regression with log-loss are both convex, so yes for those. Neural networks, K-Means and sigmoid-plus-MSE are non-convex, so there is no guarantee — you converge to <em>a</em> critical point that depends on initialization.</p><p>A crucial nuance for high dimensions: the practical obstacle is usually not local minima but <strong>saddle points</strong>, because a critical point is only a local minimum if every Hessian eigenvalue is positive, which becomes improbable as dimension grows. That is why SGD’s noise and momentum matter — they help escape saddles.</p><p>And empirically, in over-parameterized deep networks most local minima reached in practice have similar loss values, which is why non-convexity turns out to be much less damaging than the theory suggests.</p><div class="prep-say"><strong>30-second version</strong><p>Only for convex objectives — true for linear and logistic regression, not for neural nets. And in high dimensions the real obstacle is saddle points rather than local minima, which is why SGD noise and momentum help.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Precision about convexity plus modern understanding. The saddle-point point elevates this well above “no, it can get stuck in local minima”.</p></div></div></details>
+<details class="prep-question" data-question="compare sgd with momentum rmsprop adam and adamw" data-tags="optimizers AdamW weight decay">
+<summary><span class="prep-q-no">04</span><span class="prep-q-title">Compare SGD with momentum, RMSProp, Adam and AdamW.<span class="prep-tags"><span>optimizers</span><span>AdamW</span><span>weight decay</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Each fixes a specific deficiency in the previous one.</p><p><strong>SGD with momentum</strong> accumulates a velocity <code>v ← βv + ∇J</code>, accelerating along consistently-signed directions and damping oscillation across a narrow valley; simple, memory-light, and still best-generalizing in many well-tuned vision setups, but it needs careful learning-rate scheduling.</p><p><strong>AdaGrad</strong> — worth naming as the ancestor — scales each parameter’s step by the inverse square root of accumulated squared gradients; excellent for sparse features, but the accumulator only grows, so the effective rate decays to zero and learning halts. <strong>RMSProp</strong> replaces the sum with an exponentially-decaying average, keeping adaptivity without terminal decay.</p><p><strong>Adam</strong> combines RMSProp’s scaling with momentum and adds bias correction for the two moving averages’ zero initialization; robust to hyperparameters and the default for transformers.</p><p><strong>AdamW</strong> decouples weight decay from the gradient: in Adam, an L2 term added to the gradient also gets divided by <code>√v̂</code>, so effective regularization varies per parameter and is not true weight decay. AdamW applies <code>w ← w - ηλw</code> directly to the weights instead, which improves generalization and is the standard for large-model training today.</p><div class="prep-say"><strong>30-second version</strong><p>Momentum accelerates consistent directions; AdaGrad adapts per parameter but decays to zero; RMSProp fixes that with a decaying average; Adam adds momentum plus bias correction; AdamW decouples weight decay from the gradient.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you understand optimizers as a chain of fixes rather than a list of names. Correctly stating what AdamW decouples is the single highest-value detail.</p></div></div></details>
+<details class="prep-question" data-question="how is gradient boosting related to gradient descent function space" data-tags="boosting function space trap">
+<summary><span class="prep-q-no">05</span><span class="prep-q-title">How is gradient boosting related to gradient descent?<span class="prep-tags"><span>boosting</span><span>function space</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>It is gradient descent in <strong>function space</strong> rather than parameter space. Ordinary gradient descent parameterizes the model and steps <code>w ← w - η∇_w J</code>. Gradient boosting treats the model <em>itself</em> as the thing being optimized: at each stage it computes the negative gradient of the loss with respect to the current predictions, <code>-∂L/∂F(xᵢ)</code> — the pseudo-residuals — then fits a weak learner to approximate that negative gradient and adds it: <code>F_m = F_{m-1} + η·h_m</code>.</p><p>So the new tree plays the role of the descent direction, and the boosting learning rate (shrinkage) plays exactly the role of η.</p><p>Two clarifying consequences: with squared error the negative gradient is literally the residual <code>y - F(x)</code>, which is why the intuitive “fit the residuals” description works for regression; but with log-loss it is <code>y - p</code>, <strong>which is why you must say “negative gradient” rather than “residual” to be correct in general</strong>. XGBoost extends the analogy to second order using a Taylor expansion with both gradient and Hessian, making it the function-space analogue of Newton’s method.</p><div class="prep-say"><strong>30-second version</strong><p>Boosting is gradient descent in function space: each tree approximates the negative gradient of the loss with respect to current predictions, and shrinkage is the step size. It equals the residual only under squared error.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you see the unifying principle. One of the highest-signal questions in the ML interview canon, and the “residuals only for MSE” nuance is what marks a genuinely deep answer.</p></div></div></details>
+<details class="prep-question" data-question="why does feature scaling speed up gradient descent but not affect a tree" data-tags="scaling condition number trees">
+<summary><span class="prep-q-no">06</span><span class="prep-q-title">Why does feature scaling speed up gradient descent, when it does not affect a tree at all?<span class="prep-tags"><span>scaling</span><span>condition number</span><span>trees</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Gradient descent’s convergence rate depends on the <strong>condition number</strong> of the loss surface — roughly the ratio of largest to smallest curvature. With features on very different scales the contours are extremely elongated ellipses, so the gradient at most points is nearly perpendicular to the direction of the minimum and the trajectory zig-zags across the narrow valley. Any single learning rate is then simultaneously too large for the steep direction and too small for the flat one. Standardizing makes the contours roughly circular, so the gradient points near the optimum and convergence is fast.</p><p>A decision tree, by contrast, evaluates splits as threshold comparisons <em>within</em> a single feature and ranks candidate thresholds — an operation invariant to any monotone rescaling — so scaling changes nothing about the tree it builds.</p><p>Same reason distance-based methods (KNN, K-Means, SVM, PCA) need scaling: they combine features into a single geometric quantity, and trees never do.</p><div class="prep-say"><strong>30-second version</strong><p>Scaling improves the loss surface’s condition number, so the gradient points at the optimum instead of zig-zagging across a canyon. Trees rank thresholds within one feature, which is invariant to monotone rescaling.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you can explain the <em>mechanism</em> rather than repeating the rule. The “trees rank thresholds within one feature” framing is the clean way to say it.</p></div></div></details>
+</section>
+<div class="page-nav"><a href="08-regularization.html"><div class="dir">← Previous</div><div class="ttl">Regularization</div></a><a class="next" href="10-classification-metrics.html"><div class="dir">Next →</div><div class="ttl">Classification Metrics</div></a></div>
+</main>
+<div class="toc-rail"><nav class="toc"></nav></div>
+</div>
+</div>
+</div>
+<script src="assets/app.js?v=20260727c"></script>
+<script src="assets/ml-sitenav.js?v=20260727c"></script>
+<script src="assets/enhance.js?v=20260727c"></script>
+<script src="assets/interview-prep.js?v=20260727c"></script>
+</body>
+</html>

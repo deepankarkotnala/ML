@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#f4f5f8" name="theme-color"/>
+<title>Linear Regression — Switch job</title>
+<!-- Machine Learning brand metadata -->
+<link href="assets/brand/favicon.svg?v=20260727c" rel="icon" type="image/svg+xml"/>
+<link href="assets/brand/favicon-32.png?v=20260727c" rel="icon" sizes="32x32" type="image/png"/>
+<link href="assets/brand/favicon.ico?v=20260727c" rel="shortcut icon"/>
+<link href="assets/brand/apple-touch-icon.png?v=20260727c" rel="apple-touch-icon" sizes="180x180"/>
+<link href="assets/brand/site.webmanifest?v=20260727c" rel="manifest"/>
+<link color="#6f47f5" href="assets/brand/safari-pinned-tab.svg?v=20260727c" rel="mask-icon"/>
+<link href="assets/brand/social-card.png?v=20260727c" rel="image_src"/>
+<meta content="Switch job" name="application-name"/>
+<meta content="Switch job" name="apple-mobile-web-app-title"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="#2563eb" name="msapplication-TileColor"/>
+<meta content="assets/brand/browserconfig.xml?v=20260727c" name="msapplication-config"/>
+<meta content="website" property="og:type"/>
+<meta content="Switch job Learning Platform" property="og:site_name"/>
+<meta content="Linear Regression" property="og:title"/>
+<meta content="The normal equation derived, Gauss-Markov and which assumption violations you can safely ignore, multicollinearity, negative R-squared, and why linear regression fails for classification." property="og:description"/>
+<meta content="assets/brand/social-card.png?v=20260727c" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="Switch job learning platform logo" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Linear Regression" name="twitter:title"/>
+<meta content="The normal equation derived, Gauss-Markov and which assumption violations you can safely ignore, multicollinearity, negative R-squared, and why linear regression fails for classification." name="twitter:description"/>
+<meta content="assets/brand/social-card.png?v=20260727c" name="twitter:image"/>
+<link href="assets/brand/favicon-16.png?v=20260727c" rel="icon" sizes="16x16" type="image/png"/>
+<!-- /Machine Learning brand metadata -->
+<meta content="The normal equation derived, Gauss-Markov and which assumption violations you can safely ignore, multicollinearity, negative R-squared, and why linear regression fails for classification." name="description"/>
+<link href="assets/styles.css?v=20260727c" rel="stylesheet"/>
+<link href="assets/office-theme.css?v=20260727e" rel="stylesheet"/>
+</head>
+<body data-page="ml-06-linear-regression" data-prep-section="ml">
+<div class="app">
+<aside class="sidebar">
+<div class="brand">
+<a class="brand-link" href="index.html" aria-label="Switch job home">
+<span class="brand-mark" aria-hidden="true"><img src="assets/brand/switch-job-logo.png?v=20260727c" alt=""/></span>
+<div class="brand-text"><strong>Switch job</strong><span>Learning Platform</span></div>
+</a>
+</div>
+<div class="search-wrap"><div class="search-box"><svg fill="none" height="15" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="15"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg><input data-search="" placeholder="Search everything…  ( / )" type="text"/></div><div class="search-results"></div></div>
+<nav class="nav"></nav>
+</aside>
+<div class="backdrop"></div>
+<div class="main">
+<header class="topbar">
+<button aria-label="Menu" class="icon-btn menu-btn"><svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><path d="M3 12h18M3 6h18M3 18h18"></path></svg></button>
+<div class="crumbs">Machine Learning / Part B / Module 06</div>
+<button aria-label="Toggle theme" class="icon-btn" data-theme-toggle=""></button>
+</header>
+<div class="content-wrap">
+<main class="content prep-content">
+<div class="eyebrow"><span class="dot"></span> Module 06 · Part B Linear Models</div>
+<h1>Linear Regression</h1>
+<p class="lead">Do not skim this because it looks basic. Linear regression is where interviewers test whether you understand <em>any</em> model rigorously, and its derivations recur through Modules 07 to 09.</p>
+<div class="meta-row"><span class="pill purple">Prerequisites · Modules 01, 05</span><span class="pill">Study time · 8 h</span><span class="pill blue">6 interview questions</span><span class="pill">Reference model</span></div>
+<div class="callout key"><div class="c-ico">🎯</div><div class="c-body"><div class="c-title">Your interview goal</div><p>Derive the normal equation with its Hessian justification, say which assumption violations break predictions versus only inference, and motivate logistic regression from first principles.</p></div></div>
+<h2 id="what-to-learn">1 · What to learn</h2>
+<ol><li>The model: <code>ŷ = w₀ + w₁x₁ + … + w_dx_d = Xw</code>, with a bias column of ones.</li><li>The loss: sum of squared errors, and its MLE justification under Gaussian noise.</li><li>The <strong>normal equation</strong> <code>w = (XᵀX)⁻¹Xᵀy</code> — derived by setting the gradient to zero.</li><li>When <code>XᵀX</code> is singular and what to do: pseudo-inverse via SVD, ridge, or dropping collinear features.</li><li>Computational cost: <code>O(nd² + d³)</code> for the normal equation versus <code>O(nd)</code> per gradient-descent iteration — and therefore when to use which.</li><li>The five OLS assumptions and the <strong>Gauss–Markov theorem</strong> — which assumptions BLUE actually needs.</li><li>Which violations break <em>predictions</em> versus only break <em>inference</em> — standard errors, p-values, confidence intervals.</li><li>Diagnostics: residual-versus-fitted, Q–Q, scale-location, leverage and Cook’s distance, VIF.</li><li>Multicollinearity: what it does and does not break.</li><li><code>R²</code>, adjusted <code>R²</code>, and their failure modes including negative out-of-sample <code>R²</code>.</li><li>Coefficient interpretation: units, “holding all else constant”, and standardized coefficients.</li><li>Extensions: polynomial terms, interactions, splines, weighted least squares, robust regression (Huber, RANSAC), quantile regression.</li><li>Why linear regression fails for classification — the setup for Module 07.</li></ol>
+<h2 id="intuitions">2 · Core intuitions</h2>
+<h3>OLS is an orthogonal projection</h3>
+<p>The fitted values are the projection of <code>y</code> onto the column space of <code>X</code>, and the residuals are orthogonal to every column of <code>X</code>. That is the geometric meaning of setting the gradient to zero: you have removed all the signal <code>X</code> can explain, and what remains is by construction uncorrelated with your features. This picture also explains multicollinearity — if two columns nearly coincide, the projection is fine but the <em>decomposition</em> of it into per-column coefficients becomes unstable.</p>
+<h3>Squared error is not a neutral choice</h3>
+<p>It is the MLE under Gaussian noise, differentiable everywhere, has a closed form, and penalizes large errors quadratically — which makes it sensitive to outliers. With heavy-tailed errors, MAE (the Laplace MLE) or Huber (quadratic near zero, linear in the tails) is the principled alternative. Being able to say <em>why</em> you would switch is what separates a real answer from “MSE because that is what regression uses”.</p>
+<h3>Normality is the most over-claimed assumption</h3>
+<p>Gauss–Markov says OLS is the Best Linear Unbiased Estimator under linearity, zero-mean errors given <code>X</code>, homoscedasticity, and no autocorrelation. <strong>Normality is not required</strong> for that result. Normality matters for exact small-sample inference — t-tests, F-tests, exact confidence intervals — and with large <code>n</code> the CLT covers you approximately. Candidates who list normality as required for OLS to work reveal that they memorized a list.</p>
+<h3>Multicollinearity does not hurt predictions, it hurts explanations</h3>
+<p>With two nearly identical features, many <code>(w₁, w₂)</code> combinations give nearly the same fit, so individual coefficients become large, unstable, and can flip sign across samples; standard errors inflate and “feature X matters” conclusions become unreliable. But <code>ŷ</code> and RMSE are typically fine. So if you need inference, fix it. If you only need predictions, you may legitimately do nothing. <strong>Perfect</strong> collinearity is different — then <code>XᵀX</code> is singular and there is no unique solution at all.</p>
+<h3>R² is a comparison to the mean, and it can be negative</h3>
+<p><code>R² = 1 - SSres/SStot</code> measures how much better you do than predicting <code>ȳ</code>. In-sample it can never decrease when you add a feature — even a random one — which is why adjusted <code>R²</code> penalizes parameter count. Out-of-sample, <code>R²</code> <em>can</em> go negative: it means your model is worse than the training mean, which happens more than people expect on shifted data.</p>
+<h3>Why linear regression fails for classification</h3>
+<p>Fit OLS to a 0/1 target and you get four distinct problems, each of which is a reason for the logit link in Module 07. Have this list ready — it is the standard bridge question.</p>
+<ol><li><strong>Unbounded output</strong> — predictions outside [0,1] that cannot be read as probabilities.</li><li><strong>A boundary dragged by extreme x</strong> — squared error penalizes distance from 0/1 even for confidently-correct points, so adding easy points moves your decision boundary.</li><li><strong>Wrong noise model</strong> — Bernoulli variance <code>p(1-p)</code> depends on <code>p</code>, so errors are heteroscedastic by construction and the Gaussian justification for MSE does not apply.</li><li><strong>Wrong functional shape</strong> — a linear model implies a constant marginal effect on probability, but probabilities must saturate near 0 and 1.</li></ol>
+<h2 id="formulas">3 · Whiteboard formulas</h2>
+<div class="code-block" data-reveal="">
+<div class="code-head"><span class="lang"><span class="dots"><i></i><i></i><i></i></span>linear_regression.txt</span><button class="copy-btn">Copy</button></div>
+<pre><code>Model                ŷ = Xw,        X ∈ ℝ^(n×(d+1)) with a ones column
+
+Loss                 J(w) = ½‖y - Xw‖²  =  ½ Σᵢ (yᵢ - w·xᵢ)²
+
+Gradient             ∇J(w) = -Xᵀ(y - Xw) = Xᵀ(Xw - y)
+
+Set to zero          XᵀXw = Xᵀy            ← the "normal equations"
+Solution             w = (XᵀX)⁻¹ Xᵀ y      ← requires XᵀX invertible
+Singular case        w = X⁺y   (Moore-Penrose pseudo-inverse, via SVD)
+
+Simple regression    w₁ = Cov(x,y)/Var(x) = ρ·(σy/σx);   w₀ = ȳ - w₁x̄
+
+Sums of squares      SStot = Σ(yᵢ - ȳ)²
+                     SSres = Σ(yᵢ - ŷᵢ)²
+R²                   R² = 1 - SSres/SStot
+Adjusted R²          R²adj = 1 - (1-R²)·(n-1)/(n-d-1)
+
+VIF for feature j    VIF_j = 1/(1 - R²_j)
+                     VIF > 5 (or 10) → concerning collinearity
+
+Gauss-Markov: under (1) linearity in parameters, (2) E[e|X]=0,
+(3) homoscedasticity Var(e|X)=s²I, (4) no autocorrelation,
+OLS is the Best Linear Unbiased Estimator. Normality NOT required.</code></pre>
+</div>
+<h2 id="assumptions">4 · The assumptions, and what each violation breaks</h2>
+<p>Being able to fill in the two “breaks?” columns is the whole game on assumption questions. Most candidates can list the assumptions; very few can say which violations they can safely ignore for a pure prediction task.</p>
+<div class="table-wrap"><table><thead><tr><th>Assumption</th><th>Violation looks like</th><th>Breaks predictions?</th><th>Breaks inference?</th><th>Fix</th></tr></thead><tbody><tr><td>Linearity in parameters</td><td>Curved residual-vs-fitted plot</td><td><strong>Yes</strong></td><td>Yes</td><td>Transform, polynomial, splines, non-linear model</td></tr><tr><td><code>E[e|X] = 0</code> (exogeneity)</td><td>Omitted confounder</td><td><strong>Yes</strong> (biased)</td><td>Yes</td><td>Add the variable, instrumental variables, better design</td></tr><tr><td>Homoscedasticity</td><td>Funnel shape in residuals</td><td>No (still unbiased)</td><td><strong>Yes</strong></td><td>Robust (HC) standard errors, WLS, log target</td></tr><tr><td>No autocorrelation</td><td>Patterned residuals over time</td><td>Mildly</td><td><strong>Yes</strong></td><td>Time-series model, Newey–West SEs</td></tr><tr><td>No perfect collinearity</td><td><code>XᵀX</code> singular</td><td><strong>Yes</strong> (no unique fit)</td><td>Yes</td><td>Drop or combine features, ridge</td></tr><tr><td>Normal errors <em>(inference only)</em></td><td>Curved Q–Q plot</td><td>No</td><td>Yes, in small <code>n</code></td><td>Larger <code>n</code> (CLT), bootstrap, transform</td></tr></tbody></table></div>
+<h2 id="drill">5 · Hands-on drill</h2>
+<ol><li>Implement OLS three ways in <code>numpy</code>: the normal equation, <code>np.linalg.lstsq</code> (SVD-based), and batch gradient descent. Confirm all three agree, then time them as <code>d</code> grows from 10 to 2,000.</li><li>Construct a dataset with two nearly identical features. Fit OLS repeatedly on bootstrap resamples and watch the individual coefficients swing wildly while <code>ŷ</code> stays stable. Compute VIF, then refit with ridge and watch them stabilize. <strong>This exercise makes the multicollinearity answer real.</strong></li><li>Generate heteroscedastic data, fit OLS, and confirm the coefficients stay roughly unbiased while conventional standard errors become wrong.</li><li>Fit OLS to a binary target and plot the predictions. See the out-of-range values yourself — that is the visual you should describe in the Module 07 bridge question.</li></ol>
+<div class="callout warn"><div class="c-ico">⚠️</div><div class="c-body"><div class="c-title">Gotchas that fail candidates</div><ul><li><strong>Saying OLS requires normally distributed features.</strong> It requires nothing of the features’ distribution; the inference-only normality assumption is about the <em>errors</em>.</li><li><strong>Saying multicollinearity ruins the model.</strong> It ruins coefficient interpretation, usually not predictive accuracy.</li><li><strong>Interpreting a coefficient causally.</strong> Any omitted confounder invalidates the causal reading.</li><li><strong>Not knowing when to use the normal equation versus gradient descent.</strong> With <code>d</code> in the tens of thousands, <code>d³</code> is fatal.</li><li><strong>Forgetting that <code>R²</code> rises mechanically with more features</strong> in-sample.</li><li><strong>Claiming linear regression cannot model non-linear relationships.</strong> It is linear <em>in the parameters</em>; with <code>x²</code>, <code>log x</code>, splines and interactions it fits highly non-linear functions of the original inputs.</li></ul></div></div>
+<h2 id="questions">6 · Interview questions</h2>
+<div class="prep-toolbar" data-sticky-prep=""><label class="prep-filter"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><input data-question-filter="" placeholder="Filter these questions…"/></label><button class="btn ghost" data-expand-answers="" type="button">Open all</button><span class="prep-count" data-question-count="">6 questions</span></div>
+<section aria-label="Linear regression interview questions" class="prep-question-list">
+<details class="prep-question" data-question="derive the normal equation" data-tags="derivation matrix calculus convexity">
+<summary><span class="prep-q-no">01</span><span class="prep-q-title">Derive the normal equation.<span class="prep-tags"><span>derivation</span><span>matrix calculus</span><span>convexity</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Minimize <code>J(w) = ½‖y - Xw‖² = ½(y - Xw)ᵀ(y - Xw)</code>. Expand to <code>½(yᵀy - 2wᵀXᵀy + wᵀXᵀXw)</code>. Differentiate with respect to <code>w</code>: <code>∇J = -Xᵀy + XᵀXw</code>. Set to zero: <code>XᵀXw = Xᵀy</code>, hence <code>w = (XᵀX)⁻¹Xᵀy</code> whenever <code>XᵀX</code> is invertible.</p><p>It is a genuine minimum because <code>J</code> is convex — its Hessian is <code>XᵀX</code>, positive semi-definite, and positive definite exactly when <code>X</code> has full column rank.</p><div class="prep-say"><strong>30-second version</strong><p>Expand the squared loss, differentiate, set the gradient to zero: XᵀXw = Xᵀy, so w = (XᵀX)⁻¹Xᵀy. It is a minimum because the Hessian XᵀX is positive semi-definite.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you can do matrix calculus and whether you justify that it is a minimum. Mentioning the Hessian and convexity unprompted is the differentiator.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “When is <code>XᵀX</code> not invertible, and what then?” — when columns are perfectly collinear or <code>d &gt; n</code>. Use the Moore–Penrose pseudo-inverse via SVD, which returns the minimum-norm solution, or add ridge: <code>(XᵀX + λI)</code> is always invertible for λ &gt; 0 because it shifts every eigenvalue up by λ.</div></div></details>
+<details class="prep-question" data-question="assumptions of linear regression which can you ignore for prediction" data-tags="assumptions inference trap">
+<summary><span class="prep-q-no">02</span><span class="prep-q-title">What are the assumptions of linear regression, and which can you ignore if you only care about prediction?<span class="prep-tags"><span>assumptions</span><span>inference</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Linearity in the parameters, exogeneity (<code>E[e|X] = 0</code>), homoscedasticity, no autocorrelation of errors, no perfect multicollinearity, and — for exact small-sample inference only — normality of errors.</p><p>For a pure prediction task: violations of <strong>linearity and exogeneity are serious</strong>, because they bias the fit itself. <strong>Heteroscedasticity and non-normal errors mostly damage inference</strong> — standard errors, p-values and confidence intervals become unreliable — while coefficient estimates stay unbiased and predictions remain usable, so if you are reporting RMSE rather than p-values you can often proceed, optionally with robust standard errors. Autocorrelation matters more than it looks, because it usually signals you should be using a time-series model and that your CV is leaking. Imperfect multicollinearity is tolerable for prediction and fatal for interpretation.</p><div class="prep-say"><strong>30-second version</strong><p>Linearity, exogeneity, homoscedasticity, no autocorrelation, no perfect collinearity — plus normality for small-sample inference only. Linearity and exogeneity bias the fit; the rest mostly damage inference, not predictions.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>The split between prediction and inference. Exactly the question separating candidates who memorized a list from those who understand what the list is for.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “Is normality of errors needed for OLS to be BLUE?” — no. Gauss–Markov needs linearity, zero-mean errors, homoscedasticity and no autocorrelation. Normality buys exact t and F distributions in small samples; the CLT gives an approximate version for large n.</div></div></details>
+<details class="prep-question" data-question="explain multicollinearity how do you detect and handle it vif" data-tags="multicollinearity VIF ridge">
+<summary><span class="prep-q-no">03</span><span class="prep-q-title">Explain multicollinearity. How do you detect and handle it?<span class="prep-tags"><span>multicollinearity</span><span>VIF</span><span>ridge</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Two or more predictors are strongly linearly related, so the data cannot cleanly attribute the shared variance. Coefficient estimates become high-variance, can be implausibly large, and can flip sign with small sample changes; standard errors inflate, so individually significant predictors appear insignificant even while the overall F-test is strongly significant — <strong>that pattern is a classic tell</strong>.</p><p>Detection: the pairwise correlation matrix for obvious cases, <strong>VIF</strong> (<code>1/(1-R²_j)</code>, flagged above 5 or 10) for the general case, or the condition number of <code>X</code>.</p><p>Handling depends on the goal — drop one of the pair, combine them into a domain-meaningful composite, use PCA, use <strong>ridge</strong>, collect more data, or, if you only need predictions from a tree ensemble, do nothing at all.</p><div class="prep-say"><strong>30-second version</strong><p>Predictors are strongly linearly related, so coefficients become unstable and standard errors inflate — but predictions are usually fine. Detect with VIF; fix by dropping, combining, or ridge, or ignore it if you only need predictions.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you know this is primarily an interpretation problem. The “significant F-test, insignificant t-tests” signature is a strong detail.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “Why does ridge help specifically?” — writing <code>X = UΣVᵀ</code>, ridge scales each direction by <code>σᵢ²/(σᵢ² + λ)</code>. Directions with tiny singular values — exactly the collinear ones where variance explodes — get shrunk hardest, while well-determined directions are barely touched.</div></div></details>
+<details class="prep-question" data-question="can r squared be negative can it decrease when you add a feature" data-tags="R-squared evaluation trap">
+<summary><span class="prep-q-no">04</span><span class="prep-q-title">Can <code>R²</code> be negative? Can it decrease when you add a feature?<span class="prep-tags"><span>R-squared</span><span>evaluation</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>In-sample, on the data you fitted, <code>R²</code> is bounded in [0,1] and can <strong>never</strong> decrease when you add a feature — OLS can always set the new coefficient to zero and do no worse, so it is monotone in feature count. That is exactly why adjusted <code>R²</code> exists: it penalizes each extra parameter and <em>can</em> fall.</p><p>Out-of-sample, <code>R²</code> absolutely can be negative: <code>1 - SSres/SStot</code> goes negative whenever your squared error exceeds that of simply predicting the training mean — common under distribution shift or severe overfitting. So negative <code>R²</code> is not a bug; it is a meaningful and fairly damning diagnostic.</p><div class="prep-say"><strong>30-second version</strong><p>In-sample it cannot decrease with more features and stays in [0,1]. Out-of-sample it can go negative, meaning you are worse than predicting the training mean.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you distinguish in-sample from out-of-sample behaviour. Many candidates confidently say “no, R² is always 0 to 1”.</p></div></div></details>
+<details class="prep-question" data-question="when would you use gradient descent instead of the normal equation" data-tags="optimization cost scale">
+<summary><span class="prep-q-no">05</span><span class="prep-q-title">When would you use gradient descent instead of the normal equation?<span class="prep-tags"><span>optimization</span><span>cost</span><span>scale</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>The normal equation is <code>O(nd² + d³)</code> and needs the whole <code>XᵀX</code> in memory, so it becomes impractical once <code>d</code> reaches the thousands — the <code>d³</code> inversion dominates. Use gradient descent, or a conjugate-gradient or L-BFGS solver, when <code>d</code> is large; when <code>n</code> is too large for memory and you want mini-batches or online updates; when <code>XᵀX</code> is ill-conditioned so explicit inversion is numerically unstable; or when the loss has no closed form — which is most of them, including logistic loss, Huber, and anything with an L1 penalty. Conversely, for small-to-moderate <code>d</code> the normal equation is exact and needs no learning-rate tuning. In practice you would use <code>lstsq</code> or SVD rather than literally inverting <code>XᵀX</code>.</p><div class="prep-say"><strong>30-second version</strong><p>When d is large (the d³ inversion dominates), when n exceeds memory, when XᵀX is ill-conditioned, or when the loss has no closed form — which covers logistic, Huber and anything with L1.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Cost awareness, and knowing that closed forms are the exception rather than the rule.</p></div></div></details>
+<details class="prep-question" data-question="why cant you just use linear regression for classification" data-tags="classification bridge trap">
+<summary><span class="prep-q-no">06</span><span class="prep-q-title">Why can’t you just use linear regression for classification?<span class="prep-tags"><span>classification</span><span>bridge</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>Four concrete reasons, and this is the bridge into logistic regression. <strong>(1) Unbounded output:</strong> <code>Xw</code> ranges over all reals, so you get predictions like −0.3 and 1.4 that cannot be probabilities. <strong>(2) Sensitivity of the boundary:</strong> squared error penalizes distance from 0/1 even for confidently-correct points, so a cluster of extreme <code>x</code> values drags the fitted line and moves the implied threshold — adding easy points changes your boundary. <strong>(3) Wrong noise model:</strong> a Bernoulli target has variance <code>p(1-p)</code>, which depends on <code>p</code>, so errors are heteroscedastic by construction and the Gaussian-noise justification for MSE simply does not apply. <strong>(4) Wrong functional shape:</strong> a linear model implies a constant marginal effect of <code>x</code> on probability, but probability must saturate near 0 and 1.</p><p>The fix for all four is to model a <em>transformed</em> quantity that is naturally unbounded — the log-odds — and to use the Bernoulli likelihood as the loss. That is exactly logistic regression.</p><div class="prep-say"><strong>30-second version</strong><p>Unbounded predictions outside [0,1]; a boundary dragged by far-away points; heteroscedastic Bernoulli errors that void the MSE justification; and a constant marginal effect where probabilities must saturate.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you can motivate logistic regression from first principles rather than asserting it. Asked constantly, and answering with these four points positions you perfectly for the log-odds questions that follow.</p></div></div></details>
+</section>
+<div class="page-nav"><a href="05-bias-variance-cross-validation.html"><div class="dir">← Previous</div><div class="ttl">Bias–Variance &amp; Cross-Validation</div></a><a class="next" href="07-logistic-regression-log-odds.html"><div class="dir">Next →</div><div class="ttl">Logistic Regression &amp; Log Odds</div></a></div>
+</main>
+<div class="toc-rail"><nav class="toc"></nav></div>
+</div>
+</div>
+</div>
+<script src="assets/app.js?v=20260727c"></script>
+<script src="assets/ml-sitenav.js?v=20260727c"></script>
+<script src="assets/enhance.js?v=20260727c"></script>
+<script src="assets/interview-prep.js?v=20260727c"></script>
+</body>
+</html>

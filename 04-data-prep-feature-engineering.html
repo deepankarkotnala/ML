@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#f4f5f8" name="theme-color"/>
+<title>Data Preparation, EDA & Feature Engineering — Switch job</title>
+<!-- Machine Learning brand metadata -->
+<link href="assets/brand/favicon.svg?v=20260727c" rel="icon" type="image/svg+xml"/>
+<link href="assets/brand/favicon-32.png?v=20260727c" rel="icon" sizes="32x32" type="image/png"/>
+<link href="assets/brand/favicon.ico?v=20260727c" rel="shortcut icon"/>
+<link href="assets/brand/apple-touch-icon.png?v=20260727c" rel="apple-touch-icon" sizes="180x180"/>
+<link href="assets/brand/site.webmanifest?v=20260727c" rel="manifest"/>
+<link color="#6f47f5" href="assets/brand/safari-pinned-tab.svg?v=20260727c" rel="mask-icon"/>
+<link href="assets/brand/social-card.png?v=20260727c" rel="image_src"/>
+<meta content="Switch job" name="application-name"/>
+<meta content="Switch job" name="apple-mobile-web-app-title"/>
+<meta content="yes" name="apple-mobile-web-app-capable"/>
+<meta content="yes" name="mobile-web-app-capable"/>
+<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
+<meta content="#2563eb" name="msapplication-TileColor"/>
+<meta content="assets/brand/browserconfig.xml?v=20260727c" name="msapplication-config"/>
+<meta content="website" property="og:type"/>
+<meta content="Switch job Learning Platform" property="og:site_name"/>
+<meta content="Data Preparation, EDA & Feature Engineering" property="og:title"/>
+<meta content="The five faces of data leakage, missingness mechanisms, high-cardinality encoding without leakage, and why the fitted pipeline is the real deliverable." property="og:description"/>
+<meta content="assets/brand/social-card.png?v=20260727c" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="Switch job learning platform logo" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Data Preparation, EDA & Feature Engineering" name="twitter:title"/>
+<meta content="The five faces of data leakage, missingness mechanisms, high-cardinality encoding without leakage, and why the fitted pipeline is the real deliverable." name="twitter:description"/>
+<meta content="assets/brand/social-card.png?v=20260727c" name="twitter:image"/>
+<link href="assets/brand/favicon-16.png?v=20260727c" rel="icon" sizes="16x16" type="image/png"/>
+<!-- /Machine Learning brand metadata -->
+<meta content="The five faces of data leakage, missingness mechanisms, high-cardinality encoding without leakage, and why the fitted pipeline is the real deliverable." name="description"/>
+<link href="assets/styles.css?v=20260727c" rel="stylesheet"/>
+<link href="assets/office-theme.css?v=20260727e" rel="stylesheet"/>
+</head>
+<body data-page="ml-04-data-prep-feature-engineering" data-prep-section="ml">
+<div class="app">
+<aside class="sidebar">
+<div class="brand">
+<a class="brand-link" href="index.html" aria-label="Switch job home">
+<span class="brand-mark" aria-hidden="true"><img src="assets/brand/switch-job-logo.png?v=20260727c" alt=""/></span>
+<div class="brand-text"><strong>Switch job</strong><span>Learning Platform</span></div>
+</a>
+</div>
+<div class="search-wrap"><div class="search-box"><svg fill="none" height="15" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="15"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg><input data-search="" placeholder="Search everything…  ( / )" type="text"/></div><div class="search-results"></div></div>
+<nav class="nav"></nav>
+</aside>
+<div class="backdrop"></div>
+<div class="main">
+<header class="topbar">
+<button aria-label="Menu" class="icon-btn menu-btn"><svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><path d="M3 12h18M3 6h18M3 18h18"></path></svg></button>
+<div class="crumbs">Machine Learning / Part A / Module 04</div>
+<button aria-label="Toggle theme" class="icon-btn" data-theme-toggle=""></button>
+</header>
+<div class="content-wrap">
+<main class="content prep-content">
+<div class="eyebrow"><span class="dot"></span> Module 04 · Part A Foundations</div>
+<h1>Data Preparation, EDA &amp; Feature Engineering</h1>
+<p class="lead">This is where real projects are won and lost, and interviewers know it. It is the highest-yield module in this curriculum for applied and take-home rounds.</p>
+<div class="meta-row"><span class="pill purple">Prerequisites · Modules 01–03</span><span class="pill">Study time · 10 h</span><span class="pill blue">6 interview questions</span><span class="pill">Highest yield</span></div>
+<div class="callout key"><div class="c-ico">🎯</div><div class="c-body"><div class="c-title">Your interview goal</div><p>Recognise all five kinds of leakage on sight, defend a split-then-transform order, encode a 40,000-category column without leaking, and know that the pipeline — not the model — is what ships.</p></div></div>
+<h2 id="what-to-learn">1 · What to learn</h2>
+<h3>Understanding and cleaning</h3>
+<ol><li>Systematic EDA: shapes, dtypes, missingness pattern, cardinality, target distribution, bivariate relationships, correlation structure, duplicates.</li><li>Target definition and label quality — how the label was generated, by whom, with what delay.</li><li>Data lineage: which columns exist <em>at prediction time</em> versus only after the fact.</li><li>Missing-data mechanisms: MCAR, MAR, MNAR — and why the mechanism dictates the fix.</li><li>Imputation: mean/median/mode, constant sentinel, missing-indicator column, KNN, iterative/MICE, and native handling in XGBoost and LightGBM.</li><li>Outliers: detection, and the four responses — keep, cap, transform, remove — each with a stated reason.</li></ol>
+<h3>Transformations</h3>
+<ol><li>Scaling: standardization, min-max, robust, max-abs.</li><li>Skew handling: log, log1p, Box–Cox, Yeo–Johnson, quantile transform.</li><li>Categorical encoding: one-hot, ordinal, target/mean encoding <strong>computed out-of-fold</strong>, frequency, hashing, CatBoost ordered statistics, embeddings.</li><li>High-cardinality categoricals — the practical hard case.</li><li>Datetime features: cyclical sin/cos encoding, lags, rolling windows, time-since-event.</li><li>Text features: bag-of-words, TF-IDF, n-grams, and modern embedding features.</li><li>Interactions, polynomials, binning, ratios and domain-derived features.</li></ol>
+<h3>Discipline</h3>
+<ol><li><strong>Data leakage</strong> — every form of it. The single most-tested concept in this module.</li><li>Train/serve consistency: fitting all transformers <em>inside</em> a pipeline, on training folds only.</li><li><code>sklearn</code> <code>Pipeline</code> + <code>ColumnTransformer</code> as the correct default structure.</li><li>Feature selection: filter, wrapper, embedded, and permutation importance.</li><li>Multicollinearity: VIF, correlated-pair pruning, or just using a model that does not care.</li></ol>
+<h2 id="leakage">2 · Leakage — the five faces</h2>
+<p>Leakage is any information in your features that would not be available, in that form, at prediction time. It is the number-one cause of “97% in the notebook, 61% in production”.</p>
+<ol><li><strong>Target leakage</strong> — a feature computed from the outcome. <code>total_amount_paid</code> when predicting default; <code>discharge_date</code> when predicting readmission.</li><li><strong>Train/test contamination</strong> — fitting a scaler, imputer, encoder or selector on the full dataset before splitting, so test statistics inform training.</li><li><strong>Temporal leakage</strong> — using future information for a past prediction. Random K-fold on time-ordered data does this by construction.</li><li><strong>Group leakage</strong> — the same entity (patient, user, device) in both train and test, so the model memorizes the entity rather than the pattern. Fix with <code>GroupKFold</code>.</li><li><strong>Duplicate leakage</strong> — exact or near-duplicate rows split across train and test.</li></ol>
+<div class="callout"><div class="c-ico">🧭</div><div class="c-body"><div class="c-title">A sixth worth naming</div><p>Leakage through <strong>feature selection or hyperparameter tuning performed on all the data</strong>. Selecting features using the full dataset is leakage even if the model never sees test rows directly.</p></div></div>
+<h2 id="order">3 · The correct split-then-transform order</h2>
+<div class="code-block" data-reveal="">
+<div class="code-head"><span class="lang"><span class="dots"><i></i><i></i><i></i></span>pipeline_order.txt</span><button class="copy-btn">Copy</button></div>
+<pre><code>1. Define the target and confirm every feature is available at prediction time
+2. Remove duplicates and obvious corruption
+3. SPLIT  ← everything below happens per-fold, fit on train only
+4. Fit imputers            on train  → transform train, val, test
+5. Fit encoders            on train  → transform train, val, test
+6. Fit scalers             on train  → transform train, val, test
+7. Fit feature selectors   on train  → transform train, val, test
+8. Fit model               on train
+9. Evaluate on val (tune), then ONCE on test (report)</code></pre>
+</div>
+<p>Steps 4–8 belong inside a <code>Pipeline</code> so cross-validation re-fits them per fold automatically. <strong>If your CV loop does not re-fit preprocessing every fold, your CV score is optimistic.</strong></p>
+<h2 id="intuitions">4 · Core intuitions</h2>
+<h3>Target encoding is a leakage machine unless done out-of-fold</h3>
+<p>Replacing a category with the mean target for that category uses the label, so computing it on the full training set lets each row see its own target. Compute it out-of-fold (or with CatBoost’s ordered scheme), smooth toward the global mean for rare categories, and handle unseen categories explicitly.</p>
+<h3>Missingness is often informative</h3>
+<p>Before imputing, ask whether the fact of absence carries signal. Income missing on a loan application is not random. The safest general recipe: <strong>impute and also add a binary <code>was_missing</code> indicator</strong>, so the model can use both the filled value and the absence.</p>
+<h3>“Handle outliers” is a decision with a reason, not a step</h3>
+<p>A sensor reading of 10,000 °C is a data error — remove it. A legitimate £2M transaction in a fraud dataset is the most important row in the file — do not touch it. The only wrong answer is a blanket policy applied without asking which kind you have.</p>
+<h3>The pipeline is the deliverable, not the model</h3>
+<p>If your preprocessing lives in notebook cells above <code>model.fit</code>, it cannot be reproduced at serving time, and you have a training/serving skew bug waiting to happen. Everything — imputation, encoding, scaling, selection — goes inside a fitted <code>Pipeline</code> serialized with the model.</p>
+<h2 id="drill">5 · Hands-on drill</h2>
+<ol><li>Take any messy public dataset and build one <code>Pipeline</code> with <code>ColumnTransformer</code> handling numeric and categorical branches, imputation with indicators, scaling, and one-hot or target encoding. Cross-validate it.</li><li>Then <strong>deliberately introduce each of the five leakage types</strong>, measure how much the CV score inflates for each, and write the number down.</li><li>Having a concrete figure — “leakage cost me 14 AUC points” — makes your interview answers vivid and credible.</li></ol>
+<div class="callout warn"><div class="c-ico">⚠️</div><div class="c-body"><div class="c-title">Gotchas that fail candidates</div><ul><li><strong><code>StandardScaler().fit(X)</code> before <code>train_test_split</code>.</strong> Instantly disqualifying in a code round.</li><li><strong>SMOTE applied before splitting</strong> — synthetic points interpolated from test neighbours land in train.</li><li><strong>Target encoding fitted on all training rows</strong> without out-of-fold computation.</li><li><strong>Dropping rows with missing values by default</strong> — often discards 40% of the data and biases the sample.</li><li><strong>One-hot encoding a 50,000-category column</strong>, then wondering why the model is slow and overfits.</li><li><strong>Not noticing a feature that is too good.</strong> A single feature with 0.99 AUC is a leakage alarm, not a win.</li></ul></div></div>
+<h2 id="questions">6 · Interview questions</h2>
+<div class="prep-toolbar" data-sticky-prep=""><label class="prep-filter"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><input data-question-filter="" placeholder="Filter these questions…"/></label><button class="btn ghost" data-expand-answers="" type="button">Open all</button><span class="prep-count" data-question-count="">6 questions</span></div>
+<section aria-label="Data preparation and feature engineering interview questions" class="prep-question-list">
+<details class="prep-question" data-question="model gets 0.97 auc in cross validation and 0.61 in production diagnose" data-tags="leakage debugging production trap">
+<summary><span class="prep-q-no">01</span><span class="prep-q-title">Your model gets 0.97 AUC in cross-validation and 0.61 in production. Diagnose it.<span class="prep-tags"><span>leakage</span><span>debugging</span><span>production</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>I would work a fixed checklist out loud, most likely first. <strong>(1) Leakage</strong> — is any feature computed from or after the outcome? Is any preprocessing fitted before the split? Sort features by importance and interrogate the top few; a single dominant feature is the classic signature. <strong>(2) Split design</strong> — random K-fold on temporal data, or the same entity in both folds, both inflate the estimate. <strong>(3) Training/serving skew</strong> — is production computing features the same way, with the same defaults, units, timezone and category vocabulary? <strong>(4) Distribution shift</strong> — production traffic may differ, either because the world moved or because the training set was selected non-randomly, such as training only on approved loans then scoring all applicants. <strong>(5) Label definition</strong> — production may be scored against labels defined differently from training.</p><p>To confirm: a strictly time-based holdout, a feature-by-feature train-versus-production distribution comparison, and an ablation dropping suspicious features.</p><div class="prep-say"><strong>30-second version</strong><p>Leakage first, then split design, training/serving skew, distribution shift, label definition. Confirm with a time-based holdout evaluated through the exact serving-time feature computation.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Systematic debugging under uncertainty. One of the most common 2026 applied questions, and the expected answer leads with leakage.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “Which single check first?” — a strictly time-based holdout evaluated with the exact serving-time feature computation. It catches leakage, temporal leakage and skew simultaneously.</div></div></details>
+<details class="prep-question" data-question="name five distinct kinds of data leakage" data-tags="leakage fundamentals">
+<summary><span class="prep-q-no">02</span><span class="prep-q-title">Name five distinct kinds of data leakage.<span class="prep-tags"><span>leakage</span><span>fundamentals</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p><strong>Target leakage</strong> — a feature derived from the outcome. <strong>Preprocessing contamination</strong> — fitting transformers before splitting. <strong>Temporal leakage</strong> — future information in a past prediction. <strong>Group leakage</strong> — the same entity in train and test. <strong>Duplicate leakage</strong> — identical or near-identical rows across the split. A sixth worth naming is leakage through <strong>feature selection or tuning performed on all the data</strong>, which is leakage even when the model never sees test rows directly.</p><div class="prep-say"><strong>30-second version</strong><p>Target, preprocessing contamination, temporal, group, and duplicate — plus selection or tuning performed on the full dataset.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Depth on the highest-consequence topic in applied ML. Naming five with a concrete example each is a strong answer.</p></div></div></details>
+<details class="prep-question" data-question="how do you encode a 60 category city column and a 40000 category merchant id" data-tags="encoding cardinality trap">
+<summary><span class="prep-q-no">03</span><span class="prep-q-title">You have a 60-category <code>city</code> column and a 40,000-category <code>merchant_id</code>. How do you encode each?<span class="prep-tags"><span>encoding</span><span>cardinality</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>They need different treatments precisely because of cardinality. For <code>city</code> at 60 categories, one-hot is fine for a linear model; for tree ensembles, native categorical support in LightGBM or CatBoost, or ordinal encoding, avoids 60 sparse columns.</p><p>For <code>merchant_id</code> at 40,000, one-hot is out — it explodes dimensionality and each column carries almost no signal. In rough order: <strong>out-of-fold target encoding</strong> with smoothing toward the global mean so rare merchants are shrunk; <strong>frequency or count encoding</strong>, which often carries surprising signal; <strong>grouping</strong> — keep the top-N and bucket the tail into <code>other</code>; <strong>hashing</strong> for a fixed-width representation under memory constraints; <strong>learned embeddings</strong> if already using a neural model; or <strong>CatBoost</strong>, designed for exactly this via ordered target statistics that avoid naive target-encoding leakage.</p><p>I would also engineer merchant-level aggregates — mean transaction amount, transaction count, days active — which often beat the ID encoding itself.</p><div class="prep-say"><strong>30-second version</strong><p>Scale the method to the cardinality. One-hot or native categorical for 60; out-of-fold target encoding, frequency encoding, tail-grouping or CatBoost for 40,000 — plus merchant-level aggregate features.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you scale your method to cardinality, and whether you know target encoding’s leakage hazard. Mentioning out-of-fold computation unprompted is the key signal.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “What about a merchant unseen at serving time?” — you need an explicit fallback: the global prior for target encoding, an <code>unknown</code> bucket for grouping, and a monitoring alert on the unseen-category rate.</div></div></details>
+<details class="prep-question" data-question="mcar mar mnar why does the distinction matter" data-tags="missing data statistics">
+<summary><span class="prep-q-no">04</span><span class="prep-q-title">MCAR, MAR, MNAR. Why does the distinction matter?<span class="prep-tags"><span>missing data</span><span>statistics</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p><strong>MCAR</strong> — missingness independent of everything, so dropping rows is unbiased, just wasteful. <strong>MAR</strong> — missingness depends on <em>observed</em> variables, for example income missing more often for younger applicants, so it can be modelled and multiple imputation from the observed features is principled. <strong>MNAR</strong> — missingness depends on the <em>unobserved value itself</em>, such as high earners declining to state income, so no imputation from observed data recovers it without bias and the missingness itself must be modelled as a feature.</p><p>Practically: MCAR is rare, most real data is MAR or MNAR, and the safe default is <strong>impute plus indicator</strong>, so the model can exploit the missingness pattern rather than having it smoothed away.</p><div class="prep-say"><strong>30-second version</strong><p>MCAR lets you drop rows unbiased; MAR can be imputed from observed features; MNAR cannot be recovered and the missingness must itself become a feature. Default to impute-plus-indicator.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Statistical literacy plus practical judgment. The impute-plus-indicator recommendation shows you have done this for real.</p></div><div class="prep-follow"><strong>Likely follow-up:</strong> “What does XGBoost do with missing values?” — it learns a default direction per split, trying all missing left then all right and keeping whichever gives more gain. That is data-driven missingness handling, and one reason boosted trees are strong on messy tabular data.</div></div></details>
+<details class="prep-question" data-question="walk me through your eda on a dataset you have never seen" data-tags="EDA process applied">
+<summary><span class="prep-q-no">05</span><span class="prep-q-title">Walk me through your EDA on a dataset you have never seen.<span class="prep-tags"><span>EDA</span><span>process</span><span>applied</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>A fixed sequence, narrating why each step exists. Shape and dtypes. Target distribution, including class balance, which decides my metrics. Missingness by column <em>and its pattern</em> — columns missing together often reveal a join problem. Cardinality of every categorical, to plan encoding. Univariate distributions, looking for skew, spikes at defaults like 0 or −999, and impossible values. Bivariate relationships against the target. A correlation matrix for multicollinearity and for suspiciously perfect correlations. Duplicates and near-duplicates. Any temporal or group structure that dictates the split strategy.</p><p>Finally, and most importantly, a column-by-column check that each feature is genuinely <strong>available at prediction time</strong>. I would end by writing down the three biggest data risks — that list is what a senior interviewer is listening for.</p><div class="prep-say"><strong>30-second version</strong><p>Shape, target distribution, missingness pattern, cardinality, univariate and bivariate views, correlations, duplicates, temporal or group structure — then an availability-at-prediction-time audit and a written list of the top three data risks.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you have a repeatable process rather than improvising. The availability check and the risk list are the differentiators.</p></div></div></details>
+<details class="prep-question" data-question="should you always remove outliers" data-tags="outliers judgment trap">
+<summary><span class="prep-q-no">06</span><span class="prep-q-title">Should you always remove outliers?<span class="prep-tags"><span>outliers</span><span>judgment</span><span>trap</span></span></span><span aria-hidden="true" class="prep-chevron">＋</span></summary>
+<div class="prep-answer"><div class="prep-answer-label">Strong answer</div><p>No — you should always <em>investigate</em> them, then decide with a reason. Three cases: measurement error, such as a negative age or a 10,000 °C reading, so fix or remove; legitimate extreme values that matter, such as large fraudulent transactions or luxury property prices, so keep, because they may be the signal you are paid to find; and legitimate extremes that destabilize a specific model, so keep the row but reduce its leverage with a log or Yeo–Johnson transform, winsorizing, or a robust loss.</p><p>Note that trees are largely insensitive to feature outliers because splits are rank-based, whereas OLS, K-Means and distance-based methods are highly sensitive. So “do I need to handle this outlier?” partly depends on which model you are about to fit.</p><div class="prep-say"><strong>30-second version</strong><p>Never blanket-remove — investigate, then decide. Errors go; legitimate extremes usually stay, because in fraud they are the signal. And sensitivity depends on the model: trees barely care, OLS and K-Means do.</p></div><div class="prep-say"><strong>What’s being tested</strong><p>Whether you apply recipes or reasoning. “Drop anything beyond three sigma” is the wrong answer.</p></div></div></details>
+</section>
+<div class="page-nav"><a href="03-classification-vs-regression.html"><div class="dir">← Previous</div><div class="ttl">Classification vs Regression</div></a><a class="next" href="05-bias-variance-cross-validation.html"><div class="dir">Next →</div><div class="ttl">Bias–Variance &amp; Cross-Validation</div></a></div>
+</main>
+<div class="toc-rail"><nav class="toc"></nav></div>
+</div>
+</div>
+</div>
+<script src="assets/app.js?v=20260727c"></script>
+<script src="assets/ml-sitenav.js?v=20260727c"></script>
+<script src="assets/enhance.js?v=20260727c"></script>
+<script src="assets/interview-prep.js?v=20260727c"></script>
+</body>
+</html>
