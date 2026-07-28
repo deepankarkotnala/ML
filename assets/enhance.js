@@ -973,7 +973,14 @@
   function init() {
     clearLegacyReadingClasses();
     addDsaWorkspaceNav();
-    addOfficeRibbon();
+    // The Home / Learn / Practice / Interview ribbon is NOT injected in the ML
+    // portal. Its links are resolved against this folder (ml-sitenav.js makes
+    // machine-learning/ the site root so the directory stays deployable on its
+    // own), and machine-learning/ has no modules/, scenario-practice/ or
+    // interview-hub/ — so three of the four tabs pointed at nothing. The
+    // sidebar, the topbar Home button and the mobile "Jump to section" bar
+    // already cover navigation here.
+    // addOfficeRibbon();
     addHomeButton();
     addFocusButton();
     setupTermDialogs();

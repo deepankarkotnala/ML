@@ -39,6 +39,7 @@
 <link href="assets/styles.css?v=20260728b" rel="stylesheet"/>
 <link href="assets/office-theme.css?v=20260728b" rel="stylesheet"/>
 <link href="assets/ml-visuals.css?v=20260728a" rel="stylesheet"/>
+<link href="assets/ml-mobile.css?v=20260728c" rel="stylesheet"/>
 </head>
 <body data-page="ml-16-bagging-random-forest" data-prep-section="ml">
 <div class="app">
@@ -56,7 +57,7 @@
 <div class="main">
 <header class="topbar">
 <button aria-label="Menu" class="icon-btn menu-btn"><svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><path d="M3 12h18M3 6h18M3 18h18"></path></svg></button>
-<div class="crumbs">Machine Learning / Part D / Module 16</div>
+<div class="crumbs">Machine Learning / Part D / <b>Module 16</b></div>
 <button aria-label="Toggle theme" class="icon-btn" data-theme-toggle=""></button>
 </header>
 <div class="content-wrap">
@@ -66,9 +67,142 @@
 <p class="lead">Guaranteed in interviews, and the bagging-versus-boosting question is near-universal. The variance identity below is the single highest-value thing to memorise here.</p>
 <div class="meta-row"><span class="pill purple">Prerequisites · Modules 05, 15</span><span class="pill">Study time · 6 h</span><span class="pill blue">6 interview questions</span><span class="pill purple">Highest priority</span></div>
 <div class="callout key"><div class="c-ico">🎯</div><div class="c-body"><div class="c-title">Your interview goal</div><p>Write the correlated-average variance identity, explain feature subsampling as reducing rho rather than “adding randomness”, derive the 36.8% out-of-bag fraction, and answer the n_estimators overfitting contrast perfectly.</p></div></div>
-<h2 id="what-to-learn">1 · What to learn</h2>
+<h2 id="ground-up">1 · From the ground up</h2>
+<div class="callout plain"><div class="c-ico">🧩</div><div class="c-body"><div class="c-title">In plain words</div><p>One deep decision tree is roughly right on average but wildly unstable — change a few rows and it redraws itself. So build hundreds of trees on slightly different samples of the data and average their answers. The individual mistakes are partly random, so they partly cancel. Random Forest then adds one further trick that is the actual innovation: it <em>forces the trees to disagree with each other</em>, because trees that agree cannot cancel anything.</p></div></div>
+<div class="gu-ladder">
+<div class="gu-step"><h4>Start with the problem, not the formula</h4><p>The previous module ended on a specific complaint: a fully grown tree has <strong>low bias and high variance</strong>. It can represent almost any boundary, so it is not systematically wrong — but resample your data and you get a visibly different tree, because one flipped split near the root redraws everything beneath it.</p><p>High variance with low bias is the good case to be in, because averaging attacks variance and leaves bias alone. Averaging <code>n</code> independent estimates of the same quantity divides the variance by <code>n</code> without shifting the centre. That is the oldest trick in statistics, and it is the whole plan.</p><div class="gu-so"><strong>So what:</strong> this is why bagging is applied to <em>deep, unpruned</em> trees. Bagging a high-bias model is pointless — averaging many similarly-wrong estimates leaves you equally wrong. You want each tree overfitting a little, in a different direction.</div></div>
+<div class="gu-step"><h4>Get different trees from one dataset</h4><p>Averaging needs several trees, and you have only one dataset. So manufacture variety: draw a <strong>bootstrap</strong> sample — <code>n</code> rows sampled <em>with replacement</em> from your <code>n</code> rows. Some rows appear twice or three times, others not at all. Train a tree on that. Repeat. This is <strong>bagging</strong> — bootstrap aggregating.</p><p>A useful fact drops out of the arithmetic: the chance a given row is never picked in <code>n</code> draws is <code>(1 − 1/n)ⁿ</code>, which converges to <code>1/e ≈ 0.368</code>. So each tree sees about <strong>63%</strong> of the distinct rows and misses about <strong>37%</strong>.</p><div class="gu-so"><strong>So what:</strong> those left-out rows are free validation data. Predict each row using only the trees that never saw it and you get the <strong>out-of-bag error</strong> — a held-out estimate without a held-out set and without cross-validation.</div></div>
+<div class="gu-step"><h4>The identity that explains everything else</h4><p>Now be precise about what averaging buys, because "it reduces variance" is only half true. For <code>n</code> estimates each with variance <code>σ²</code> and <em>pairwise correlation</em> <code>ρ</code> between them, the variance of their average is</p><p><code>Var(average) = ρσ² + (1 − ρ)σ² / n</code></p><p>Look at the two terms. The second shrinks to nothing as you add trees. The first does not move at all. So as <code>n → ∞</code> the variance does not go to zero — it flattens onto <strong><code>ρσ²</code></strong>, a floor set purely by how correlated your trees are.</p><div class="gu-so"><strong>So what:</strong> this single formula is the most valuable thing in the module. It says adding trees has <em>diminishing and ultimately zero</em> return, and that the only way to lower the floor is to lower <code>ρ</code>. Everything Random Forest does differently from bagging is an attack on <code>ρ</code>.</div></div>
+<div class="gu-step"><h4>See the floor</h4><p>Below, the same curve for three correlation levels, computed straight from that formula with <code>σ² = 1</code>. Follow any curve rightwards and watch it stop improving. Where it stops is <code>ρ</code>.</p></div>
+</div>
+<div class="mlviz">
+<div class="mlviz-title">More trees stops helping — and where it stops is the correlation</div>
+<div class="mlviz-scroll">
+<svg viewbox="0 0 660 300" role="img" aria-label="Variance of the ensemble average plotted against the number of trees for three correlation levels. All three start at 1.0 with one tree. The uncorrelated curve falls towards zero, the rho equals 0.2 curve flattens at 0.2, and the rho equals 0.6 curve flattens at 0.6.">
+<g class="mv-gridline"><path d="M90 250 H620"></path><path d="M90 212 H620"></path><path d="M90 174 H620"></path><path d="M90 136 H620"></path><path d="M90 98 H620"></path><path d="M90 60 H620"></path></g>
+<path class="mv-axis" d="M90 50 V250 H620"></path>
+<text class="mv-lbl-xs" x="82" y="253" text-anchor="end">0</text>
+<text class="mv-lbl-xs" x="82" y="215" text-anchor="end">0.2</text>
+<text class="mv-lbl-xs" x="82" y="139" text-anchor="end">0.6</text>
+<text class="mv-lbl-xs" x="82" y="63" text-anchor="end">1.0</text>
+<text class="mv-lbl-sm" x="34" y="150" text-anchor="middle" transform="rotate(-90 34 150)">variance of the average</text>
+<g class="mv-lbl-xs" text-anchor="middle">
+  <text x="90" y="268">1</text><text x="192" y="268">2</text><text x="294" y="268">4</text>
+  <text x="396" y="268">8</text><text x="498" y="268">16</text><text x="600" y="268">32</text>
+</g>
+<text class="mv-lbl-sm" x="355" y="288" text-anchor="middle">number of trees in the ensemble</text>
+
+<!-- asymptotes -->
+<path class="mv-str-5 mv-dash mv-soft" stroke-width="1.4" d="M90 136 H620"></path>
+<path class="mv-str-2 mv-dash mv-soft" stroke-width="1.4" d="M90 212 H620"></path>
+
+<!-- rho = 0.6 : a highly correlated forest -->
+<path class="mv-str-5" stroke-width="2.8" fill="none" stroke-linecap="round" d="M90 60 L192 98 L294 117 L396 126.5 L498 131.25 L600 133.6"></path>
+<g class="mv-fill-5"><circle cx="90" cy="60" r="4"></circle><circle cx="192" cy="98" r="4"></circle><circle cx="294" cy="117" r="4"></circle><circle cx="396" cy="126.5" r="4"></circle><circle cx="498" cy="131.25" r="4"></circle><circle cx="600" cy="133.6" r="4"></circle></g>
+<text class="mv-lbl-xs mv-fill-5" x="404" y="118">ρ = 0.6 — trees agree with each other</text>
+<text class="mv-lbl-xs mv-fill-5" x="404" y="152">floor = 0.6 · adding trees is nearly useless</text>
+
+<!-- rho = 0.2 : a decorrelated forest -->
+<path class="mv-str-2" stroke-width="2.8" fill="none" stroke-linecap="round" d="M90 60 L192 136 L294 174 L396 193 L498 202.5 L600 207.25"></path>
+<g class="mv-fill-2"><circle cx="90" cy="60" r="4"></circle><circle cx="192" cy="136" r="4"></circle><circle cx="294" cy="174" r="4"></circle><circle cx="396" cy="193" r="4"></circle><circle cx="498" cy="202.5" r="4"></circle><circle cx="600" cy="207.25" r="4"></circle></g>
+<text class="mv-lbl-xs mv-fill-2" x="404" y="188">ρ = 0.2 — feature subsampling forced them apart</text>
+<text class="mv-lbl-xs mv-fill-2" x="100" y="207">floor = 0.2</text>
+
+<!-- rho = 0 : the unreachable ideal -->
+<path class="mv-str-1" stroke-width="2.8" fill="none" stroke-linecap="round" d="M90 60 L192 155 L294 202.5 L396 226.25 L498 238.1 L600 244.1"></path>
+<g class="mv-fill-1"><circle cx="90" cy="60" r="4"></circle><circle cx="192" cy="155" r="4"></circle><circle cx="294" cy="202.5" r="4"></circle><circle cx="396" cy="226.25" r="4"></circle><circle cx="498" cy="238.1" r="4"></circle><circle cx="600" cy="244.1" r="4"></circle></g>
+<text class="mv-lbl-xs mv-fill-1" x="200" y="248">ρ = 0 — independent trees (never achievable)</text>
+
+<text class="mv-mono-sm" x="436" y="74">Var = ρσ² + (1−ρ)σ²/n</text>
+</svg>
+</div>
+<div class="mv-keys"><span><i class="mv-k1"></i>ρ = 0</span><span><i class="mv-k2"></i>ρ = 0.2</span><span><i class="mv-k5"></i>ρ = 0.6</span><span><i class="mv-kd"></i>the floor ρσ²</span></div>
+<p class="mlviz-cap">All three curves start at the same place, because with one tree there is nothing to average. <b>What differs is where they stop falling.</b> This is why "how many trees?" is the boring hyperparameter — past a few hundred it does almost nothing — while <code>max_features</code>, which sets ρ, is the one that matters.</p>
+</div>
+<div class="gu-ladder">
+<div class="gu-step"><h4>Why bagging alone leaves ρ high</h4><p>Bootstrap sampling changes the rows, but every tree still gets to look at every column. So suppose one feature is genuinely much more predictive than the rest. Then <em>every</em> tree, on almost every bootstrap sample, will find that same feature to be the best first split — and once the roots match, the trees are structurally similar all the way down.</p><p>Similar trees make similar mistakes on the same rows. That is exactly what high <code>ρ</code> means, and the identity above says a high floor follows.</p><div class="gu-so"><strong>So what:</strong> bagged trees are correlated <em>through the strong features</em>, not through the data sampling. This is the observation Random Forest is built on, and stating it is what a good answer sounds like.</div></div>
+<div class="gu-step"><h4>The actual innovation: hide most features at every split</h4><p>Random Forest keeps the bootstrap and adds one rule. At <strong>each split</strong> — not once per tree, at every single node — draw a random subset of <code>max_features</code> columns and choose the best split only among those. Typical defaults are <code>√p</code> for classification and <code>p/3</code> for regression.</p><p>Now the dominant feature is simply unavailable at many nodes, so those nodes are forced to find the second- or third-best structure. Trees end up genuinely different, <code>ρ</code> drops, the floor drops with it.</p><div class="gu-so"><strong>So what:</strong> this is a deliberate, profitable trade. Each individual tree gets slightly <em>worse</em> — you sometimes withheld its best split, which raises its bias a little — but the ensemble gets better, because the variance floor fell further than the bias rose. <b>Accepting a worse component to get a better whole is the idea to say out loud.</b></div></div>
+</div>
+<div class="mlviz">
+<div class="mlviz-title">Bagging correlates through strong features; Random Forest breaks it</div>
+<div class="mlviz-scroll">
+<svg viewbox="0 0 660 250" role="img" aria-label="Left panel: three bagged trees that all split on feature x3 at the root, shown as identical structures with high correlation. Right panel: three Random Forest trees whose roots differ because each node only saw a random subset of features, giving low correlation.">
+<!-- LEFT: bagging -->
+<g class="mv-in" style="--d:.05s">
+  <rect class="mv-box" x="16" y="22" width="308" height="176" rx="14"></rect>
+  <text class="mv-lbl mv-fill-5" x="30" y="44">plain bagging — all columns always available</text>
+  <text class="mv-lbl-xs" x="30" y="59">every tree finds the same best root split</text>
+  <g class="mv-fill-5">
+    <rect x="38" y="76" width="76" height="22" rx="6" opacity=".22"></rect>
+    <rect x="140" y="76" width="76" height="22" rx="6" opacity=".22"></rect>
+    <rect x="242" y="76" width="66" height="22" rx="6" opacity=".22"></rect>
+  </g>
+  <g class="mv-mono-sm" text-anchor="middle">
+    <text x="76" y="91">x₃ ≤ 7</text><text x="178" y="91">x₃ ≤ 7</text><text x="275" y="91">x₃ ≤ 7</text>
+  </g>
+  <g class="mv-str-5" stroke-width="1.4">
+    <path d="M76 98 L54 122"></path><path d="M76 98 L98 122"></path>
+    <path d="M178 98 L156 122"></path><path d="M178 98 L200 122"></path>
+    <path d="M275 98 L253 122"></path><path d="M275 98 L297 122"></path>
+  </g>
+  <g class="mv-fill-5" opacity=".22">
+    <rect x="36" y="122" width="36" height="18" rx="5"></rect><rect x="82" y="122" width="36" height="18" rx="5"></rect>
+    <rect x="138" y="122" width="36" height="18" rx="5"></rect><rect x="184" y="122" width="36" height="18" rx="5"></rect>
+    <rect x="235" y="122" width="36" height="18" rx="5"></rect><rect x="281" y="122" width="30" height="18" rx="5"></rect>
+  </g>
+  <text class="mv-lbl mv-fill-5" x="30" y="168">ρ stays high → the floor stays high</text>
+  <text class="mv-lbl-xs" x="30" y="185">the trees make the same mistakes on the same rows</text>
+</g>
+<!-- RIGHT: random forest -->
+<g class="mv-in" style="--d:.30s">
+  <rect class="mv-box" x="336" y="22" width="308" height="176" rx="14"></rect>
+  <text class="mv-lbl mv-fill-1" x="350" y="44">Random Forest — a random subset per split</text>
+  <text class="mv-lbl-xs" x="350" y="59">x₃ is simply not offered at many nodes</text>
+  <g class="mv-fill-1">
+    <rect x="358" y="76" width="76" height="22" rx="6" opacity=".22"></rect>
+    <rect x="460" y="76" width="76" height="22" rx="6" opacity=".22"></rect>
+    <rect x="562" y="76" width="66" height="22" rx="6" opacity=".22"></rect>
+  </g>
+  <g class="mv-mono-sm" text-anchor="middle">
+    <text x="396" y="91">x₃ ≤ 7</text><text x="498" y="91">x₁ ≤ 2</text><text x="595" y="91">x₇ ≤ 4</text>
+  </g>
+  <g class="mv-str-1" stroke-width="1.4">
+    <path d="M396 98 L374 122"></path><path d="M396 98 L418 122"></path>
+    <path d="M498 98 L470 122"></path><path d="M498 98 L520 122"></path>
+    <path d="M595 98 L567 122"></path><path d="M595 98 L617 122"></path>
+  </g>
+  <g class="mv-fill-1" opacity=".22">
+    <rect x="356" y="122" width="36" height="18" rx="5"></rect><rect x="402" y="122" width="36" height="18" rx="5"></rect>
+    <rect x="452" y="122" width="30" height="18" rx="5"></rect><rect x="504" y="122" width="42" height="18" rx="5"></rect>
+    <rect x="549" y="122" width="42" height="18" rx="5"></rect><rect x="601" y="122" width="30" height="18" rx="5"></rect>
+  </g>
+  <text class="mv-lbl mv-fill-1" x="350" y="168">ρ drops → the floor drops</text>
+  <text class="mv-lbl-xs" x="350" y="185">each tree is slightly worse; the average is better</text>
+</g>
+<text class="mv-lbl-xs" x="16" y="228">Note the subset is redrawn at every node, not once per tree — that is what keeps the branches diverging all the way down.</text>
+</svg>
+</div>
+<p class="mlviz-cap">Only the root labels differ, and that is the entire point: <b>a different first question makes a structurally different tree</b>. Set <code>max_features</code> to all <code>p</code> columns and a Random Forest collapses back into plain bagging — which is the cleanest one-line statement of the difference between them.</p>
+</div>
+<div class="gu-ladder">
+<div class="gu-step"><h4>What can and cannot go wrong</h4><p>Adding more trees cannot overfit. The ensemble prediction is an average converging to a fixed limit, so extra trees buy accuracy that flattens out and then costs only compute — a rare hyperparameter you can set high and stop thinking about.</p><p>Everything else can still go wrong. <code>max_features</code> too low starves each tree of good splits and bias climbs. Deeply noisy data with fully grown trees can still memorise, so <code>min_samples_leaf</code> earns its place. And the forest inherits two limitations from the single tree that no amount of averaging repairs: it <strong>cannot extrapolate</strong> beyond the training range, and impurity-based feature importances remain <strong>biased toward high-cardinality features</strong> — use permutation importance instead.</p><div class="gu-so"><strong>So what:</strong> "more trees never overfits, but a forest is not immune to overfitting" is the precise version. The two inherited limitations are the follow-up that catches people who learned forests as a black box.</div></div>
+</div>
+<div class="gu-analogy"><b>Analogy</b> — you poll a hundred forecasters instead of one, because individual errors partly cancel. But if all hundred read the same morning briefing, their consensus is barely better than one of them: they are wrong <em>together</em>, and no amount of extra forecasters helps. <b>That shared briefing is ρ.</b> Random Forest is the rule that each forecaster may only read a random handful of the available sources — every individual becomes slightly less well-informed, and the consensus gets sharper, because now their errors are finally independent enough to cancel.</div>
+<div class="gu-jargon">
+<div><strong>bootstrap</strong><span>a sample of n rows drawn with replacement from n rows. Duplicates in, roughly 37% left out.</span></div>
+<div><strong>bagging</strong><span>bootstrap aggregating — train one model per bootstrap sample and average (or vote).</span></div>
+<div><strong>out-of-bag (OOB)</strong><span>the ~37% a given tree never saw. Scoring each row with only the trees that missed it gives a free validation estimate.</span></div>
+<div><strong>ρ (rho)</strong><span>average pairwise correlation between the trees' predictions. Sets the variance floor at ρσ².</span></div>
+<div><strong>variance floor</strong><span>ρσ² — the variance you are left with after infinitely many trees. Lowering it requires lowering ρ.</span></div>
+<div><strong>max_features / mtry</strong><span>how many randomly chosen columns are considered at each split. The knob that controls ρ. √p and p/3 are the usual defaults.</span></div>
+<div><strong>decorrelation</strong><span>the deliberate act of making the trees differ. Random Forest's actual contribution over bagging.</span></div>
+<div><strong>Extra Trees</strong><span>goes further — thresholds are chosen at random too. Lower ρ and lower variance still, at the cost of more bias per tree.</span></div>
+<div><strong>permutation importance</strong><span>shuffle one column and measure the damage. Slower than impurity importance but free of its cardinality bias.</span></div>
+<div><strong>parallel ensemble</strong><span>the trees are independent, so they train concurrently. The structural opposite of boosting, where each tree needs the previous one.</span></div>
+</div>
+<h2 id="what-to-learn">2 · What to learn</h2>
 <ol><li><strong>Bootstrap sampling</strong>: drawing <code>n</code> items with replacement, and the ~63.2% inclusion result.</li><li><strong>Bagging</strong> (bootstrap aggregating): train <code>B</code> models on <code>B</code> bootstrap samples, then average or vote.</li><li>Why bagging reduces variance but not bias — with the mathematical argument.</li><li><strong>Random Forest = bagging + random feature subsampling at each split.</strong> Both sources of randomness matter.</li><li>Why feature subsampling is the crucial addition: <strong>decorrelation</strong>.</li><li><code>max_features</code>: <code>sqrt(p)</code> for classification, <code>p/3</code> for regression, and why.</li><li><strong>Out-of-bag (OOB) error</strong> as free validation, and its relationship to cross-validation.</li><li>Key hyperparameters: <code>n_estimators</code>, <code>max_features</code>, <code>max_depth</code>, <code>min_samples_leaf</code>, <code>bootstrap</code>.</li><li>Why more trees do not overfit a Random Forest.</li><li><strong>Extra Trees</strong> (Extremely Randomized Trees) and how they differ.</li><li>Feature importance: impurity-based (MDI) versus permutation-based, and MDI’s biases.</li><li>Parallelizability, and the contrast with boosting’s sequential nature.</li><li>Strengths and limits versus gradient boosting.</li></ol>
-<h2 id="intuitions">2 · Core intuitions</h2>
+<h2 id="intuitions">3 · Core intuitions</h2>
 <h3>Averaging independent estimates reduces variance</h3>
 <p>If you have <code>B</code> independent estimators each with variance <code>σ²</code>, the variance of their mean is <code>σ²/B</code>. That is the entire idea behind bagging: fit many high-variance low-bias models and average them. Bias is essentially unchanged, since each model is approximately unbiased and the average of unbiased estimators is unbiased — so bagging buys variance reduction almost for free.</p>
 <h3>But bagged trees are not independent, and this is the key insight</h3>
@@ -92,7 +226,7 @@
 <p>Each tree is fitted independently, and prediction is an average. Adding trees reduces the <code>(1-ρ)σ²/B</code> term monotonically and then plateaus; it does not push the ensemble toward the training data. So <code>n_estimators</code> is a compute-and-latency decision, not a regularization decision — set it as high as your budget allows and stop when the OOB curve flattens. <strong>This is diametrically opposite to boosting</strong>, where <code>n_estimators</code> is the primary overfitting risk. That contrast is the single most-asked ensemble question.</p>
 <h3>Extra Trees push randomization further</h3>
 <p>Instead of searching for the best threshold on each candidate feature, Extra Trees pick thresholds <strong>at random</strong> and take the best among those random candidates; they also typically use the whole dataset rather than bootstrap samples. This further reduces correlation and is much faster (no threshold search), at the cost of slightly higher bias per tree. On noisy data they sometimes beat Random Forests, and they are worth naming as a cheap thing to try.</p>
-<h2 id="formulas">3 · Whiteboard formulas</h2>
+<h2 id="formulas">4 · Whiteboard formulas</h2>
 <div class="code-block" data-reveal="">
 <div class="code-head"><span class="lang"><span class="dots"><i></i><i></i><i></i></span>bagging_rf.txt</span><button class="copy-btn">Copy</button></div>
 <pre><code>Bootstrap            draw n samples from n WITH replacement
@@ -113,12 +247,12 @@ Random Forest = bagging + at each split consider only max_features random featur
 Bias:      roughly unchanged by bagging (slightly up for RF due to restricted splits)
 Variance:  reduced substantially</code></pre>
 </div>
-<h2 id="bagging-vs-boosting">4 · Bagging vs boosting — the table to memorize</h2>
+<h2 id="bagging-vs-boosting">5 · Bagging vs boosting — the table to memorize</h2>
 <div class="table-wrap"><table><thead><tr><th></th><th>Bagging / Random Forest</th><th>Boosting</th></tr></thead><tbody><tr><td>Training</td><td><strong>Parallel</strong>, independent</td><td><strong>Sequential</strong>, each depends on the last</td></tr><tr><td>Samples</td><td>Bootstrap resamples</td><td>Full data, reweighted or gradient-targeted</td></tr><tr><td>Base learner</td><td><strong>Low bias, high variance</strong> (deep trees)</td><td><strong>High bias, low variance</strong> (shallow trees)</td></tr><tr><td>Primarily reduces</td><td><strong>Variance</strong></td><td><strong>Bias</strong></td></tr><tr><td>More estimators →</td><td>Plateaus; no real overfitting</td><td><strong>Can overfit</strong>; needs early stopping</td></tr><tr><td>Overfit risk</td><td>Low</td><td>Moderate to high</td></tr><tr><td>Parallelizable</td><td>Yes, trivially</td><td>No across trees</td></tr><tr><td>Noise / outlier sensitivity</td><td>Robust</td><td>More sensitive (keeps chasing hard points)</td></tr><tr><td>Hyperparameter sensitivity</td><td>Low — good defaults</td><td>High — needs tuning</td></tr><tr><td>Typical tabular accuracy</td><td>Strong</td><td><strong>Usually best</strong></td></tr><tr><td>Free validation</td><td>OOB error</td><td>No (use a validation set for early stopping)</td></tr></tbody></table></div>
-<h2 id="drill">5 · Hands-on drill</h2>
+<h2 id="drill">6 · Hands-on drill</h2>
 <ol><li>Verify the 63.2% result empirically: bootstrap-sample repeatedly and count unique rows.</li><li>Implement bagging over your Module 15 tree from scratch. Plot test error against <code>B</code> and watch it plateau — <strong>that plateau is the <code>ρσ²</code> floor</strong>.</li><li>Add random feature subsampling to get a Random Forest. Plot test error against <code>max_features</code> from 1 to <code>p</code> and find the interior optimum. <strong>This plot is the empirical proof of the decorrelation argument</strong> and is worth describing verbally in interviews.</li><li>Compute the average pairwise correlation of tree predictions for bagging versus RF and confirm RF’s is lower.</li><li>Compare OOB error against 5-fold CV error on the same data; note how close they are and how much less compute OOB cost.</li><li>Compare <code>feature_importances_</code> with <code>permutation_importance</code> on a dataset containing a high-cardinality ID column. The ID will rank absurdly high on MDI and near zero on permutation importance — <strong>that contrast is the answer to the feature-importance question</strong>.</li></ol>
 <div class="callout warn"><div class="c-ico">⚠️</div><div class="c-body"><div class="c-title">Gotchas that fail candidates</div><ul><li><strong>Saying Random Forest is just bagging.</strong> The feature subsampling is the point.</li><li><strong>Not being able to explain <em>why</em> feature subsampling helps.</strong> “Decorrelation” plus the variance identity is the answer.</li><li><strong>Getting the <code>n_estimators</code> overfitting comparison wrong.</strong></li><li><strong>Trusting <code>feature_importances_</code> uncritically.</strong> Know the high-cardinality bias.</li><li><strong>Not knowing the 63.2% / 36.8% bootstrap result.</strong></li><li><strong>Using OOB error on time-series data.</strong> It assumes i.i.d. rows.</li><li><strong>Saying RF handles missing values natively in <code>sklearn</code>.</strong> It does not — you must impute, unlike XGBoost and LightGBM.</li></ul></div></div>
-<h2 id="questions">6 · Interview questions</h2>
+<h2 id="questions">7 · Interview questions</h2>
 <div class="prep-toolbar" data-sticky-prep=""><label class="prep-filter"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><input data-question-filter="" placeholder="Filter these questions…"/></label><button class="btn ghost" data-expand-answers="" type="button">Open all</button><span class="prep-count" data-question-count="">6 questions</span></div>
 <section aria-label="Bagging and Random Forest interview questions" class="prep-question-list">
 <details class="prep-question" data-question="bagging versus boosting explain the difference completely" data-tags="ensembles bagging boosting">
@@ -150,5 +284,6 @@ Variance:  reduced substantially</code></pre>
 <script src="assets/ml-sitenav.js?v=20260727c"></script>
 <script src="assets/enhance.js?v=20260728b"></script>
 <script src="assets/interview-prep.js?v=20260727c"></script>
+<script src="assets/ml-mobile.js?v=20260728c"></script>
 </body>
 </html>

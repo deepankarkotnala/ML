@@ -39,6 +39,7 @@
 <link href="assets/styles.css?v=20260728b" rel="stylesheet"/>
 <link href="assets/office-theme.css?v=20260728b" rel="stylesheet"/>
 <link href="assets/ml-visuals.css?v=20260728a" rel="stylesheet"/>
+<link href="assets/ml-mobile.css?v=20260728c" rel="stylesheet"/>
 </head>
 <body data-page="ml-15-decision-trees" data-prep-section="ml">
 <div class="app">
@@ -56,7 +57,7 @@
 <div class="main">
 <header class="topbar">
 <button aria-label="Menu" class="icon-btn menu-btn"><svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><path d="M3 12h18M3 6h18M3 18h18"></path></svg></button>
-<div class="crumbs">Machine Learning / Part D / Module 15</div>
+<div class="crumbs">Machine Learning / Part D / <b>Module 15</b></div>
 <button aria-label="Toggle theme" class="icon-btn" data-theme-toggle=""></button>
 </header>
 <div class="content-wrap">
@@ -66,9 +67,182 @@
 <p class="lead">The foundation of everything in Modules 16 to 18. A tree is a piecewise-constant function on an axis-aligned partition — that one sentence explains most of its properties.</p>
 <div class="meta-row"><span class="pill purple">Prerequisites · Modules 02, 05</span><span class="pill">Study time · 8 h</span><span class="pill blue">6 interview questions</span><span class="pill">Foundation</span></div>
 <div class="callout key"><div class="c-ico">🎯</div><div class="c-body"><div class="c-title">Your interview goal</div><p>Compute a Gini split by hand under pressure, explain why trees need no scaling in terms of the general principle, and know which tree weaknesses ensembling fixes and which persist into XGBoost.</p></div></div>
-<h2 id="what-to-learn">1 · What to learn</h2>
+<h2 id="ground-up">1 · From the ground up</h2>
+<div class="callout plain"><div class="c-ico">🧩</div><div class="c-body"><div class="c-title">In plain words</div><p>A decision tree is a game of twenty questions. Ask one yes/no question about one feature — "is age above 30?" — and your data falls into two piles. Ask another question of each pile. Keep going until each pile is almost entirely one class, then stop and call that pile's majority your prediction. Everything else on this page is either <em>how the tree picks which question to ask</em>, or <em>when to make it stop asking</em>.</p></div></div>
+<div class="gu-ladder">
+<div class="gu-step"><h4>Start with the problem, not the formula</h4><p>Linear and logistic regression both do the same thing: multiply every feature by a weight and add the results into one number. That is a strong assumption — it says the effect of age is the same whether income is high or low, and it says a one-unit change in age matters equally at 20 and at 60.</p><p>Now try a completely different tactic. Do not combine features at all. Just pick one feature, pick a threshold, and split the data in two. Then treat each half as a fresh, smaller problem and do it again.</p><div class="gu-so"><strong>So what:</strong> because the model never adds or multiplies features together, <strong>feature scaling is irrelevant</strong> — comparing age to 30 gives the same split whether age is in years or in months. That is the honest reason trees need no standardisation, and it is a favourite follow-up.</div></div>
+<div class="gu-step"><h4>Define what makes one question better than another</h4><p>A good question produces <em>purer</em> piles — piles that lean heavily to one class. So you need a number for "how mixed is this pile". The usual one is <strong>Gini impurity</strong>: <code>G = 1 − Σ pₖ²</code>, where <code>pₖ</code> is the fraction of the pile belonging to class <code>k</code>.</p><p>Read it as a probability. <code>Σ pₖ²</code> is the chance that two items drawn from the pile match, so <code>G</code> is the chance they <em>differ</em>. A pure pile scores 0. A 50/50 two-class pile scores 0.5, the worst possible.</p><div class="gu-so"><strong>So what:</strong> a split's worth is the impurity you <em>removed</em>: the parent's impurity minus the size-weighted average of the two children's. Weighting by size matters — carving off three clean rows out of a thousand barely helps, however pure those three are.</div></div>
+<div class="gu-step"><h4>Then just try everything</h4><p>There is no clever formula for the best question. The tree loops over every feature, and for each feature over every threshold that separates two adjacent observed values, computes the impurity drop, and keeps the winner. That is the entire training algorithm for one node.</p><div class="gu-so"><strong>So what:</strong> it is <strong>greedy</strong> — best split now, with no lookahead. A pair of splits that would be brilliant together but mediocre alone will be missed, which is exactly why the globally optimal tree is not what you get, and why ensembles help so much later.</div></div>
+<div class="gu-step"><h4>Watch it score three candidate questions</h4><p>Below, the same twelve rows with three candidate splits. The arithmetic is done for you: parent impurity is <code>0.500</code>, and each split is scored by what it leaves behind. One split is perfect, one barely helps, and one is completely worthless despite looking like a reasonable line to draw.</p></div>
+</div>
+<div class="mlviz">
+<div class="mlviz-title">A split is scored by how much impurity it removes</div>
+<div class="mlviz-scroll">
+<svg viewbox="0 0 660 322" role="img" aria-label="Twelve points in two classes with three candidate split lines shown in turn, each labelled with the resulting Gini impurity and the information gain. The vertical split at 4.5 separates the classes perfectly for a gain of 0.5; a split at 1.5 gains only 0.1; a horizontal split gains nothing.">
+<g class="mv-gridline"><path d="M70 70 H610"></path><path d="M70 116 H610"></path><path d="M70 162 H610"></path><path d="M70 208 H610"></path><path d="M70 254 H610"></path></g>
+<path class="mv-axis" d="M70 40 V270 H610"></path>
+<text class="mv-lbl-sm" x="340" y="292" text-anchor="middle">x₁ →</text>
+<text class="mv-lbl-sm" x="30" y="155" text-anchor="middle" transform="rotate(-90 30 155)">x₂ →</text>
+<text class="mv-lbl-xs" x="76" y="288">parent pile: 6 + 6 → Gini 0.500</text>
+
+<!-- candidate A: the winner (also the frame kept under reduced motion) -->
+<g class="mv-cyc3" style="--i:0">
+  <path class="mv-str-1" stroke-width="3" stroke-linecap="round" d="M313 44 V266"></path>
+  <text class="mv-mono mv-fill-1" x="322" y="58">x₁ ≤ 4.5</text>
+  <text class="mv-lbl-xs" x="322" y="72">left: 6+0 → G 0.000</text>
+  <text class="mv-lbl-xs" x="322" y="85">right: 0+6 → G 0.000</text>
+  <rect class="mv-box-1" x="76" y="46" width="196" height="40" rx="9"></rect>
+  <text class="mv-lbl mv-fill-1" x="88" y="63">gain = 0.500</text>
+  <text class="mv-lbl-xs" x="88" y="78">perfect — both piles are pure</text>
+</g>
+<!-- candidate B: barely helps -->
+<g class="mv-cyc3" style="--i:1">
+  <path class="mv-str-3" stroke-width="3" stroke-linecap="round" d="M151 44 V266"></path>
+  <text class="mv-mono mv-fill-3" x="160" y="58">x₁ ≤ 1.5</text>
+  <text class="mv-lbl-xs" x="160" y="72">left: 2+0 → G 0.000</text>
+  <text class="mv-lbl-xs" x="160" y="85">right: 4+6 → G 0.480</text>
+  <rect class="mv-box-3" x="330" y="46" width="212" height="40" rx="9"></rect>
+  <text class="mv-lbl mv-fill-3" x="342" y="63">gain = 0.100</text>
+  <text class="mv-lbl-xs" x="342" y="78">a pure sliver, but it carries only 2 of 12 rows</text>
+</g>
+<!-- candidate C: worthless -->
+<g class="mv-cyc3" style="--i:2">
+  <path class="mv-str-5" stroke-width="3" stroke-linecap="round" d="M74 161 H606"></path>
+  <text class="mv-mono mv-fill-5" x="330" y="150">x₂ ≤ 4.5</text>
+  <rect class="mv-box-5" x="76" y="46" width="248" height="53" rx="9"></rect>
+  <text class="mv-lbl mv-fill-5" x="88" y="63">gain = 0.000</text>
+  <text class="mv-lbl-xs" x="88" y="78">below: 3+3 → G 0.500</text>
+  <text class="mv-lbl-xs" x="88" y="91">above: 3+3 → G 0.500 · nothing learned</text>
+</g>
+
+<!-- class A -->
+<g class="mv-fill-1">
+  <circle cx="124" cy="216" r="5.5" class="mv-pop" style="--d:.05s"></circle>
+  <circle cx="178" cy="172" r="5.5" class="mv-pop" style="--d:.10s"></circle>
+  <circle cx="124" cy="128" r="5.5" class="mv-pop" style="--d:.15s"></circle>
+  <circle cx="232" cy="194" r="5.5" class="mv-pop" style="--d:.20s"></circle>
+  <circle cx="178" cy="106" r="5.5" class="mv-pop" style="--d:.25s"></circle>
+  <circle cx="232" cy="150" r="5.5" class="mv-pop" style="--d:.30s"></circle>
+</g>
+<!-- class B -->
+<g class="mv-fill-2">
+  <rect x="443" y="189" width="10" height="10" rx="2" class="mv-pop" style="--d:.35s"></rect>
+  <rect x="497" y="145" width="10" height="10" rx="2" class="mv-pop" style="--d:.40s"></rect>
+  <rect x="443" y="101" width="10" height="10" rx="2" class="mv-pop" style="--d:.45s"></rect>
+  <rect x="551" y="167" width="10" height="10" rx="2" class="mv-pop" style="--d:.50s"></rect>
+  <rect x="497" y="211" width="10" height="10" rx="2" class="mv-pop" style="--d:.55s"></rect>
+  <rect x="389" y="123" width="10" height="10" rx="2" class="mv-pop" style="--d:.60s"></rect>
+</g>
+</svg>
+</div>
+<div class="mv-keys"><span><i class="mv-k1"></i>class A</span><span><i class="mv-k2"></i>class B</span><span><i class="mv-k3"></i>weak split</span><span><i class="mv-k5"></i>useless split</span></div>
+<p class="mlviz-cap">The third candidate is the instructive one. It is a perfectly sensible-looking line, and it divides the data into two equal halves — but each half is still 50/50, so <b>the tree has learned nothing at all</b>. Impurity gain, not visual tidiness, is the only thing the algorithm can see.</p>
+</div>
+<div class="gu-ladder">
+<div class="gu-step"><h4>Now recurse, and read off the geometry</h4><p>Take the winning split, then run the identical procedure on each of the two piles — new best feature, new best threshold, chosen independently on each side. Stop when a pile is pure, too small to split, or you have hit a depth limit.</p><p>Because every question is "is one feature above a threshold?", every cut is a straight line perpendicular to an axis. Nesting those cuts carves the feature space into <strong>axis-aligned rectangles</strong>, one per leaf, and inside a rectangle the prediction is a single constant.</p><div class="gu-so"><strong>So what:</strong> two consequences worth stating. A tree can capture interactions for free — "high income <em>and</em> young" is just a nested split, no term to specify. But a genuinely diagonal boundary has to be approximated by a staircase of little rectangles, which is why a tree can need surprising depth for a relationship a straight line would nail.</div></div>
+</div>
+<div class="mlviz">
+<div class="mlviz-title">Nested questions carve the space into rectangles</div>
+<div class="mlviz-scroll">
+<svg viewbox="0 0 660 300" role="img" aria-label="On the left, a feature space cut first by a vertical line and then by a horizontal line on the right-hand side only, producing three rectangular regions. On the right, the matching decision tree with a root node, one leaf, one internal node and two further leaves.">
+<!-- LEFT: the partition -->
+<g>
+  <text class="mv-lbl" x="46" y="34">the feature space</text>
+  <text class="mv-lbl-xs" x="46" y="49">three leaves = three rectangles</text>
+  <!-- regions -->
+  <rect class="mv-fill-1 mv-in" opacity=".15" x="48" y="68" width="122" height="184" style="--d:.05s"></rect>
+  <rect class="mv-fill-2 mv-in" opacity=".15" x="170" y="68" width="152" height="92" style="--d:.45s"></rect>
+  <rect class="mv-fill-1 mv-in" opacity=".15" x="170" y="160" width="152" height="92" style="--d:.45s"></rect>
+  <rect class="mv-box" x="48" y="68" width="274" height="184" fill="none"></rect>
+  <!-- cut 1 -->
+  <g class="mv-in" style="--d:.20s">
+    <path class="mv-str-1" stroke-width="3" stroke-linecap="round" d="M170 68 V252"></path>
+    <circle class="mv-fill-1" cx="170" cy="60" r="9"></circle>
+    <text class="mv-lbl-xs" x="170" y="63.5" text-anchor="middle" fill="#fff">1</text>
+  </g>
+  <!-- cut 2: only inside the right region -->
+  <g class="mv-in" style="--d:.60s">
+    <path class="mv-str-2" stroke-width="3" stroke-linecap="round" d="M170 160 H322"></path>
+    <circle class="mv-fill-2" cx="332" cy="160" r="9"></circle>
+    <text class="mv-lbl-xs" x="332" y="163.5" text-anchor="middle" fill="#fff">2</text>
+  </g>
+  <!-- points -->
+  <g class="mv-fill-1"><circle cx="75" cy="110" r="4.5"></circle><circle cx="100" cy="150" r="4.5"></circle><circle cx="70" cy="200" r="4.5"></circle><circle cx="120" cy="230" r="4.5"></circle><circle cx="95" cy="90" r="4.5"></circle><circle cx="140" cy="180" r="4.5"></circle></g>
+  <g class="mv-fill-2"><rect x="196" y="96" width="9" height="9" rx="2"></rect><rect x="246" y="126" width="9" height="9" rx="2"></rect><rect x="286" y="91" width="9" height="9" rx="2"></rect><rect x="226" y="141" width="9" height="9" rx="2"></rect><rect x="296" y="131" width="9" height="9" rx="2"></rect></g>
+  <g class="mv-fill-1"><circle cx="210" cy="220" r="4.5"></circle><circle cx="260" cy="240" r="4.5"></circle><circle cx="295" cy="200" r="4.5"></circle><circle cx="240" cy="190" r="4.5"></circle></g>
+  <text class="mv-lbl-xs mv-fill-1" x="58" y="270">predict A</text>
+  <text class="mv-lbl-xs mv-fill-2" x="196" y="86">predict B</text>
+  <text class="mv-lbl-xs mv-fill-1" x="196" y="270">predict A</text>
+</g>
+<!-- RIGHT: the tree -->
+<g>
+  <text class="mv-lbl" x="356" y="34">the same model, drawn as a tree</text>
+  <text class="mv-lbl-xs" x="356" y="49">each internal node is one cut</text>
+  <!-- edges -->
+  <g class="mv-str-1 mv-in" stroke-width="1.6" style="--d:.30s">
+    <path d="M495 108 L400 146"></path>
+    <path d="M495 108 L568 146"></path>
+  </g>
+  <g class="mv-str-2 mv-in" stroke-width="1.6" style="--d:.70s">
+    <path d="M571 174 L522 212"></path>
+    <path d="M571 174 L614 212"></path>
+  </g>
+  <!-- root -->
+  <g class="mv-in" style="--d:.20s">
+    <rect class="mv-box-1" x="440" y="80" width="110" height="28" rx="8"></rect>
+    <text class="mv-mono-sm" x="495" y="98" text-anchor="middle">x₁ ≤ 4.5 ?</text>
+    <circle class="mv-fill-1" cx="434" cy="94" r="9"></circle>
+    <text class="mv-lbl-xs" x="434" y="97.5" text-anchor="middle" fill="#fff">1</text>
+  </g>
+  <!-- left leaf -->
+  <g class="mv-in" style="--d:.35s">
+    <rect class="mv-box-1" x="356" y="146" width="86" height="28" rx="8"></rect>
+    <text class="mv-mono-sm" x="399" y="164" text-anchor="middle">leaf → A</text>
+  </g>
+  <!-- right internal -->
+  <g class="mv-in" style="--d:.60s">
+    <rect class="mv-box-2" x="506" y="146" width="130" height="28" rx="8"></rect>
+    <text class="mv-mono-sm" x="571" y="164" text-anchor="middle">x₂ ≤ 4.5 ?</text>
+    <circle class="mv-fill-2" cx="646" cy="160" r="9"></circle>
+    <text class="mv-lbl-xs" x="646" y="163.5" text-anchor="middle" fill="#fff">2</text>
+  </g>
+  <!-- grandchildren -->
+  <g class="mv-in" style="--d:.80s">
+    <rect class="mv-box-2" x="478" y="212" width="86" height="28" rx="8"></rect>
+    <text class="mv-mono-sm" x="521" y="230" text-anchor="middle">leaf → B</text>
+  </g>
+  <g class="mv-in" style="--d:.90s">
+    <rect class="mv-box-1" x="576" y="212" width="86" height="28" rx="8"></rect>
+    <text class="mv-mono-sm" x="619" y="230" text-anchor="middle">leaf → A</text>
+  </g>
+  <text class="mv-lbl-xs" x="356" y="270">prediction = walk down, answer two questions, read the leaf</text>
+</g>
+</svg>
+</div>
+<p class="mlviz-cap">Notice that cut ② exists only on the right-hand side. <b>Each branch chooses its own next question independently</b> — that is what "recursive partitioning" means, and it is why a tree can be deep in one region of the data and shallow in another.</p>
+</div>
+<div class="gu-ladder">
+<div class="gu-step"><h4>Left alone, it will memorise the training set</h4><p>Nothing in the procedure says stop. Keep splitting and eventually every leaf holds a single row, every leaf is perfectly pure, and training accuracy is 100%. You have not learned the pattern; you have stored the data in a very elaborate lookup table.</p><p>So you must constrain it, and there are two moments at which you can. <strong>Pre-pruning</strong> stops growth early with <code>max_depth</code>, <code>min_samples_leaf</code> or <code>min_samples_split</code> — cheap, but it is a guess made before you know what lies below. <strong>Post-pruning</strong> grows the tree out and then removes branches that do not pay for themselves, scoring each subtree with <code>R(T) + α·|leaves(T)|</code> and tuning <code>α</code> by cross-validation.</p><div class="gu-so"><strong>So what:</strong> post-pruning is the better answer and the less common one. Pre-pruning can stop just above a split that would have been excellent, because the split above it looked useless in isolation — the same greedy blind spot from earlier, appearing again.</div></div>
+<div class="gu-step"><h4>The weaknesses that actually matter</h4><p>A single tree is <strong>high variance</strong>: change a handful of rows and the root split can flip, redrawing everything below it. It cannot extrapolate — beyond the range of the training data a leaf's constant is all you get, so a tree will never predict a rising trend past what it has seen. And impurity-based feature importance is <em>biased toward high-cardinality features</em>, because a feature with many distinct values gets many more thresholds to try.</p><div class="gu-so"><strong>So what:</strong> the variance problem is fixable by averaging many trees, which is the next two modules. The extrapolation limit and the importance bias are <em>not</em> fixed by ensembling — a random forest inherits both. Saying so is what separates a memorised answer from an understood one.</div></div>
+</div>
+<div class="gu-analogy"><b>Analogy</b> — a hospital triage flowchart. Each question is deliberately crude and about one thing only ("is the temperature above 38?"), and no nurse multiplies temperature by blood pressure. The power is in the <em>nesting</em>: the second question you get asked depends entirely on how you answered the first, so two patients can be routed through completely different questions. <b>And this is exactly why an over-grown tree is dangerous</b> — a flowchart with one box per patient ever seen is a filing cabinet, not a diagnostic procedure.</div>
+<div class="gu-jargon">
+<div><strong>node</strong><span>one question in the tree. The <em>root</em> is the first; <em>internal</em> nodes are the rest; <em>leaves</em> ask nothing and just predict.</span></div>
+<div><strong>split</strong><span>a feature plus a threshold, dividing one pile into two.</span></div>
+<div><strong>Gini impurity</strong><span>the chance two items drawn from a pile are of different classes. 0 = pure, 0.5 = worst for two classes.</span></div>
+<div><strong>entropy</strong><span>a different mixedness measure, <code>−Σ pₖ log pₖ</code>. Ranks splits almost identically to Gini; Gini avoids the logarithm so it is slightly cheaper.</span></div>
+<div><strong>information gain</strong><span>parent impurity minus the size-weighted impurity of the children. What a split is scored on.</span></div>
+<div><strong>greedy</strong><span>picks the best split available right now, with no lookahead. Fast, and not globally optimal.</span></div>
+<div><strong>recursive partitioning</strong><span>the formal name for the whole procedure: split, then repeat independently on each side.</span></div>
+<div><strong>pre-pruning</strong><span>constraining growth as you build — max_depth, min_samples_leaf.</span></div>
+<div><strong>post-pruning</strong><span>growing fully, then cutting back branches that do not justify their complexity.</span></div>
+<div><strong>ccp_alpha</strong><span>the price charged per leaf in cost-complexity pruning. Larger alpha = smaller tree.</span></div>
+<div><strong>axis-aligned</strong><span>every boundary is perpendicular to one feature axis, so regions are rectangles and diagonals become staircases.</span></div>
+<div><strong>CART</strong><span>Classification And Regression Trees — the binary-split algorithm scikit-learn implements. For regression it minimises squared error instead of Gini.</span></div>
+</div>
+<h2 id="what-to-learn">2 · What to learn</h2>
 <ol><li>The structure: root, internal nodes, branches, leaves; how a prediction is made by traversal.</li><li>Greedy recursive binary splitting, and why it is greedy — finding the globally optimal tree is NP-hard.</li><li><strong>Impurity measures for classification: Gini and entropy.</strong> Definitions, ranges, and their practical near-equivalence.</li><li><strong>Information gain</strong> and gain ratio; why plain information gain favours high-cardinality features.</li><li>Splitting criteria for regression: variance reduction / MSE, and MAE.</li><li>The exact split-finding algorithm: for each feature, sort candidate thresholds and evaluate the weighted impurity of the children.</li><li>Stopping criteria: <code>max_depth</code>, <code>min_samples_split</code>, <code>min_samples_leaf</code>, <code>max_leaf_nodes</code>, <code>min_impurity_decrease</code>.</li><li><strong>Pruning</strong>: pre- versus post-pruning; cost-complexity (weakest-link) pruning and <code>ccp_alpha</code>.</li><li>Handling categorical features, and the combinatorial explosion of subset splits.</li><li>Handling missing values: surrogate splits, and the learned-default-direction approach.</li><li>Why trees need <strong>no feature scaling</strong>.</li><li>Why single trees are <strong>high-variance</strong> — and why that motivates Modules 16 to 18.</li><li><strong>Axis-aligned splits</strong> and the resulting inability to represent a diagonal boundary compactly.</li><li><strong>Failure to extrapolate</strong> — trees predict a constant outside the training range.</li><li>Feature importance from trees, and its bias toward high-cardinality and continuous features.</li></ol>
-<h2 id="intuitions">2 · Core intuitions</h2>
+<h2 id="intuitions">3 · Core intuitions</h2>
 <h3>A tree partitions the feature space into boxes</h3>
 <p>Each split cuts one region into two along a single feature; the leaves are axis-aligned boxes, and the prediction is constant within each box — the majority class or the mean target. So a decision tree is a <strong>piecewise-constant function on an axis-aligned partition</strong>. That single sentence explains most of its properties: no scaling needed, no extrapolation, jagged boundaries, and easy interaction capture.</p>
 <h3>Splitting is greedy and locally optimal</h3>
@@ -84,7 +258,7 @@
 <p>Change a few training rows and the root split can change, which changes every subsequent split, which restructures the whole tree. Two trees fitted on bootstrap samples of the same data can look entirely different while achieving similar accuracy. That instability is precisely what bagging exploits — averaging many high-variance, low-bias models reduces variance without adding much bias. So <strong>Module 15’s weakness is Module 16’s opportunity</strong>, and stating that link is a strong transition in an interview.</p>
 <h3>Trees cannot extrapolate</h3>
 <p>A leaf’s prediction is a constant computed from its training samples, so feeding in a value beyond the training range simply lands you in the outermost leaf and returns its constant. Train a regression tree on houses of 50–200 m² and predict for 500 m², and you get the same answer as for 200 m². Linear regression would extrapolate the trend — perhaps wrongly, but at least responsively. This is a genuine reason to prefer a linear model for a trending target, and why boosted trees struggle with time-series trends unless you detrend or add explicit trend features.</p>
-<h2 id="formulas">3 · Whiteboard formulas</h2>
+<h2 id="formulas">4 · Whiteboard formulas</h2>
 <div class="code-block" data-reveal="">
 <div class="code-head"><span class="lang"><span class="dots"><i></i><i></i><i></i></span>decision_trees.txt</span><button class="copy-btn">Copy</button></div>
 <pre><code>Gini impurity        G = 1 - SUM_k p_k²          binary: max 0.5 at p=0.5
@@ -109,7 +283,7 @@ Cost-complexity pruning:
 
 Split-finding cost   O(n*d*log n) per node with pre-sorting</code></pre>
 </div>
-<h2 id="worked-gini">4 · A worked Gini split — practise until mechanical</h2>
+<h2 id="worked-gini">5 · A worked Gini split — practise until mechanical</h2>
 <p>Parent node: 100 samples, 50 positive / 50 negative. Candidate split → Left: 60 samples (45 pos / 15 neg); Right: 40 samples (5 pos / 35 neg).</p>
 <div class="code-block" data-reveal="">
 <div class="code-head"><span class="lang"><span class="dots"><i></i><i></i><i></i></span>gini_worked_example.txt</span><button class="copy-btn">Copy</button></div>
@@ -124,10 +298,10 @@ Weighted = (60/100)(0.375) + (40/100)(0.21875)
 Gini gain = 0.5 - 0.3125 = 0.1875</code></pre>
 </div>
 <div class="callout"><div class="c-ico">🧭</div><div class="c-body"><div class="c-title">Do not forget the weighting</div><p>Weighting by child size is essential — an unweighted average would over-value a split isolating a tiny pure node, which is exactly the pathology <code>min_samples_leaf</code> guards against. Being asked to compute a split by hand is common, and fumbling the arithmetic on a question you conceptually understand is an avoidable loss.</p></div></div>
-<h2 id="drill">5 · Hands-on drill</h2>
+<h2 id="drill">6 · Hands-on drill</h2>
 <ol><li>Implement a decision tree from scratch: Gini computation, exhaustive split search over features and thresholds, recursive building, depth and leaf-size stopping rules, prediction by traversal. This is a common live-coding task, and building it once makes Modules 16 to 18 far easier.</li><li>Compute the worked Gini example above by hand, then verify with your implementation.</li><li>Fit trees at <code>max_depth</code> 1 through 20 and plot train and test accuracy — produce the overfitting curve yourself.</li><li>Fit the same tree specification on 10 bootstrap samples and visualize all ten. <strong>The structural variation you see <em>is</em> the high-variance argument for bagging.</strong></li><li>Train a regression tree on a linear trend and plot its step-function predictions, including beyond the training range. That flat line past the boundary is your extrapolation answer.</li><li>Use <code>cost_complexity_pruning_path</code> to obtain the <code>ccp_alpha</code> sequence and pick one by cross-validation.</li></ol>
 <div class="callout warn"><div class="c-ico">⚠️</div><div class="c-body"><div class="c-title">Gotchas that fail candidates</div><ul><li><strong>Claiming Gini and entropy give substantially different trees.</strong> They rarely do — say so.</li><li><strong>Saying trees need scaling.</strong></li><li><strong>Not knowing trees cannot extrapolate.</strong></li><li><strong>Treating tree feature importance as reliable</strong> without mentioning its high-cardinality bias.</li><li><strong>Not knowing the greedy-versus-optimal distinction</strong>, or why greediness is necessary.</li><li><strong>Confusing pre-pruning with post-pruning</strong>, or not knowing <code>ccp_alpha</code> exists.</li><li><strong>Saying a deep tree is interpretable.</strong> A depth-20 tree has up to a million leaves; nobody reads that.</li></ul></div></div>
-<h2 id="questions">6 · Interview questions</h2>
+<h2 id="questions">7 · Interview questions</h2>
 <div class="prep-toolbar" data-sticky-prep=""><label class="prep-filter"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><input data-question-filter="" placeholder="Filter these questions…"/></label><button class="btn ghost" data-expand-answers="" type="button">Open all</button><span class="prep-count" data-question-count="">6 questions</span></div>
 <section aria-label="Decision tree interview questions" class="prep-question-list">
 <details class="prep-question" data-question="gini or entropy which is better" data-tags="impurity Gini entropy trap">
@@ -159,5 +333,6 @@ Gini gain = 0.5 - 0.3125 = 0.1875</code></pre>
 <script src="assets/ml-sitenav.js?v=20260727c"></script>
 <script src="assets/enhance.js?v=20260728b"></script>
 <script src="assets/interview-prep.js?v=20260727c"></script>
+<script src="assets/ml-mobile.js?v=20260728c"></script>
 </body>
 </html>
