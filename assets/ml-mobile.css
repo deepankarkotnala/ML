@@ -724,6 +724,22 @@
   .content h3,
   .content td { overflow-wrap: break-word; }
 
+  /* Grid and flex children default to `min-width: auto`, which means they
+     refuse to shrink below their content's minimum width. Put a scrollable
+     table (min-width 460px) inside one and the CHILD grows past the viewport,
+     even though the table itself is correctly scrollable — the overflow just
+     moves up one level. Explicitly allowing these containers to shrink is what
+     lets the inner scroll container do its job. */
+  .gu-ladder,
+  .gu-step,
+  .gu-jargon,
+  .gu-jargon > div,
+  .grid > *,
+  .prep-topic-grid > *,
+  .callout,
+  .callout .c-body,
+  .mlviz { min-width: 0; }
+
   img, svg, video, iframe { max-width: 100%; }
 }
 

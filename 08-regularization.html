@@ -36,8 +36,15 @@
 <link href="assets/brand/favicon-16.png?v=20260727c" rel="icon" sizes="16x16" type="image/png"/>
 <!-- /Machine Learning brand metadata -->
 <meta content="Why L1 produces exact zeros via both the geometric and subgradient arguments, the SVD view of ridge, regularization as a Bayesian prior, and the five families beyond an L1/L2 penalty." name="description"/>
-<link href="assets/styles.css?v=20260728b" rel="stylesheet"/>
-<link href="assets/office-theme.css?v=20260728b" rel="stylesheet"/>
+<!-- Theme before first paint. Without this the document paints with the light
+     tokens and only flips when app.js runs at the end of <body>, which is a
+     white flash on every navigation in dark mode. Mirrors app.js's getTheme()
+     exactly — same key, same "light" default — so the pre-paint value can never
+     disagree with what the scripts apply a moment later. Inline and blocking on
+     purpose: an external file would cost a round trip before first paint. -->
+<script>(function(){try{var t=localStorage.getItem("gp.theme")||"light";document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=t==="dark"?"#17191e":"#f3f4f6";}catch(e){}})();</script>
+<link href="assets/styles.css?v=20260729d" rel="stylesheet"/>
+<link href="assets/office-theme.css?v=20260729a" rel="stylesheet"/>
 <link href="assets/ml-visuals.css?v=20260728a" rel="stylesheet"/>
 <link href="assets/ml-mobile.css?v=20260728c" rel="stylesheet"/>
 </head>
@@ -227,7 +234,7 @@ sklearn note      Ridge/Lasso use `alpha` = λ  (bigger = MORE regularization)
 </div>
 <script src="assets/app.js?v=20260727c"></script>
 <script src="assets/ml-sitenav.js?v=20260727c"></script>
-<script src="assets/enhance.js?v=20260728b"></script>
+<script src="assets/enhance.js?v=20260729d"></script>
 <script src="assets/interview-prep.js?v=20260727c"></script>
 <script src="assets/ml-mobile.js?v=20260728c"></script>
 </body>

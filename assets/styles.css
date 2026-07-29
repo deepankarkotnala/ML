@@ -555,7 +555,15 @@ tbody tr:hover { background: var(--bg-subtle); }
       whole page, handled natively by `@view-transition`. We explicitly turn OFF
       the JS-era .main entry animation there so nothing competes with it.
    2. Browsers WITHOUT it → the JS fallback (sitenav.js) fades the content out on
-      leave, and the `page-enter` keyframe fades the next page in. */
+      leave, and the `page-enter` keyframe fades the next page in.
+
+   The light/dark toggle rides on path 1 as well: enhance.js runs it inside
+   `document.startViewTransition`, which produces the same root snapshot and so
+   picks up the same crossfade timing below. That is deliberate — it is why a
+   theme change and a page change feel like one gesture, and why the theme fade
+   cannot stagger (a snapshot carries the gradients, glass and shadows that
+   cannot interpolate between themes). Browsers on path 2 get the atomic flip
+   instead; see the `.theme-switching` block at the end of this file. */
 
 /* --- Fallback path (no View Transitions support) --- */
 @supports not (view-transition-name: none) {
@@ -4018,4 +4026,31 @@ html[data-theme="dark"] .toc-textbook a.active {
   html .app { grid-template-columns: calc(var(--sidebar-w) * 0.9) minmax(0, 1fr); }
   .app > .sidebar { zoom: 0.9; height: calc(100vh / 0.9); }
   .content-wrap > .content { zoom: 0.9; }
+}
+
+/* =========================================================================
+   Light ↔ dark switch — every element flips in the same frame
+   `enhance.js` puts `.theme-switching` on <html> across a theme change.
+
+   Without it the flip is *staggered*: components here carry their own
+   transitions (`all .15s`, `.2s`, `border-color .3s`…), so each starts and
+   finishes re-colouring on its own clock, while the things that physically
+   cannot interpolate between themes — gradients, `backdrop-filter` glass,
+   shadows — snap immediately. The page arrives in dark mode in pieces.
+
+   Giving everything one shared duration does not fix that: the
+   non-interpolating surfaces still snap while the rest drifts. The only version
+   with nothing to stagger is no animation at all — suppress every transition for
+   the length of the change and the whole page repaints once, in one frame.
+
+   This is the fallback for browsers without view transitions; where they exist,
+   the crossfade below is what you see, and this block keeps CSS transitions from
+   competing with it. The class is removed a moment later, so ordinary
+   hover/focus transitions are untouched outside the switch itself.
+   ========================================================================= */
+html.theme-switching,
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: none !important;
 }
