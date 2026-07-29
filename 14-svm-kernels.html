@@ -112,7 +112,7 @@
   <polygon class="mv-fill-3" points="396,210 406,214 402,222"></polygon>
   <text class="mv-lbl-xs mv-fill-3" x="428" y="284">support vectors: the walls rest on these</text>
   <text class="mv-lbl mv-fill-1" x="96" y="46">maximum margin — the SVM's choice</text>
-  <text class="mv-lbl-xs" x="96" y="62">widest corridor: 2 / ‖w‖</text>
+  <text class="mv-lbl-xs" x="96" y="62">the widest gap that still fits</text>
 </g>
 
 <!-- candidate 2 of 3: separates perfectly, but skims the blue class -->
@@ -155,7 +155,9 @@
 </g>
 </svg>
 </div>
-<div class="mv-keys"><span><i class="mv-k2"></i>class −1</span><span><i class="mv-k1"></i>class +1</span><span><i class="mv-kd"></i>margin walls (w·x + b = ±1)</span><span><i class="mv-k5"></i>a worse separator</span></div>
+<div class="mv-keys"><span><i class="mv-k2"></i>class −1</span><span><i class="mv-k1"></i>class +1</span><span><i class="mv-kd"></i>the edges of the gap</span><span><i class="mv-k5"></i>a worse separator</span></div>
+<p class="mlviz-cap">Slide any of the three boundaries a little and training accuracy does not change — which is exactly why accuracy cannot pick one. <b>The margin is the tie-breaker</b>, and it is a statement about the data you have <em>not</em> seen yet.</p>
+</div>
 <div class="gu-ladder">
 <div class="gu-step"><h4>Only the dots on the walls matter</h4><p>Take a dot far from the boundary and drag it further away. The boundary does not move. Delete it entirely — still no movement. The answer is held in place only by the few dots the walls rest against, and those are the <strong>support vectors</strong>.</p><div class="gu-so"><strong>So what:</strong> two consequences worth saying. The trained model only needs those few points, so it stays small. And it is <em>relaxed</em> about far-away outliers but <em>very</em> sensitive to a mislabelled point sitting near the boundary — the opposite of what most people assume.</div></div>
 <div class="gu-step"><h4>Real data overlaps, so allow mistakes for a price</h4><p>Everything so far assumed a clean gap exists. Put one blue dot deep in the green crowd and the strict version has <em>no answer at all</em>. And one mislabelled point near the edge can drag a good boundary badly off course.</p><p>So relax it. Let points break the rule, and charge for it. The setting that fixes the price is <code>C</code>, and this "soft margin" is what every real implementation uses.</p><div class="gu-so"><strong>So what:</strong> <code>C</code> runs <em>backwards</em> from what people expect. <b>Large C</b> = mistakes are expensive = insist on being right = narrow gap, more overfitting. <b>Small C</b> = mistakes are cheap = a wide gap that tolerates some errors = more regularisation. Getting that direction the wrong way round is the single most common SVM slip.</div></div>

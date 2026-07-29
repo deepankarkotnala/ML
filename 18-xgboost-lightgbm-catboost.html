@@ -91,35 +91,37 @@
 <div class="gu-step"><h4>What that regularisation actually does to a leaf</h4><p>Every leaf has to settle on one output number. Left alone it picks whatever fits its rows best. Turn up the penalty and the leaf is pulled <strong>toward zero</strong> — it still leans the same way, just less confidently — and the split that created it looks less impressive, so weak splits stop being worth making.</p><p>The chart below shows exactly that. Same leaf, same data, one setting changed.</p><div class="gu-so"><strong>So what:</strong> regularisation here does two things at once: <b>leaves predict smaller values, and splits have to work harder to justify themselves.</b> That is all you need to say about it.</div></div>
 </div>
 <div class="mlviz">
-<div class="mlviz-title">One leaf's objective is a parabola — λ moves its minimum toward zero</div>
+<div class="mlviz-title">Turn the penalty up and the leaf picks a smaller number</div>
 <div class="mlviz-scroll">
 <svg viewbox="0 0 660 300" role="img" aria-label="Two parabolas showing a single leaf's objective as a function of its output weight. With lambda zero the minimum sits at w equals 1.5 with objective minus 4.5. With lambda equal to four the minimum moves to w equals 0.75 with objective minus 2.25, a smaller leaf value and a smaller gain.">
 <g class="mv-gridline"><path d="M90 240.9 H620"></path><path d="M90 200 H620"></path><path d="M90 159.1 H620"></path><path d="M90 100 H620"></path></g>
 <path class="mv-axis" d="M172.3 50 V262"></path>
 <path class="mv-axis" d="M90 159.1 H620"></path>
-<text class="mv-lbl-sm" x="628" y="163" text-anchor="end">w</text>
+<text class="mv-lbl-sm" x="628" y="163" text-anchor="end">the leaf's output →</text>
 <text class="mv-lbl-xs" x="166" y="152" text-anchor="end">0</text>
-<text class="mv-lbl-sm" x="40" y="120" text-anchor="middle" transform="rotate(-90 40 120)">leaf objective</text>
+<text class="mv-lbl-sm" x="40" y="120" text-anchor="middle" transform="rotate(-90 40 120)">how bad the leaf's choice is</text>
 
 <!-- lambda = 0 -->
 <path class="mv-str-5" stroke-width="2.8" fill="none" stroke-linecap="round" d="M90 95.4 Q 131 130, 172.3 159.1 Q 213.4 184, 254.5 204.5 Q 295.7 221, 336.8 231.8 Q 377.9 239, 419 240.9 Q 460.1 239, 501.2 231.8 Q 542.3 221, 583.4 204.5"></path>
 <circle class="mv-fill-5 mv-pulse" cx="419" cy="240.9" r="5.5"></circle>
 <path class="mv-str-5 mv-dash" stroke-width="1.4" d="M419 240.9 V159.1"></path>
-<text class="mv-lbl mv-fill-5" x="436" y="256">λ = 0</text>
+<text class="mv-lbl mv-fill-5" x="430" y="256">no penalty</text>
 
 <!-- lambda = 4 -->
 <path class="mv-str-1" stroke-width="2.8" fill="none" stroke-linecap="round" d="M90 86.4 Q 131 122, 172.3 159.1 Q 192.8 172, 213.4 181.8 Q 234 190, 254.5 195.5 Q 275 199, 295.7 200 Q 316 199, 336.8 195.5 Q 377.9 181, 419 159.1 Q 460.1 128, 501.2 86.4"></path>
 <circle class="mv-fill-1 mv-pulse" cx="295.7" cy="200" r="5.5"></circle>
 <path class="mv-str-1 mv-dash" stroke-width="1.4" d="M295.7 200 V159.1"></path>
-<text class="mv-lbl mv-fill-1" x="306" y="195">λ = 4</text>
+<text class="mv-lbl mv-fill-1" x="296" y="184" text-anchor="middle">penalty on</text>
 
-<text class="mv-mono-sm" x="204" y="68">Obj(w) = Gw + ½(H+λ)w²</text>
-<text class="mv-lbl-xs" x="204" y="84">G = −6 · H = 4 · minimum at w* = −G/(H+λ)</text>
-<text class="mv-mono-sm mv-fill-5" x="188" y="250">λ = 0 → w* = 6/4 = 1.50 · Obj* = −4.50</text>
-<text class="mv-mono-sm mv-fill-1" x="188" y="266">λ = 4 → w* = 6/8 = 0.75 · Obj* = −2.25</text>
+<text class="mv-lbl-sm" x="204" y="68">the leaf must pick one output number</text>
+<text class="mv-lbl-xs" x="204" y="84">the lowest point of the curve is the number it picks</text>
+<text class="mv-mono-sm mv-fill-5" x="188" y="250">no penalty   → the leaf picks 1.50</text>
+<text class="mv-mono-sm mv-fill-1" x="188" y="266">penalty on  → the leaf picks 0.75, and gains less</text>
 </svg>
 </div>
-<div class="mv-keys"><span><i class="mv-k5"></i>λ = 0 (unregularised)</span><span><i class="mv-k1"></i>λ = 4</span></div>
+<div class="mv-keys"><span><i class="mv-k5"></i>no penalty</span><span><i class="mv-k1"></i>penalty turned up</span></div>
+<p class="mlviz-cap">Turning the penalty up makes the curve steeper, which pulls its lowest point closer to zero and makes the best it can manage less impressive. Those are the two effects of regularisation, and they are all you need: <b>leaves predict smaller values, and splits have to work harder to justify themselves.</b> A leaf resting on very few rows gets shrunk automatically for the same reason.</p>
+</div>
 <div class="gu-ladder">
 <div class="gu-step"><h4>LightGBM: stop checking every value, and grow where it pays</h4><p>LightGBM leaves the maths alone and attacks the <em>cost of finding a split</em>. Two ideas matter, two are refinements.</p><ul>
 <li><strong>Bucket the numbers.</strong> Instead of trying every distinct value of a column, sort them into around 255 buckets once, up front, and only try those. Same answer, far fewer checks — and the buckets get reused at every node.</li>

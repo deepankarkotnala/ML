@@ -148,6 +148,8 @@
 </svg>
 </div>
 <div class="mv-keys"><span><i class="mv-k1"></i>class A</span><span><i class="mv-k2"></i>class B</span><span><i class="mv-k3"></i>weak split</span><span><i class="mv-k5"></i>useless split</span></div>
+<p class="mlviz-cap">The third candidate is the instructive one. It is a perfectly sensible-looking line, and it divides the data into two equal halves — but each half is still 50/50, so <b>the tree has learned nothing at all</b>. Impurity gain, not visual tidiness, is the only thing the algorithm can see.</p>
+</div>
 <div class="gu-ladder">
 <div class="gu-step"><h4>Now repeat, and look at the shape it makes</h4><p>Take the winning split, then run the same procedure on each half separately — new best feature, new best cutoff, chosen independently on each side. Stop when a pile is pure, too small, or you hit a depth limit.</p><p>Because every question is "is this one feature above a cutoff?", every cut is a straight line square to an axis. Nesting them carves the space into <strong>rectangles</strong>, one per leaf, and inside each rectangle the prediction is a single number.</p><div class="gu-so"><strong>So what:</strong> a tree picks up feature interactions for free — "high income <em>and</em> young" is just one split inside another, with nothing to specify. But a genuinely diagonal boundary has to be approximated by a staircase of little rectangles, which is why a tree sometimes needs surprising depth for something a straight line would nail.</div></div>
 </div>
